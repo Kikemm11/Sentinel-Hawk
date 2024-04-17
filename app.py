@@ -7,7 +7,7 @@ import os
 import time
 import loginApp
 from models.vehiculosConecction import VehicleConnection
-from loginApp import database
+#from loginApp import database
 
 app = Flask(__name__)
 
@@ -128,7 +128,7 @@ def begin():
 
 @app.route('/vehicle-type')
 def index():
-    connection = VehicleConnection(database)
+    connection = VehicleConnection(loginApp.database)
     vehicle_types = connection.read_all_vehicle_types()
     return render_template('vehicle_type.html', vehicle_types=vehicle_types)
 
@@ -136,7 +136,7 @@ def index():
 
 @app.route('/vehicle-search/<string:vehicle_name>')
 def search_index(vehicle_name):
-    connection = VehicleConnection(database)
+    connection = VehicleConnection(loginApp.database)
     vehicle = connection.read_one_vehicle_type(vehicle_name)
     return render_template('vehicle_search.html', vehicle_type=vehicle)
 
@@ -169,7 +169,7 @@ def update():
 
         print("data: ",data)
 
-        connection = VehicleConnection(database)
+        connection = VehicleConnection(loginApp.database)
         
         print("data: ",data)
 
@@ -184,7 +184,7 @@ def update():
 @app.route('/delete/<int:vehicle_id>', methods=['POST'])
 def delete_vehicle(vehicle_id):
  
-    connection = VehicleConnection(database)
+    connection = VehicleConnection(loginApp.database)
     resultado = connection.delete_vehicle_type(vehicle_id)
     if resultado['success']:
         return redirect('/vehicle-type')  
