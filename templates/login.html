@@ -1,0 +1,164 @@
+{% if mensaje %}
+<script>
+  window.onload = function() {
+    alert("{{ mensaje }}");
+  };
+</script>
+{% endif %}
+
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
+      <link rel="stylesheet" href="static/login.css">
+      <title>Sign in & Sign up Form</title>
+      <style>
+        /* Estilos para el logo */
+        .logo {
+          position: relative;
+          top: 20px;
+          left: 14%;
+          transform: translateX(-50%);
+          width: 150px; /* Ajusta el tamaño según sea necesario */
+          height: auto;
+          z-index: 1; /* Asegura que el logo esté por encima de los otros elementos */
+        }
+        .logo2 {
+          position: absolute;
+          top: -135px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 150px; /* Ajusta el tamaño según sea necesario */
+          height: auto;
+          z-index: 1; /* Asegura que el logo esté por encima de los otros elementos */
+        }
+      </style>
+    </head>
+    <body>
+      
+      <div class="container">
+        <div class="forms-container">
+          <div class="signin-signup">
+            <form method="post" action="{{ url_for('login') }}" class="sign-in-form">
+              <h2 class="title">Sign in</h2>
+              <div class="input-field">
+                <i class="fas fa-user"></i>
+                <input type="text" id="username" name="username" placeholder="Username" />
+              </div>
+              <div class="input-field">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="password" name="password" placeholder="Password" />
+                <span class="input-group-text" onclick="togglePasswordVisibility()">
+                  <i id="password-toggle" class="fas fa-eye"></i>
+                </span>
+              </div>
+              <input type="submit" value="Login" class="btn solid" />
+              
+            </form>
+            <form method="post" action="{{ url_for('signUp') }}" class="sign-up-form">
+              <h2 class="title">Sign up</h2>
+              <div class="input-field">
+                <i class="fas fa-user"></i>
+                <input type="text" name="username1" id="username1"placeholder="Username" />
+              </div>
+              
+              <div class="input-field">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="password1" name="password1" placeholder="Password" />
+                <span class="input-group-text" onclick="togglePasswordVisibility1()">
+                  <i id="password-toggle1" class="fas fa-eye"></i>
+                </span>
+              </div>
+              <div class="input-field">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="password2" name="password2" placeholder="Password" />
+                <span class="input-group-text" onclick="togglePasswordVisibility2()">
+                  <i id="password-toggle2" class="fas fa-eye"></i>
+                </span>
+              </div>
+              <input type="submit" class="btn" value="Sign up" />
+              
+            </form>
+          </div>
+        </div>
+    
+        <div class="panels-container">
+          <div class="panel left-panel">
+            <div class="content">
+            <img src="static/assets/img/sentinel.png" alt="Logo" class="logo">
+              <p>
+                Welcome to SENTINEL HAWK website page.. Complete your Sign Up to website access 
+              </p>
+              <button class="btn transparent" id="sign-up-btn">
+                Sign up
+              </button>
+            </div>
+          </div>
+          <div class="panel right-panel">
+            <div class="content">
+              <img src="static/assets/img/sentinel.png" alt="Logo" class="logo2">
+              
+              <p>
+                Welcome to SENTINEL HAWK website page.. Complete your Sign In to website access 
+              </p>
+              <button class="btn transparent" id="sign-in-btn">
+                Sign in
+              </button>
+            </div>
+          </div>
+       
+          <script>
+            const sign_in_btn = document.querySelector("#sign-in-btn");
+            const sign_up_btn = document.querySelector("#sign-up-btn");
+            const container = document.querySelector(".container");
+        
+            sign_up_btn.addEventListener("click", () => {
+              container.classList.add("sign-up-mode");
+            });
+        
+            sign_in_btn.addEventListener("click", () => {
+              container.classList.remove("sign-up-mode");
+            });
+        
+            function togglePasswordVisibility() {
+              var passwordInput = document.getElementById("password");
+              var passwordToggle = document.getElementById("password-toggle");
+        
+              if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                passwordToggle.className = "fas fa-eye-slash";
+              } else {
+                passwordInput.type = "password";
+                passwordToggle.className = "fas fa-eye";
+              }
+            }
+        
+            function togglePasswordVisibility1() {
+              var passwordInput = document.getElementById("password1");
+              var passwordToggle = document.getElementById("password-toggle1");
+        
+              if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                passwordToggle.className = "fas fa-eye-slash";
+              } else {
+                passwordInput.type = "password";
+                passwordToggle.className = "fas fa-eye";
+              }
+            }
+            function togglePasswordVisibility2() {
+              var passwordInput = document.getElementById("password2");
+              var passwordToggle = document.getElementById("password-toggle2");
+        
+              if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                passwordToggle.className = "fas fa-eye-slash";
+              } else {
+                passwordInput.type = "password";
+                passwordToggle.className = "fas fa-eye";
+              }
+            }
+          </script>
+        </body>
+        </html>

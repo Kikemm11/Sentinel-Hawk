@@ -1,0 +1,161 @@
+{% if mensaje %}
+<script>
+  window.onload = function() {
+    alert("{{ mensaje }}");
+  };
+</script>
+{% endif %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tipos de Vehículos</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Tipos de Vehículos</h1>
+        <button id="addVehicleBtn" class="btn btn-success"><i class="fas fa-plus"></i> Agregar Vehículo</button>
+        <!-- Search Bar -->
+        <div class="row mb-3">
+            <div class="col">
+                <br>
+                <input type="text" class="form-control" id="searchInput" placeholder="Buscar por nombre">
+            </div>
+            <div class="col-auto">
+                <br>
+                <button class="btn btn-primary" id="searchBtn"><i class="fas fa-search"></i> Buscar</button>
+            </div>
+    </div>
+        <div class="modal fade" id="addVehicleModal" tabindex="-1" aria-labelledby="addVehicleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addVehicleModalLabel">Agregar Vehículo</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="POST" action="/add" id="addVehicleForm">
+                            <div class="form-group">
+                                <label for="newVehicleName">Nombre del Vehículo</label>
+                                <input type="text" class="form-control" id="newVehicleName" name="newVehicleName">
+                            </div>
+                            <div class="form-group">
+                                <label for="newVehicleCharge">Cargo</label>
+                                <input type="text" class="form-control" id="newVehicleCharge" name="newVehicleCharge">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                <button type="submit" class="btn btn-primary" id="addBtn">Guardar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>        
+        <table class="table mt-3">
+            <thead class="thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Cargo</th>
+                    <th>Acciones</th> 
+                </tr>
+            </thead>
+            <tbody>
+                {% for vehicle_type in vehicle_types %}
+                <tr id="vehicleRow{{ vehicle_type.vehicle_type_id }}">
+                    <td>{{ vehicle_type.vehicle_type_id }}</td>
+                    <td class="editable" data-id="{{ vehicle_type.vehicle_type_id }}">{{ vehicle_type.name }}</td>
+                    <td class="editable" data-id="{{ vehicle_type.vehicle_type_id }}">{{ vehicle_type.charge }}</td>
+                    <td>
+                        <button type="button" class="btn btn-primary update-btn" data-id="{{ vehicle_type.vehicle_type_id }}" data-name="{{ vehicle_type.name }}"><i class="fas fa-edit"></i> Update</button>
+                        <form method="POST" action="/delete/{{ vehicle_type.vehicle_type_id }}" class="delete-form d-inline">
+                            <button type="submit" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="updateModalLabel">Actualizar</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form method="POST" action="/update" id="updateForm{{ vehicle_type.vehicle_type_id }}">
+                                    <div class="form-group">
+                                        <label for="newCharge">Nuevo Cargo</label>
+                                        <input type="text" class="form-control" id="newCharge" name="newCharge">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                        <input type="hidden" name="vehicleId" value="{{ vehicle_type.vehicle_type_id }}">
+                                        <button type="submit" class="btn btn-primary" id="saveChangesBtn">Guardar Cambios</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.update-btn').click(function() {
+                var vehicleId = $(this).data('id');
+                var vehicleName = $(this).data('name');
+                $('#updateModalLabel').text('Actualizar ' + vehicleName);
+                // Set the data-id attribute for the "Guardar cambios" button
+                $('#saveChangesBtn').data('id', vehicleId);
+                $('#updateModal').modal('show');
+            });
+    
+            $('#saveChangesBtn').click(function() {
+                // Get the values from the form fields
+                var vehicleId = $(this).data('id');
+                var newCharge = $('#newCharge').val();
+            
+                // Submit the form
+                $('#updateForm' + vehicleId).submit();
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#addVehicleBtn').click(function() {
+                $('#addVehicleModal').modal('show');
+            });
+
+            $('#addBtn').click(function() {
+                // Get the values from the form fields
+                var vehicleName = $('#newVehicleName').val();
+                var newCharge = $('#newVehicleCharge').val();
+            
+                // Submit the form
+                $('#addVehicleForm').submit();
+            });
+        });
+    </script>
+    <script>
+        document.getElementById("searchBtn").addEventListener("click", function() {
+            var searchValue = document.getElementById("searchInput").value;
+            // Construct the URL with the search query as a parameter
+            var url = "/vehicle-search/" + encodeURIComponent(searchValue);
+            // Redirect the user to the search results page
+            window.location.href = url;
+        });
+    </script>
+</body>
+</html>
