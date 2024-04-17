@@ -16,17 +16,35 @@
 <body>
     <div class="container">
         <h1>Vehicle Types</h1>
+
+        <!--Botón de agregar vehículo-->
+
         <button id="addVehicleBtn" class="btn btn-success"><i class="fas fa-plus"></i> Add Vehicle</button>
+
+        <!--Botón de agregar vehículo-->
+
+        <!--Barra de búsqueda-->
+
         <div class="row mb-3">
             <div class="col">
                 <br>
                 <input type="text" class="form-control" id="searchInput" placeholder="Search By Name">
             </div>
+
+            <!--Botón de búsqueda-->
+
             <div class="col-auto">
                 <br>
                 <button class="btn btn-primary" id="searchBtn"><i class="fas fa-search"></i> Search</button>
             </div>
-    </div>
+
+            <!--Botón de búsqueda-->
+        </div>
+
+        <!--Barra de búsqueda-->
+
+        <!--Pop up Crear vehículo-->
+
         <div class="modal fade" id="addVehicleModal" tabindex="-1" aria-labelledby="addVehicleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -54,7 +72,14 @@
                     </div>
                 </div>
             </div>
-        </div>        
+        </div>
+        
+        
+        <!--Pop up Crear vehículo-->
+
+
+        <!--Tabla de vehículos-->
+
         <table class="table mt-3">
             <thead class="thead-dark">
                 <tr>
@@ -77,6 +102,9 @@
                         </form>
                     </td>
                 </tr>
+
+                <!--Pop up Actualizar vehículo-->
+
                 <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -102,10 +130,16 @@
                         </div>
                     </div>
                 </div>
+
+                <!--Pop up Actualizar vehículo-->
+
                 {% endfor %}
             </tbody>
         </table>
     </div>
+
+
+    <!--Tabla de vehículos-->
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
