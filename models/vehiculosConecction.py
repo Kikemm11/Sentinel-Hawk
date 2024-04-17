@@ -29,13 +29,13 @@ class VehicleConnection:
             session = self.SessionLocal()
             session.add(db_data)
             session.commit()
-            return {'success': True, 'message': 'Tipo de vehículo registrado correctamente.'}
+            return {'success': True, 'message': 'Vehicle type successfully registered'}
         except IntegrityError:
             session.rollback()
-            return {'success': False, 'message': 'El tipo de vehículo ya existe.'}
+            return {'success': False, 'message': 'vehicle type already exists'}
         except Exception as e:
             session.rollback()
-            return {'success': False, 'message': f'Error al insertar tipo de vehículo: {str(e)}'}
+            return {'success': False, 'message': f'Error trying to create vehicle type: {str(e)}'}
         finally:
             session.close()
             
@@ -63,12 +63,12 @@ class VehicleConnection:
             if vehicle:
                 vehicle.charge = data.get('charge')
                 session.commit()
-                return {'success': True, 'message': 'Tipo de vehículo actualizado correctamente.'}
+                return {'success': True, 'message': 'Vehicle type successfully updated'}
             else:
-                return {'success': False, 'message': 'No se encontró el tipo de vehículo con el ID proporcionado.'}
+                return {'success': False, 'message': 'Cannot find the vehicle type with the provided id'}
         except Exception as e:
             session.rollback()
-            return {'success': False, 'message': f'Error al actualizar tipo de vehículo: {str(e)}'}
+            return {'success': False, 'message': f'Error trying to update vehicle type: {str(e)}'}
         finally:
             session.close()
 
@@ -81,11 +81,11 @@ class VehicleConnection:
             if vehicle:
                 session.delete(vehicle)
                 session.commit()
-                return {'success': True, 'message': 'Tipo de vehículo eliminado correctamente.'}
+                return {'success': True, 'message': 'TVehicle type successfully deleted'}
             else:
-                return {'success': False, 'message': 'No se encontró el tipo de vehículo con el ID proporcionado.'}
+                return {'success': False, 'message': 'Cannot find the vehicle type with the provided id'}
         except Exception as e:
             session.rollback()
-            return {'success': False, 'message': f'Error al eliminar tipo de vehículo: {str(e)}'}
+            return {'success': False, 'message': f'Error trying to delete vehicle type: {str(e)}'}
         finally:
             session.close()

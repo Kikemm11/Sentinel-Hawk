@@ -9,30 +9,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Tipos de Vehículos</title>
+    <title>Vehicle Types</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
     <div class="container">
-        <h1>Tipos de Vehículos</h1>
-        <button id="addVehicleBtn" class="btn btn-success"><i class="fas fa-plus"></i> Agregar Vehículo</button>
-        <!-- Search Bar -->
+        <h1>Vehicle Types</h1>
+        <button id="addVehicleBtn" class="btn btn-success"><i class="fas fa-plus"></i> Add Vehicle</button>
         <div class="row mb-3">
             <div class="col">
                 <br>
-                <input type="text" class="form-control" id="searchInput" placeholder="Buscar por nombre">
+                <input type="text" class="form-control" id="searchInput" placeholder="Search By Name">
             </div>
             <div class="col-auto">
                 <br>
-                <button class="btn btn-primary" id="searchBtn"><i class="fas fa-search"></i> Buscar</button>
+                <button class="btn btn-primary" id="searchBtn"><i class="fas fa-search"></i> Search</button>
             </div>
     </div>
         <div class="modal fade" id="addVehicleModal" tabindex="-1" aria-labelledby="addVehicleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="addVehicleModalLabel">Agregar Vehículo</h5>
+                        <h5 class="modal-title" id="addVehicleModalLabel">Add Vehicle</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -40,16 +39,16 @@
                     <div class="modal-body">
                         <form method="POST" action="/add-vehicle" id="addVehicleForm">
                             <div class="form-group">
-                                <label for="newVehicleName">Nombre del Vehículo</label>
+                                <label for="newVehicleName">Vehicle Type Name</label>
                                 <input type="text" class="form-control" id="newVehicleName" name="newVehicleName">
                             </div>
                             <div class="form-group">
-                                <label for="newVehicleCharge">Cargo</label>
+                                <label for="newVehicleCharge">Charge</label>
                                 <input type="text" class="form-control" id="newVehicleCharge" name="newVehicleCharge">
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                                <button type="submit" class="btn btn-primary" id="addBtn">Guardar</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-primary" id="addBtn">Save</button>
                             </div>
                         </form>
                     </div>
@@ -60,9 +59,9 @@
             <thead class="thead-dark">
                 <tr>
                     <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Cargo</th>
-                    <th>Acciones</th> 
+                    <th>Type Name</th>
+                    <th>Charge</th>
+                    <th>Actions</th> 
                 </tr>
             </thead>
             <tbody>
@@ -82,7 +81,7 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="updateModalLabel">Actualizar</h5>
+                                <h5 class="modal-title" id="updateModalLabel">Update</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -90,13 +89,13 @@
                             <div class="modal-body">
                                 <form method="POST" action="/update-vehicle" id="updateForm{{ vehicle_type.vehicle_type_id }}">
                                     <div class="form-group">
-                                        <label for="newCharge">Nuevo Cargo</label>
+                                        <label for="newCharge">New Charge</label>
                                         <input type="text" class="form-control" id="newCharge" name="newCharge">
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                                         <input type="hidden" name="vehicleId" value="{{ vehicle_type.vehicle_type_id }}">
-                                        <button type="submit" class="btn btn-primary" id="saveChangesBtn">Guardar Cambios</button>
+                                        <button type="submit" class="btn btn-primary" id="saveChangesBtn">Save Changes</button>
                                     </div>
                                 </form>
                             </div>
@@ -116,7 +115,7 @@
             $('.update-btn').click(function() {
                 var vehicleId = $(this).data('id');
                 var vehicleName = $(this).data('name');
-                $('#updateModalLabel').text('Actualizar ' + vehicleName);
+                $('#updateModalLabel').text('Update ' + vehicleName);
                 // Set the data-id attribute for the "Guardar cambios" button
                 $('#saveChangesBtn').data('id', vehicleId);
                 $('#updateModal').modal('show');

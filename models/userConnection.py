@@ -6,8 +6,6 @@ from sqlalchemy import func, case
 from datetime import datetime, timedelta
 from sqlalchemy.exc import IntegrityError
 
-
-
 Base = declarative_base()
 
 class User(Base):
@@ -37,12 +35,12 @@ class UserConnection:
             session = self.SessionLocal()
             session.add(db_data)
             session.commit()
-            return {'success': True, 'message': 'Usuario registrado correctamente.'}
+            return {'success': True, 'message': 'User successfully registered'}
         except IntegrityError:
             session.rollback()
-            return {'success': False, 'message': 'El usuario ya existe.'}
+            return {'success': False, 'message': 'User already exists.'}
         except Exception as e:
             session.rollback()
-            return {'success': False, 'message': f'Error al insertar usuario: {str(e)}'}
+            return {'success': False, 'message': f'Error trying to create user: {str(e)}'}
         finally:
             session.close()
