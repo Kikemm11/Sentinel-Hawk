@@ -3,6 +3,8 @@ import bcrypt
 from starlette.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_404_NOT_FOUND, HTTP_204_NO_CONTENT
 #from fastapi.responses import JSONResponse
 
+# Global variable to set the connection to the database
+
 database = "postgresql://kikemm11:04122001@localhost:5432/sentinel_hawk"
 
 def get_user(data):

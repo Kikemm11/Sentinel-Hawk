@@ -38,7 +38,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form method="POST" action="/add" id="addVehicleForm">
+                        <form method="POST" action="/add-vehicle" id="addVehicleForm">
                             <div class="form-group">
                                 <label for="newVehicleName">Nombre del Vehículo</label>
                                 <input type="text" class="form-control" id="newVehicleName" name="newVehicleName">
@@ -88,7 +88,7 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <form method="POST" action="/update" id="updateForm{{ vehicle_type.vehicle_type_id }}">
+                                <form method="POST" action="/update-vehicle" id="updateForm{{ vehicle_type.vehicle_type_id }}">
                                     <div class="form-group">
                                         <label for="newCharge">Nuevo Cargo</label>
                                         <input type="text" class="form-control" id="newCharge" name="newCharge">

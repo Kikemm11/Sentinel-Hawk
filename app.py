@@ -11,9 +11,13 @@ from loginApp import database
 
 app = Flask(__name__)
 
-app.static_folder = 'static'  # Ruta a la carpeta de archivos estáticos
+#Static folder route
 
-app.secret_key = '123456789'  # Cambia esta clave secreta por una segura
+app.static_folder = 'static'  
+
+#Web app secret key (Need to change)
+
+app.secret_key = '123456789' 
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -25,6 +29,7 @@ class User(UserMixin):
 def generate_token():
     return secrets.token_urlsafe(16)  
 
+# Set the different routes involoved lin the web application
 
 
 @login_manager.user_loader
@@ -43,7 +48,7 @@ def logout():
     return redirect('/')    
 
     
-
+# Login route
 
 @app.route('/', methods=['GET', 'POST'])
 def login():
@@ -67,13 +72,11 @@ def login():
         else:
             mensaje = 'Por favor, ingresa tanto el nombre de usuario como la contraseña'
             return render_template('login.html', mensaje=mensaje, tipo='danger')    
-            
-       
-        
+               
     return render_template('login.html')
 
 
-
+# Signup route
 
 @app.route('/signUp', methods=['GET', 'POST'])
 def signUp():
@@ -114,22 +117,14 @@ def signUp():
     return render_template('login.html')
 
 
-   
+# Main route 
 
 @app.route('/main')
 @login_required
 def begin():
     return render_template('main.html')
 
-
-@app.route('/vehicle-search/<string:vehicle_name>')
-def search_index(vehicle_name):
-    connection = VehicleConnection(database)
-    vehicle = connection.read_one_vehicle_type(vehicle_name)
-    return render_template('vehicle_search.html', vehicle_type=vehicle)
-
-
-
+# Vehicle type index route
 
 @app.route('/vehicle-type')
 def index():
@@ -137,25 +132,32 @@ def index():
     vehicle_types = connection.read_all_vehicle_types()
     return render_template('vehicle_type.html', vehicle_types=vehicle_types)
 
+# Vehicle type search route
 
-@app.route('/add', methods=['GET', 'POST'])
+@app.route('/vehicle-search/<string:vehicle_name>')
+def search_index(vehicle_name):
+    connection = VehicleConnection(database)
+    vehicle = connection.read_one_vehicle_type(vehicle_name)
+    return render_template('vehicle_search.html', vehicle_type=vehicle)
+
+# Add new vehicle route
+
+@app.route('/add-vehicle', methods=['GET', 'POST'])
 def add():
 
     if 'newVehicleName' in request.form and 'newVehicleCharge' in request.form:
         name = request.form['newVehicleName']
         charge = request.form['newVehicleCharge']
 
-
         data = {"name": name, "charge": charge}
-
 
         connection = VehicleConnection("postgresql://kikemm11:04122001@localhost:5432/sentinel_hawk")
         vehicle_types = connection.write_vehicle_type(data)
         return redirect('/vehicle-type')  
 
+# Update vehicle route
 
-
-@app.route('/update', methods=['GET', 'POST'])
+@app.route('/update-vehicle', methods=['GET', 'POST'])
 def update():
 
     if  'newCharge' in request.form:
@@ -177,7 +179,7 @@ def update():
         
         return redirect('/vehicle-type')       
 
-
+# Delete vehicle route
 
 @app.route('/delete/<int:vehicle_id>', methods=['POST'])
 def delete_vehicle(vehicle_id):

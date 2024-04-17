@@ -29,6 +29,7 @@ class UserConnection:
         session.close()
         return result    
     
+    #Create user function
     
     def write_user(self, data):
         try:
