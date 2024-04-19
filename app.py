@@ -6,8 +6,9 @@ from flask_cors import CORS
 import os
 import time
 import loginApp
-from models.vehiculosConnection import VehicleConnection
+from models.vehicle_typeConnection import VehicleConnection
 from models.userConnection import UserConnection
+from models.currencyConnection import CurrencyConnection
 #from loginApp import database
 
 app = Flask(__name__)
@@ -114,9 +115,9 @@ def vehicle_type_search_index(vehicle_name):
 @app.route('/add-vehicle', methods=['GET', 'POST'])
 def add_vehicle_type():
 
-    if 'newVehicleName' in request.form and 'newVehicleCharge' in request.form:
-        name = request.form['newVehicleName']
-        charge = request.form['newVehicleCharge']
+    if 'vehicleName' in request.form and 'vehicleCharge' in request.form:
+        name = request.form['vehicleName']
+        charge = request.form['vehicleCharge']
 
         data = {"name": name, "charge": charge}
 
@@ -129,9 +130,9 @@ def add_vehicle_type():
 @app.route('/update-vehicle', methods=['GET', 'POST'])
 def update_vehicle_type():
 
-    if  'newCharge' in request.form:
+    if  'newVehicleCharge' in request.form:
         
-        charge = request.form['newCharge']
+        charge = request.form['newVehicleCharge']
         vehicle_id = request.form['vehicleId']
 
         data = {"charge": charge }
@@ -253,6 +254,73 @@ def delete_user(user_id):
     resultado = connection.delete_user(user_id)
     if resultado['success']:
         return redirect('/manage-users')  
+        #return resultado['message']
+    else:
+        return "Error: " + resultado['message']
+    
+    
+
+#---Currency routes---
+
+
+
+# Currency type index route
+
+@app.route('/currency')
+def currency_index():
+    connection = CurrencyConnection(loginApp.database)
+    currencies = connection.read_all_currencies()
+    return render_template('currency.html', currencies=currencies)
+
+# Currency search route
+
+@app.route('/currency-search/<string:currency_name>')
+def currency_search_index(currency_name):
+    connection = CurrencyConnection(loginApp.database)
+    currency = connection.read_one_currency(currency_name)
+    return render_template('currency_search.html', currency=currency)
+
+# Add new currency route
+
+@app.route('/add-currency', methods=['GET', 'POST'])
+def add_currency():
+
+    if 'currencyName' in request.form and 'currencyCode' in request.form:
+        name = request.form['currencyName']
+        code = request.form['currencyCode']
+
+        data = {"name": name, "code": code}
+
+        connection = CurrencyConnection(loginApp.database)
+        currency = connection.write_currency(data)
+        return redirect('/currency')  
+
+# Update currency route
+
+@app.route('/update-currency', methods=['GET', 'POST'])
+def update_currency():
+
+    if  'newCurrencyName' in request.form and 'newCurrencyCode' in request.form:
+        
+        name = request.form['newCurrencyName']
+        code = request.form['newCurrencyCode']
+        currency_id = request.form['currencyId']
+
+        data = {"name": name, "code": code}
+        connection = CurrencyConnection(loginApp.database)
+        currency_update = connection.update_currency(currency_id,data)
+                
+        return redirect('/currency')       
+
+# Delete currency route
+
+@app.route('/delete-currency/<int:currency_id>', methods=['POST'])
+def delete_currency(currency_id):
+ 
+    connection = CurrencyConnection(loginApp.database)
+    resultado = connection.delete_currency(currency_id)
+    if resultado['success']:
+        return redirect('/currency')  
         #return resultado['message']
     else:
         return "Error: " + resultado['message']    

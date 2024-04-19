@@ -23,7 +23,7 @@ class VehicleConnection:
        
     #Create vehicle type function 
     
-    def write_vehicle_type(self, data):#create
+    def write_vehicle_type(self, data):
         try:
             db_data = VehicleType(**data)
             session = self.SessionLocal()
@@ -59,9 +59,9 @@ class VehicleConnection:
     def update_vehicle_type(self, vehicle_id, data): 
         try:
             session = self.SessionLocal()
-            vehicle = session.query(VehicleType).filter(VehicleType.vehicle_type_id == vehicle_id).first()
-            if vehicle:
-                vehicle.charge = data.get('charge')
+            vehicle_type = session.query(VehicleType).filter(VehicleType.vehicle_type_id == vehicle_id).first()
+            if vehicle_type:
+                vehicle_type.charge = data.get('charge')
                 session.commit()
                 return {'success': True, 'message': 'Vehicle type successfully updated'}
             else:
@@ -77,9 +77,9 @@ class VehicleConnection:
     def delete_vehicle_type(self, vehicle_id): 
         try:
             session = self.SessionLocal()
-            vehicle = session.query(VehicleType).filter(VehicleType.vehicle_type_id == vehicle_id).first()
-            if vehicle:
-                session.delete(vehicle)
+            vehicle_type = session.query(VehicleType).filter(VehicleType.vehicle_type_id == vehicle_id).first()
+            if vehicle_type:
+                session.delete(vehicle_type)
                 session.commit()
                 return {'success': True, 'message': 'Vehicle type successfully deleted'}
             else:

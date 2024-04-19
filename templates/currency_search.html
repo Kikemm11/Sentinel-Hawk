@@ -1,0 +1,130 @@
+{% if message %}
+<script>
+  window.onload = function() {
+    alert("{{ message }}");
+  };
+</script>
+{% endif %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Currency Search</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+
+    {% if currency %}
+    <body>
+        <div class="container">
+            <h1>Search</h1>
+    
+            <!--Tabla de usuarios-->
+    
+            <table class="table mt-3">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Code</th>
+                        <th>Actions</th> 
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr id="currencyRow{{ currency.currency_id }}">
+                        <td>{{ currency.currency_id }}</td>
+                        <td class="editable" data-id="{{ currency.currency_id }}">{{ currency.name }}</td>
+                        <td class="editable" data-id="{{ currency.currency_id }}">{{ currency.code }}</td>
+                        <td>
+                            <button type="button" class="btn btn-primary update-btn" data-id="{{ currency.currency_id }}" data-name="{{ currency.currency_id }}"><i class="fas fa-edit"></i> Update</button>
+                            <form method="POST" action="/delete-user/{{ currency.currency_id}}" class="delete-form d-inline">
+                                <button type="submit" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+    
+                    <!--Pop up Actualizar usuario-->
+    
+                    <div class="modal fade" id="updateCurrencyModal" tabindex="-1" aria-labelledby="updateCurrencyModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="updateCurrencyModalLabel">Update</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form method="POST" action="/update-currency" id="updateCurrencyForm{{ currency.currency_id }}">
+                                        <div class="form-group">
+                                            <label for="newCurrencyName">New Name</label>
+                                            <input type="text" class="form-control" id="newCurrencyName" name="newCurrencyName">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="newCurrencyCode">New Code</label>
+                                            <input type="text" class="form-control" id="newCurrencyCode" name="newCurrencyCode">
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                            <input type="hidden" name="CurrencyId" value="{{ currency.currency_id}}">
+                                            <button type="submit" class="btn btn-primary" id="saveChangesBtn">Save Changes</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <!--Pop up Actualizar usuario-->
+                </tbody>
+            </table>
+        </div>
+
+        <br>
+        <br>
+        <div style="text-align: center;">
+            <div style="margin-top: 20px;">
+                <a href="/currency" style="text-decoration: none; color: #007bff; font-weight: bold;">Back</a>
+            </div>
+        </div>
+    
+    
+        <!--Tabla de usuarios-->
+    
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('.update-btn').click(function() {
+                    var currencnyId = $(this).data('id');
+                    var currencyName = $(this).data('name');
+                    $('#updateCurrencyModalLabel').text('Update ' + currencyName);
+                    // Set the data-id attribute for the "Guardar cambios" button
+                    $('#saveChangesBtn').data('id', currencyId);
+                    $('#updateCurrencyModal').modal('show');
+                });
+        
+                $('#saveChangesBtn').click(function() {
+                    // Get the values from the form fields
+                    var currencyId = $(this).data('id');
+                    var newCurrencyName = $('#newCurrencyName').val();
+                    var newCurrencyCode = $('#newCurrencyCode').val();
+                
+                    // Submit the form
+                    $('#updateCurrencyForm' + currencyId).submit();
+                });
+            });
+        </script>
+    </body>
+{% else %}
+    <body style="font-family: Arial, sans-serif; margin: 0; padding: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; background-color: #f4f4f4;">
+        <div style="text-align: center;">
+            <h1 style="color: #333;">Currency Not Found</h1>
+            <p style="color: #666; margin-top: 20px;">The currency you searched for does not exist.</p>
+            <p style="color: #666;">Please try again with a different search term.</p>
+            <a href="/currency" style="text-decoration: none; margin-top: 20px; color: #007bff; font-weight: bold;">Back</a>
+        </div>
+    </body>
+{% endif %}
+</html>

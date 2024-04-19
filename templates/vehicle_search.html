@@ -20,35 +20,7 @@
     <body>
     <div class="container">
         <h1>Search</h1>
-    </div>
-        <div class="modal fade" id="addVehicleModal" tabindex="-1" aria-labelledby="addVehicleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="addVehicleModalLabel">Add Vehicle Type</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form method="POST" action="/add" id="addVehicleForm">
-                            <div class="form-group">
-                                <label for="newVehicleName">Vehicle Type Name</label>
-                                <input type="text" class="form-control" id="newVehicleName" name="newVehicleName">
-                            </div>
-                            <div class="form-group">
-                                <label for="newVehicleCharge">Charge</label>
-                                <input type="text" class="form-control" id="newVehicleCharge" name="newVehicleCharge">
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                <button type="submit" class="btn btn-primary" id="addBtn">Save</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>        
+    </div>      
         <table class="table mt-3">
             <thead class="thead-dark">
                 <tr>
@@ -70,20 +42,20 @@
                         </form>
                     </td>
                 </tr>
-                <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+                <div class="modal fade" id="updateVehicleModal" tabindex="-1" aria-labelledby="updateVehicleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="updateModalLabel">Update</h5>
+                                <h5 class="modal-title" id="updateVehicleModalLabel">Update</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <form method="POST" action="/update-vehicle" id="updateForm{{ vehicle_type.vehicle_type_id }}">
+                                <form method="POST" action="/update-vehicle" id="updateVehicleForm{{ vehicle_type.vehicle_type_id }}">
                                     <div class="form-group">
-                                        <label for="newCharge">New Charge</label>
-                                        <input type="text" class="form-control" id="newCharge" name="newCharge">
+                                        <label for="newVehicleCharge">New Charge</label>
+                                        <input type="text" class="form-control" id="newVehicleCharge" name="newVehicleCharge">
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -114,19 +86,19 @@
             $('.update-btn').click(function() {
                 var vehicleId = $(this).data('id');
                 var vehicleName = $(this).data('name');
-                $('#updateModalLabel').text('Actualizar ' + vehicleName);
+                $('#updateVehicleModalLabel').text('Actualizar ' + vehicleName);
                 // Set the data-id attribute for the "Guardar cambios" button
                 $('#saveChangesBtn').data('id', vehicleId);
-                $('#updateModal').modal('show');
+                $('#updateVehicleModal').modal('show');
             });
     
             $('#saveChangesBtn').click(function() {
                 // Get the values from the form fields
                 var vehicleId = $(this).data('id');
-                var newCharge = $('#newCharge').val();
+                var newCharge = $('#newVehicleCharge').val();
             
                 // Submit the form
-                $('#updateForm' + vehicleId).submit();
+                $('#updateVehicleForm' + vehicleId).submit();
             });
         });
     </script>

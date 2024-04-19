@@ -9,17 +9,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Vehicle Types</title>
+    <title>Currency</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
     <div class="container">
-        <h1>Vehicle Types</h1>
+        <h1>Currencies</h1>
 
         <!--Botón de agregar vehículo-->
 
-        <button id="addVehicleBtn" class="btn btn-success"><i class="fas fa-plus"></i> Add Vehicle</button>
+        <button id="addCurrencyBtn" class="btn btn-success"><i class="fas fa-plus"></i> Add Currency</button>
 
         <!--Botón de agregar vehículo-->
 
@@ -45,24 +45,24 @@
 
         <!--Pop up Crear vehículo-->
 
-        <div class="modal fade" id="addVehicleModal" tabindex="-1" aria-labelledby="addVehicleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="addCurrencyModal" tabindex="-1" aria-labelledby="addCurrencyModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="addVehicleModalLabel">Add Vehicle</h5>
+                        <h5 class="modal-title" id="addCurrencyModalLabel">Add Currency</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form method="POST" action="/add-vehicle" id="addVehicleForm">
+                        <form method="POST" action="/add-currency" id="addCurrencyForm">
                             <div class="form-group">
-                                <label for="vehicleName">Vehicle Type Name</label>
-                                <input type="text" class="form-control" id="vehicleName" name="vehicleName">
+                                <label for="currencyName">Currency Name</label>
+                                <input type="text" class="form-control" id="currencyName" name="currencyName">
                             </div>
                             <div class="form-group">
-                                <label for="vehicleCharge">Charge</label>
-                                <input type="text" class="form-control" id="vehicleCharge" name="vehicleCharge">
+                                <label for="currencyCode">Code</label>
+                                <input type="text" class="form-control" id="currencyCode" name="currencyCode">
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -84,20 +84,20 @@
             <thead class="thead-dark">
                 <tr>
                     <th>ID</th>
-                    <th>Type Name</th>
-                    <th>Charge</th>
+                    <th>Name</th>
+                    <th>Code</th>
                     <th>Actions</th> 
                 </tr>
             </thead>
             <tbody>
-                {% for vehicle_type in vehicle_types %}
-                <tr id="vehicleRow{{ vehicle_type.vehicle_type_id }}">
-                    <td>{{ vehicle_type.vehicle_type_id }}</td>
-                    <td class="editable" data-id="{{ vehicle_type.vehicle_type_id }}">{{ vehicle_type.name }}</td>
-                    <td class="editable" data-id="{{ vehicle_type.vehicle_type_id }}">{{ vehicle_type.charge }}</td>
+                {% for currency in currencies %}
+                <tr id="currencyRow{{ currency.currency_id }}">
+                    <td>{{ currency.currency_id }}</td>
+                    <td class="editable" data-id="{{ currency.currency_id }}">{{ currency.name }}</td>
+                    <td class="editable" data-id="{{ currency.currency_id }}">{{ currency.code }}</td>
                     <td>
-                        <button type="button" class="btn btn-primary update-btn" data-id="{{ vehicle_type.vehicle_type_id }}" data-name="{{ vehicle_type.name }}"><i class="fas fa-edit"></i> Update</button>
-                        <form method="POST" action="/delete-vehicle/{{ vehicle_type.vehicle_type_id }}" class="delete-form d-inline">
+                        <button type="button" class="btn btn-primary update-btn" data-id="{{ currency.currency_id }}" data-name="{{ currency.name }}"><i class="fas fa-edit"></i> Update</button>
+                        <form method="POST" action="/delete-currency/{{ currency.currency_id }}" class="delete-form d-inline">
                             <button type="submit" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Delete</button>
                         </form>
                     </td>
@@ -105,24 +105,28 @@
 
                 <!--Pop up Actualizar vehículo-->
 
-                <div class="modal fade" id="updateVehicleModal" tabindex="-1" aria-labelledby="updateVehicleModalLabel" aria-hidden="true">
+                <div class="modal fade" id="updateCurrencyModal" tabindex="-1" aria-labelledby="updateCurrencyModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="updateVehicleModalLabel">Update</h5>
+                                <h5 class="modal-title" id="updateCurrencyModalLabel">Update</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <form method="POST" action="/update-vehicle" id="updateVehicleForm{{ vehicle_type.vehicle_type_id }}">
+                                <form method="POST" action="/update-currency" id="updateCurrencyForm{{ currency.currency_id }}">
                                     <div class="form-group">
-                                        <label for="newVehicleCharge">New Charge</label>
-                                        <input type="text" class="form-control" id="newVehicleCharge" name="newVehicleCharge">
+                                        <label for="newCurrencyName">New Name</label>
+                                        <input type="text" class="form-control" id="newCurrencyName" name="newCurrencyName">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="newCurrencyCode">New Code</label>
+                                        <input type="text" class="form-control" id="newCurrencyCode" name="newCurrencyCode">
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                        <input type="hidden" name="vehicleId" value="{{ vehicle_type.vehicle_type_id }}">
+                                        <input type="hidden" name="currencyId" value="{{ currency.currency_id }}">
                                         <button type="submit" class="btn btn-primary" id="saveChangesBtn">Save Changes</button>
                                     </div>
                                 </form>
@@ -147,37 +151,38 @@
     <script>
         $(document).ready(function() {
             $('.update-btn').click(function() {
-                var vehicleId = $(this).data('id');
-                var vehicleName = $(this).data('name');
-                $('#updateVehicleModalLabel').text('Update ' + vehicleName);
+                var currencyId = $(this).data('id');
+                var currencyName = $(this).data('name');
+                $('#updateCurrencyModalLabel').text('Update ' + currencyName);
                 // Set the data-id attribute for the "Guardar cambios" button
-                $('#saveChangesBtn').data('id', vehicleId);
-                $('#updateVehicleModal').modal('show');
+                $('#saveChangesBtn').data('id', currencyId);
+                $('#updateCurrencyModal').modal('show');
             });
     
             $('#saveChangesBtn').click(function() {
                 // Get the values from the form fields
-                var vehicleId = $(this).data('id');
-                var newVehicleCharge = $('#newVehicleCharge').val();
+                var currencyId = $(this).data('id');
+                var newCurrencyName = $('#newCurrencyName').val();
+                var newCurrencyCode = $('#newCurrencyCode').val();
             
                 // Submit the form
-                $('#updateVehicleForm' + vehicleId).submit();
+                $('#updateCurrencyForm' + currencyId).submit();
             });
         });
     </script>
     <script>
         $(document).ready(function() {
-            $('#addVehicleBtn').click(function() {
-                $('#addVehicleModal').modal('show');
+            $('#addCurrencyBtn').click(function() {
+                $('#addCurrencyModal').modal('show');
             });
 
             $('#addBtn').click(function() {
                 // Get the values from the form fields
-                var vehicleName = $('#vehicleName').val();
-                var vehicleCharge = $('#vehicleCharge').val();
+                var currencyName = $('#currencyName').val();
+                var currencyCode = $('#currencyCode').val();
             
                 // Submit the form
-                $('#addVehicleForm').submit();
+                $('#addCurrencyForm').submit();
             });
         });
     </script>
@@ -185,7 +190,7 @@
         document.getElementById("searchBtn").addEventListener("click", function() {
             var searchValue = document.getElementById("searchInput").value;
             // Construct the URL with the search query as a parameter
-            var url = "/vehicle-search/" + encodeURIComponent(searchValue);
+            var url = "/currency-search/" + encodeURIComponent(searchValue);
             // Redirect the user to the search results page
             window.location.href = url;
         });
