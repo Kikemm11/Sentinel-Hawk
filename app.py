@@ -173,6 +173,7 @@ def users_index():
 
 @app.route('/user-search/<string:username>')
 def user_search_index(username):
+    
     connection = UserConnection(loginApp.database)
     user = connection.read_one_user(username)
     return render_template('user_search.html', user=user)
@@ -185,7 +186,7 @@ def add_user():
     
     
 
-    if 'username1' in request.form and 'password1' in request.form and 'password2' in request.form:
+    if 'username1' in request.form and 'password1' in request.form and 'password2' in request.form and 'userPermisology' in request.form:
         
             connection = UserConnection(loginApp.database)
             users = connection.read_all_users()
@@ -193,10 +194,11 @@ def add_user():
             username = request.form['username1']
             password = request.form['password1']
             password2 = request.form['password2']
+            permisology = request.form['userPermisology']
             
             flag = True
             
-            if not password or not password2 or not username:
+            if not password or not password2 or not username or not permisology:
                 flag = False
             
             if flag == True:
@@ -204,7 +206,7 @@ def add_user():
                 if password == password2:
                     
                     hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
-                    data = {"username": username, "password":  hashed_password }
+                    data = {"username": username, "password":  hashed_password, "permisology": permisology }
                     
                     response = loginApp.insert_user(data)
                     
@@ -233,13 +235,14 @@ def add_user():
 @app.route('/update-user', methods=['GET', 'POST'])
 def update_user():
 
-    if 'newUsername' in request.form and 'newUserPassword' in request.form:
+    if 'newUsername' in request.form and 'newUserPassword' in request.form and 'newUserPermisology' in request.form:
         
         username = request.form['newUsername']
         password = request.form['newUserPassword']
+        permisology = request.form['newUserPermisology']
         user_id = request.form['userId']
 
-        data = {"username": username,"password": password  }
+        data = {"username": username,"password": password, "permisology": permisology  }
         connection = UserConnection(loginApp.database)
         user_update = connection.update_user(user_id,data)
                 

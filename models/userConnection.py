@@ -13,6 +13,7 @@ class User(Base):
     id = Column(Integer, primary_key=True)
     username = Column(String, index=True)
     password = Column(String)
+    permisology = Column(String(50), nullable=False)
 
 
 class UserConnection:
@@ -55,13 +56,14 @@ class UserConnection:
     
     #Update user functions
 
-    def update_user(self, vehicle_id, data): 
+    def update_user(self, user_id, data): 
         try:
             session = self.SessionLocal()
-            user = session.query(User).filter(User.user_id == user_id).first()
+            user = session.query(User).filter(User.id == user_id).first()
             if user:
                 user.username = data.get('username')
                 user.password = data.get('password')
+                user.permisology = data.get('permisology')
                 session.commit()
                 return {'success': True, 'message': 'User successfully updated'}
             else:
