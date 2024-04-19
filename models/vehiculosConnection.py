@@ -56,7 +56,7 @@ class VehicleConnection:
 
     #Update vehicle type functions
 
-    def update_vehicle_type(self, vehicle_id, data): #update
+    def update_vehicle_type(self, vehicle_id, data): 
         try:
             session = self.SessionLocal()
             vehicle = session.query(VehicleType).filter(VehicleType.vehicle_type_id == vehicle_id).first()
@@ -81,7 +81,7 @@ class VehicleConnection:
             if vehicle:
                 session.delete(vehicle)
                 session.commit()
-                return {'success': True, 'message': 'TVehicle type successfully deleted'}
+                return {'success': True, 'message': 'Vehicle type successfully deleted'}
             else:
                 return {'success': False, 'message': 'Cannot find the vehicle type with the provided id'}
         except Exception as e:

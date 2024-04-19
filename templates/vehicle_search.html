@@ -1,7 +1,7 @@
-{% if mensaje %}
+{% if message %}
 <script>
   window.onload = function() {
-    alert("{{ mensaje }}");
+    alert("{{ message }}");
   };
 </script>
 {% endif %}
@@ -65,7 +65,7 @@
                     <td class="editable" data-id="{{ vehicle_type.vehicle_type_id }}">{{ vehicle_type.charge }}</td>
                     <td>
                         <button type="button" class="btn btn-primary update-btn" data-id="{{ vehicle_type.vehicle_type_id }}" data-name="{{ vehicle_type.name }}"><i class="fas fa-edit"></i> Update</button>
-                        <form method="POST" action="/delete/{{ vehicle_type.vehicle_type_id }}" class="delete-form d-inline">
+                        <form method="POST" action="/delete-vehicle/{{ vehicle_type.vehicle_type_id }}" class="delete-form d-inline">
                             <button type="submit" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Delete</button>
                         </form>
                     </td>
@@ -80,7 +80,7 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <form method="POST" action="/update" id="updateForm{{ vehicle_type.vehicle_type_id }}">
+                                <form method="POST" action="/update-vehicle" id="updateForm{{ vehicle_type.vehicle_type_id }}">
                                     <div class="form-group">
                                         <label for="newCharge">New Charge</label>
                                         <input type="text" class="form-control" id="newCharge" name="newCharge">

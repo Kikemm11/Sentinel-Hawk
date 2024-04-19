@@ -21,13 +21,21 @@ class UserConnection:
         self.engine = create_engine(db_url)
         self.SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=self.engine)
        
+    #Read users functions    
+       
     def read_one_user(self, username):
         session = self.SessionLocal()
         result = session.query(User).filter(User.username == username).first()
         session.close()
-        return result    
+        return result   
     
-    #Create user function
+    def read_all_users(self):
+        session = self.SessionLocal()
+        result = session.query(User).all()
+        session.close()
+        return result 
+    
+    # Create user function
     
     def write_user(self, data):
         try:
@@ -42,5 +50,42 @@ class UserConnection:
         except Exception as e:
             session.rollback()
             return {'success': False, 'message': f'Error trying to create user: {str(e)}'}
+        finally:
+            session.close()
+    
+    #Update user functions
+
+    def update_user(self, vehicle_id, data): 
+        try:
+            session = self.SessionLocal()
+            user = session.query(User).filter(User.user_id == user_id).first()
+            if user:
+                user.username = data.get('username')
+                user.password = data.get('password')
+                session.commit()
+                return {'success': True, 'message': 'User successfully updated'}
+            else:
+                return {'success': False, 'message': 'Cannot find the user with the provided id'}
+        except Exception as e:
+            session.rollback()
+            return {'success': False, 'message': f'Error trying to update user: {str(e)}'}
+        finally:
+            session.close()
+            
+    #Delete user function
+
+    def delete_user(self, user_id): 
+        try:
+            session = self.SessionLocal()
+            user = session.query(User).filter(User.id == user_id).first()
+            if user:
+                session.delete(user)
+                session.commit()
+                return {'success': True, 'message': 'User successfully deleted'}
+            else:
+                return {'success': False, 'message': 'Cannot find the user with the provided id'}
+        except Exception as e:
+            session.rollback()
+            return {'success': False, 'message': f'Error trying to delete user: {str(e)}'}
         finally:
             session.close()

@@ -97,7 +97,7 @@
                     <td class="editable" data-id="{{ vehicle_type.vehicle_type_id }}">{{ vehicle_type.charge }}</td>
                     <td>
                         <button type="button" class="btn btn-primary update-btn" data-id="{{ vehicle_type.vehicle_type_id }}" data-name="{{ vehicle_type.name }}"><i class="fas fa-edit"></i> Update</button>
-                        <form method="POST" action="/delete/{{ vehicle_type.vehicle_type_id }}" class="delete-form d-inline">
+                        <form method="POST" action="/delete-vehicle/{{ vehicle_type.vehicle_type_id }}" class="delete-form d-inline">
                             <button type="submit" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Delete</button>
                         </form>
                     </td>
