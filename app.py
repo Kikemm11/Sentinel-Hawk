@@ -87,7 +87,7 @@ def login():
 @app.route('/main')
 @login_required
 def begin():
-    return render_template('main.html')
+    return render_template('admin_main.html')
 
 
 

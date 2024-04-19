@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="static/admin_main.css">
+  <title>Sentinel Hawk</title>
+</head>
+<body>
+  <div class="container">
+    <div class="panels-container">
+      <div class="panel left-panel">
+        <div class="content">
+          <img src="static/assets/img/sentinel.png" alt="Logo" class="logo">
+          <div class="message" id="user-message">Hello.</div>
+          <div class="user" id="user">User</div>
+          <div class="admin-buttons">
+            <button class="btn admin-btn" onclick="window.location.href='/revenues'">Revenues</button>
+            <button class="btn admin-btn" onclick="window.location.href='/daily-operations'">Daily Operations</button>
+            <div id="toggleButton" class="toggleButton">
+                <input type="checkbox" class="toggleCheckbox" id="toggleCheckbox">
+                <label for="toggleCheckbox" class="toggleLabel"></label>
+                <span class="toggleText">Activar / Desactivar</span>
+              </div>
+          </div>
+          <p>
+            Welcome to SENTINEL HAWK website application... Go to system settings below
+          </p>
+          <!-- Settings button -->
+          <br>
+          <br>
+          <button class="btn transparent" id="settings-btn">
+            Settings
+          </button>
+        </div>
+      </div>
+      <div class="panel right-panel">
+        <div class="content">
+          <img src="static/assets/img/settings.png" alt="Gears" class="settings">
+          <!-- Main button -->
+          <br>
+          <br>
+          <br>
+          <button class="btn transparent" id="main-btn">Go back</button>
+
+          <!-- Settings buttons -->
+          <div class="settings-buttons">
+            <button class="btn settings-btn" onclick="window.location.href='/manage-users'">Manage Users</button>
+            <button class="btn settings-btn" onclick="window.location.href='/vehicle-type'">Vehicle Types</button>
+            <button class="btn settings-btn" onclick="window.location.href='/payment-method'">Payment Methods</button>
+            <button class="btn settings-btn" onclick="window.location.href='/currency'">Currency</button>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        const settings_btn = document.querySelector("#settings-btn");
+        const main_btn = document.querySelector("#main-btn");
+        const container = document.querySelector(".container");
+        const settings_buttons = document.querySelector(".settings-buttons");
+        const user_message = document.querySelector("#user-message");
+        const admin_buttons = document.querySelector(".admin-buttons");
+      
+        settings_btn.addEventListener("click", () => {
+          container.classList.add("sign-up-mode");
+          user_message.style.display = 'none';
+          admin_buttons.style.display = 'none';
+        });
+      
+        main_btn.addEventListener("click", () => {
+          container.classList.remove("sign-up-mode");
+          settings_buttons.style.display = 'none'; 
+          
+        });
+      
+        // Wait for panel switch to show settings buttons
+        container.addEventListener('transitionend', () => {
+          if (container.classList.contains('sign-up-mode')) {
+            settings_buttons.style.display = 'block'; 
+            user_message.style.display = 'none'; 
+            admin_buttons.style.display = 'none';
+        } else {
+            user_message.style.display = 'block'; 
+            admin_buttons.style.display = 'block';
+        }
+          
+        });
+      </script>
+      <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const button = document.getElementById('toggleButton');
+            const checkbox = document.querySelector('.toggleCheckbox');
+            
+            button.addEventListener('click', function() {
+                fetch('/toggle_button', {
+                    method: 'POST',
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.button_active) {
+                        button.querySelector('.toggleText').textContent = 'Desactivar';
+                        button.classList.add('active'); // Add the 'active' class to the button
+                        checkbox.checked = true; // Check the checkbox
+                    } else {
+                        button.querySelector('.toggleText').textContent = 'Activar';
+                        button.classList.remove('active'); // Remove the 'active' class from the button
+                        checkbox.checked = false; // Uncheck the checkbox
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+        });
+        
+    </script>
+      
+</body>
+
+</html>

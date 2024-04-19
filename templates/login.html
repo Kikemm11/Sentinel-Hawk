@@ -13,27 +13,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
       <link rel="stylesheet" href="static/login.css">
-      <title>Sign in & Sign up Form</title>
-      <style>
-        .logo {
-          position: relative;
-          top: 20px;
-          left: 14%;
-          transform: translateX(-50%);
-          width: 150px; 
-          height: auto;
-          z-index: 1; 
-        }
-        .logo2 {
-          position: absolute;
-          top: -135px;
-          left: 50%;
-          transform: translateX(-50%);
-          width: 150px; 
-          height: auto;
-          z-index: 1; 
-        }
-      </style>
+      <title>Sign in</title>
     </head>
     <body>
       
@@ -56,30 +36,6 @@
               <input type="submit" value="Login" class="btn solid" />
               
             </form>
-            <form method="post" action="{{ url_for('signUp') }}" class="sign-up-form">
-              <h2 class="title">Sign up</h2>
-              <div class="input-field">
-                <i class="fas fa-user"></i>
-                <input type="text" name="username1" id="username1"placeholder="Username" />
-              </div>
-              
-              <div class="input-field">
-                <i class="fas fa-lock"></i>
-                <input type="password" id="password1" name="password1" placeholder="Password" />
-                <span class="input-group-text" onclick="togglePasswordVisibility1()">
-                  <i id="password-toggle1" class="fas fa-eye"></i>
-                </span>
-              </div>
-              <div class="input-field">
-                <i class="fas fa-lock"></i>
-                <input type="password" id="password2" name="password2" placeholder="Password" />
-                <span class="input-group-text" onclick="togglePasswordVisibility2()">
-                  <i id="password-toggle2" class="fas fa-eye"></i>
-                </span>
-              </div>
-              <input type="submit" class="btn" value="Sign up" />
-              
-            </form>
           </div>
         </div>
     
@@ -87,40 +43,9 @@
           <div class="panel left-panel">
             <div class="content">
             <img src="static/assets/img/sentinel.png" alt="Logo" class="logo">
-              <p>
-                Welcome to SENTINEL HAWK website page.. Complete your Sign Up to website access 
-              </p>
-              <button class="btn transparent" id="sign-up-btn">
-                Sign up
-              </button>
             </div>
           </div>
-          <div class="panel right-panel">
-            <div class="content">
-              <img src="static/assets/img/sentinel.png" alt="Logo" class="logo2">
-              
-              <p>
-                Welcome to SENTINEL HAWK website page.. Complete your Sign In to website access 
-              </p>
-              <button class="btn transparent" id="sign-in-btn">
-                Sign in
-              </button>
-            </div>
-          </div>
-       
-          <script>
-            const sign_in_btn = document.querySelector("#sign-in-btn");
-            const sign_up_btn = document.querySelector("#sign-up-btn");
-            const container = document.querySelector(".container");
-        
-            sign_up_btn.addEventListener("click", () => {
-              container.classList.add("sign-up-mode");
-            });
-        
-            sign_in_btn.addEventListener("click", () => {
-              container.classList.remove("sign-up-mode");
-            });
-        
+          <script>    
             function togglePasswordVisibility() {
               var passwordInput = document.getElementById("password");
               var passwordToggle = document.getElementById("password-toggle");

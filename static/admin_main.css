@@ -416,11 +416,170 @@ form.sign-in-form {
 }
 
 .logo {
-  position: relative;
-  top: -30px;
-  left: 15%;
-  transform: translateX(-50%);
-  width: 300px; 
-  height: auto;
-  z-index: 1; 
-}
+    position: relative;
+    top: 10px;
+    left: 34%;
+    transform: translateX(-50%);
+    width: 260px;
+    height: auto;
+    z-index: 1;
+  }
+
+  .settings {
+    position: relative;
+    top: -50px;
+    left: 75%;
+    transform: translateX(-50%);
+    width: 700px;
+    height: auto;
+    z-index: 1;
+  }
+
+  #main-btn {
+      position: absolute;
+      right: -10px; 
+      bottom: 10px; 
+      padding: 15px 30px; 
+      font-size: 12px; 
+    }
+
+    .settings-buttons {
+        display: none; 
+        position: absolute;
+        top: 50%;
+        left: -30%;
+        transform: translate(-50%, -50%);
+        text-align: left;
+      }
+      
+      .settings-buttons button {
+        display: flex;
+        align-items: center;
+        justify-content: center; 
+        margin-bottom: 20px;
+        background-color: #00003A; 
+        color: #fff; 
+        padding: 50px 150px; 
+        font-size: 20px;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        letter-spacing: 2px; 
+      }
+
+  .settings-buttons button:hover {
+    background-color: #2980b9;
+  }
+
+  .admin-buttons {
+    position: absolute;
+    display: block;
+    bottom: 0%;
+    right: 3%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .admin-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    padding: 50px 150px; 
+    font-size: 20px;
+    background-color: #00003A;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    letter-spacing: 2px;
+  }
+  
+  .admin-btn:hover {
+    background-color: #2980b9;
+  }
+
+
+  .message {
+    position: absolute;
+    top: 30px;
+    right: 85px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 900;
+    font-size: 100px;
+    color: #00003A;
+    padding: 30px 100px;
+    border-radius: 10px;
+    display: flex; 
+    align-items: center;
+    justify-content: center;
+  }
+
+  .user {
+    position: absolute;
+    top: 150px;
+    right: 90px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 50px;
+    color: #00003A;
+    padding: 30px 100px;
+    border-radius: 10px;
+    display: flex; 
+    align-items: center;
+    justify-content: center;
+  }
+
+  .toggleButton {
+    position: absolute;
+    bottom: -30%;
+    right: 15%;
+    padding: 10px 20px;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .toggleCheckbox {
+    display: none;
+  }
+  
+  .toggleLabel {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #00003A;
+    border-radius: 34px;
+    transition: background-color 0.3s;
+  }
+  
+  .toggleLabel:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 8px;
+    background-color: #fff;
+    border-radius: 50%;
+    transition: transform 0.5s;
+  }
+  
+  .toggleCheckbox:checked + .toggleLabel {
+    background-color: #E8B11E;
+  }
+  
+  .toggleCheckbox:checked + .toggleLabel:before {
+    transform: translateX(160px);
+  }
+  
+  .toggleText {
+    position: relative;
+    z-index: 1;
+  }
+  
+  
+  
