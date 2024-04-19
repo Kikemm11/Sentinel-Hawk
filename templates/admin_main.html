@@ -22,7 +22,7 @@
             <div id="toggleButton" class="toggleButton">
                 <input type="checkbox" class="toggleCheckbox" id="toggleCheckbox">
                 <label for="toggleCheckbox" class="toggleLabel"></label>
-                <span class="toggleText">Activar / Desactivar</span>
+                <span class="toggleText">Activate</span>
               </div>
           </div>
           <p>
@@ -100,11 +100,11 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.button_active) {
-                        button.querySelector('.toggleText').textContent = 'Desactivar';
+                        button.querySelector('.toggleText').textContent = 'Disable';
                         button.classList.add('active'); // Add the 'active' class to the button
                         checkbox.checked = true; // Check the checkbox
                     } else {
-                        button.querySelector('.toggleText').textContent = 'Activar';
+                        button.querySelector('.toggleText').textContent = 'Activate';
                         button.classList.remove('active'); // Remove the 'active' class from the button
                         checkbox.checked = false; // Uncheck the checkbox
                     }

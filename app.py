@@ -12,6 +12,14 @@ from models.currencyConnection import CurrencyConnection
 from models.payment_methodConnection import PaymentMethodConnection
 #from loginApp import database
 
+import threading  # Importa el módulo threading para detener los procesos en ejecución
+#from models.deteccion import iniciarDeteccion
+from models.statusConecction import DatabaseManager
+# Variable global para controlar si el botón está activo o no
+button_active = False
+# Variable global para almacenar la referencia al hilo de ejecución
+execution_thread = None
+
 app = Flask(__name__)
 
 #Static folder route
@@ -29,8 +37,35 @@ class User(UserMixin):
     def __init__(self, id):
         self.id = id
 
-def generate_token():
-    return secrets.token_urlsafe(16)  
+#---------------------------- detection funtions -----------------------------
+
+# Código que quieres ejecutar cuando el botón está activo
+def execute_code():
+    #iniciarDeteccion()
+    print("detectando")
+
+
+# Función para iniciar la ejecución del código en un hilo separado
+def start_execution():
+    global execution_thread
+    execution_thread = threading.Thread(target=execute_code)
+    execution_thread.start()
+
+# Función para detener la ejecución del código y limpiar recursos
+def stop_execution():
+    global execution_thread
+    if execution_thread and execution_thread.is_alive():
+        # Detener el hilo de ejecución si está en ejecución
+        # Aquí debes implementar la lógica para detener cualquier proceso en ejecución
+        # Por ejemplo, si tienes un bucle en execute_code, debes salir de ese bucle
+
+        execution_thread.join()  # Esperar a que el hilo termine    
+
+
+#--------------------------------------------------------------
+
+
+
 
 # Set the different routes involoved lin the web application
 
@@ -85,7 +120,7 @@ def login():
 # Main route 
 
 @app.route('/main')
-@login_required
+#@login_required
 def begin():
     return render_template('admin_main.html')
 
@@ -392,7 +427,41 @@ def delete_payment_method(payment_method_id):
         return redirect('/payment-method')  
         #return resultado['message']
     else:
-        return "Error: " + resultado['message']    
+        return "Error: " + resultado['message'] 
+    
+    
+    
+  
+#---------------------------- deteccion ---------------------------------------------
+
+
+# Modify button path to start and stop execution
+@app.route('/toggle_button', methods=['POST'])
+def toggle_button():
+    global button_active
+    button_active = not button_active
+    db_manager = DatabaseManager(loginApp.database)
+    
+    db_manager.write_status(1, False)
+   
+
+    if button_active:
+        db_manager.write_status(1, True)
+        start_execution()  # Start code execution when button is active
+    else:
+        db_manager.write_status(1, False)
+        stop_execution()   # Stop code execution when button is inactive
+
+    return jsonify({'button_active': button_active})
+
+
+
+#-------------------------------------------------------------------------------------    
+    
+
+
+
+       
 
 
 if __name__ == "__main__": 
