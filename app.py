@@ -9,6 +9,7 @@ import loginApp
 from models.vehicle_typeConnection import VehicleConnection
 from models.userConnection import UserConnection
 from models.currencyConnection import CurrencyConnection
+from models.payment_methodConnection import PaymentMethodConnection
 #from loginApp import database
 
 app = Flask(__name__)
@@ -321,6 +322,71 @@ def delete_currency(currency_id):
     resultado = connection.delete_currency(currency_id)
     if resultado['success']:
         return redirect('/currency')  
+        #return resultado['message']
+    else:
+        return "Error: " + resultado['message']  
+    
+    
+    
+#---Payment method routes---
+
+
+
+# Payment method type index route
+
+@app.route('/payment-method')
+def payment_method_index():
+    connection = PaymentMethodConnection(loginApp.database)
+    payment_methods = connection.read_all_payment_methods()
+    return render_template('payment_method.html', payment_methods=payment_methods)
+
+# Payment method search route
+
+@app.route('/payment-method-search/<string:payment_method_name>')
+def payment_method_search_index(payment_method_name):
+    connection = PaymentMethodConnection(loginApp.database)
+    payment_method = connection.read_one_payment_method(payment_method_name)
+    return render_template('payment_method_search.html', payment_method=payment_method)
+
+# Add new payment method route
+
+@app.route('/add-payment-method', methods=['GET', 'POST'])
+def add_payment_method():
+
+    if 'paymentMethodName' in request.form:
+        name = request.form['paymentMethodName']
+
+        data = {"name": name}
+
+        connection = PaymentMethodConnection(loginApp.database)
+        payment_method_index = connection.write_payment_method(data)
+        return redirect('/payment-method')  
+
+# Update payment method route
+
+@app.route('/update-payment-method', methods=['GET', 'POST'])
+def update_payment_method():
+
+    if  'newPaymentMethodName' in request.form:
+        
+        name = request.form['newPaymentMethodName']
+        payment_method_id = request.form['paymentMethodId']
+
+        data = {"name": name}
+        connection = PaymentMethodConnection(loginApp.database)
+        payment_method_update = connection.update_payment_method(payment_method_id,data)
+                
+        return redirect('/payment-method')       
+
+# Delete payment method route
+
+@app.route('/delete-payment-method/<int:payment_method_id>', methods=['POST'])
+def delete_payment_method(payment_method_id):
+ 
+    connection = PaymentMethodConnection(loginApp.database)
+    resultado = connection.delete_payment_method(payment_method_id)
+    if resultado['success']:
+        return redirect('/payment-method')  
         #return resultado['message']
     else:
         return "Error: " + resultado['message']    

@@ -9,19 +9,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Currency</title>
+    <title>Payment Method</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
     <div class="container">
-        <h1>Currencies</h1>
+        <h1>Payment Methods</h1>
 
-        <!--Botón de agregar moneda-->
+        <!--Botón de agregar metodo de pago-->
 
-        <button id="addCurrencyBtn" class="btn btn-success"><i class="fas fa-plus"></i> Add Currency</button>
+        <button id="addPaymentMethodBtn" class="btn btn-success"><i class="fas fa-plus"></i> Add Payment Method</button>
 
-        <!--Botón de agregar moneda-->
+        <!--Botón de agregar metodo de pago-->
 
         <!--Barra de búsqueda-->
 
@@ -43,26 +43,22 @@
 
         <!--Barra de búsqueda-->
 
-        <!--Pop up Crear moneda-->
+        <!--Pop up Crear metodo de pago-->
 
-        <div class="modal fade" id="addCurrencyModal" tabindex="-1" aria-labelledby="addCurrencyModalLabel" aria-hidden="true">
+        <div class="modal fade" id="addPaymentMethodModal" tabindex="-1" aria-labelledby="addPaymentMethodModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="addCurrencyModalLabel">Add Currency</h5>
+                        <h5 class="modal-title" id="addPaymentMethodModalLabel">Add Payment Method</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form method="POST" action="/add-currency" id="addCurrencyForm">
+                        <form method="POST" action="/add-payment-method" id="addPaymentMethodForm">
                             <div class="form-group">
-                                <label for="currencyName">Currency Name</label>
-                                <input type="text" class="form-control" id="currencyName" name="currencyName">
-                            </div>
-                            <div class="form-group">
-                                <label for="currencyCode">Code</label>
-                                <input type="text" class="form-control" id="currencyCode" name="currencyCode">
+                                <label for="paymentMethodName">Payment Method Name</label>
+                                <input type="text" class="form-control" id="paymentMethodName" name="paymentMethodName">
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -75,58 +71,52 @@
         </div>
         
         
-        <!--Pop up Crear moneda-->
+        <!--Pop up Crear metodo de pago-->
 
 
-        <!--Tabla de monedas-->
+        <!--Tabla de metodos de pago-->
 
         <table class="table mt-3">
             <thead class="thead-dark">
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
-                    <th>Code</th>
                     <th>Actions</th> 
                 </tr>
             </thead>
             <tbody>
-                {% for currency in currencies %}
-                <tr id="currencyRow{{ currency.currency_id }}">
-                    <td>{{ currency.currency_id }}</td>
-                    <td class="editable" data-id="{{ currency.currency_id }}">{{ currency.name }}</td>
-                    <td class="editable" data-id="{{ currency.currency_id }}">{{ currency.code }}</td>
+                {% for method in payment_methods %}
+                <tr id="methodRow{{ method.payment_method_id }}">
+                    <td>{{ method.payment_method_id }}</td>
+                    <td class="editable" data-id="{{ method.payment_method_id }}">{{ method.name }}</td>
                     <td>
-                        <button type="button" class="btn btn-primary update-btn" data-id="{{ currency.currency_id }}" data-name="{{ currency.name }}"><i class="fas fa-edit"></i> Update</button>
-                        <form method="POST" action="/delete-currency/{{ currency.currency_id }}" class="delete-form d-inline">
+                        <button type="button" class="btn btn-primary update-btn" data-id="{{ method.payment_method_id }}" data-name="{{ method.name }}"><i class="fas fa-edit"></i> Update</button>
+                        <form method="POST" action="/delete-payment-method/{{ method.payment_method_id }}" class="delete-form d-inline">
                             <button type="submit" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Delete</button>
                         </form>
                     </td>
                 </tr>
 
-                <!--Pop up Actualizar moneda-->
+                <!--Pop up Actualizar metodo de pago-->
 
-                <div class="modal fade" id="updateCurrencyModal" tabindex="-1" aria-labelledby="updateCurrencyModalLabel" aria-hidden="true">
+                <div class="modal fade" id="updatePaymentMethodModal" tabindex="-1" aria-labelledby="updatePaymentMethodModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="updateCurrencyModalLabel">Update</h5>
+                                <h5 class="modal-title" id="updatePaymentMethodModalLabel">Update</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <form method="POST" action="/update-currency" id="updateCurrencyForm{{ currency.currency_id }}">
+                                <form method="POST" action="/update-payment-method" id="updatePaymentMethodForm{{ method.payment_method_id }}">
                                     <div class="form-group">
-                                        <label for="newCurrencyName">New Name</label>
-                                        <input type="text" class="form-control" id="newCurrencyName" name="newCurrencyName">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="newCurrencyCode">New Code</label>
-                                        <input type="text" class="form-control" id="newCurrencyCode" name="newCurrencyCode">
+                                        <label for="newPaymentMethodName">New Name</label>
+                                        <input type="text" class="form-control" id="newPaymentMethodName" name="newPaymentMethodName">
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                        <input type="hidden" name="currencyId" value="{{ currency.currency_id }}">
+                                        <input type="hidden" name="paymentMethodId" value="{{ method.payment_method_id }}">
                                         <button type="submit" class="btn btn-primary" id="saveChangesBtn">Save Changes</button>
                                     </div>
                                 </form>
@@ -135,7 +125,7 @@
                     </div>
                 </div>
 
-                <!--Pop up Actualizar moneda-->
+                <!--Pop up Actualizar metodo de pago-->
 
                 {% endfor %}
             </tbody>
@@ -143,7 +133,7 @@
     </div>
 
 
-    <!--Tabla de monedas-->
+    <!--Tabla de metodos de pago-->
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
@@ -151,38 +141,36 @@
     <script>
         $(document).ready(function() {
             $('.update-btn').click(function() {
-                var currencyId = $(this).data('id');
-                var currencyName = $(this).data('name');
-                $('#updateCurrencyModalLabel').text('Update ' + currencyName);
+                var paymentMethodId = $(this).data('id');
+                var paymentMethodName = $(this).data('name');
+                $('#updatePaymentMethodModalLabel').text('Update ' + paymentMethodName);
                 // Set the data-id attribute for the "Guardar cambios" button
-                $('#saveChangesBtn').data('id', currencyId);
-                $('#updateCurrencyModal').modal('show');
+                $('#saveChangesBtn').data('id', paymentMethodId);
+                $('#updatePaymentMethodModal').modal('show');
             });
     
             $('#saveChangesBtn').click(function() {
                 // Get the values from the form fields
-                var currencyId = $(this).data('id');
-                var newCurrencyName = $('#newCurrencyName').val();
-                var newCurrencyCode = $('#newCurrencyCode').val();
-            
+                var paymentMethodId = $(this).data('id');
+                var newPaymentMethodName = $('#newPaymentMethodName').val();
+               
                 // Submit the form
-                $('#updateCurrencyForm' + currencyId).submit();
+                $('#updatePaymentMethodForm' + newPaymentMethodId).submit();
             });
         });
     </script>
     <script>
         $(document).ready(function() {
-            $('#addCurrencyBtn').click(function() {
-                $('#addCurrencyModal').modal('show');
+            $('#addPaymentMethodBtn').click(function() {
+                $('#addPaymentMethodModal').modal('show');
             });
 
             $('#addBtn').click(function() {
                 // Get the values from the form fields
-                var currencyName = $('#currencyName').val();
-                var currencyCode = $('#currencyCode').val();
+                var newPaymentMethodName = $('#newPaymentMethodName').val();
             
                 // Submit the form
-                $('#addCurrencyForm').submit();
+                $('#addPaymentMethodForm').submit();
             });
         });
     </script>
@@ -190,7 +178,7 @@
         document.getElementById("searchBtn").addEventListener("click", function() {
             var searchValue = document.getElementById("searchInput").value;
             // Construct the URL with the search query as a parameter
-            var url = "/currency-search/" + encodeURIComponent(searchValue);
+            var url = "/payment-method-search/" + encodeURIComponent(searchValue);
             // Redirect the user to the search results page
             window.location.href = url;
         });
