@@ -10,11 +10,12 @@ from models.vehicle_typeConnection import VehicleConnection
 from models.userConnection import UserConnection
 from models.currencyConnection import CurrencyConnection
 from models.payment_methodConnection import PaymentMethodConnection
-#from loginApp import database
+from models.ticketConnection import TicketConnection
+from models.status2Connection import StatusConnection
 
 import threading  # Importa el módulo threading para detener los procesos en ejecución
 #from models.deteccion import iniciarDeteccion
-from models.statusConecction import DatabaseManager
+from models.statusConnection import DatabaseManager
 # Variable global para controlar si el botón está activo o no
 button_active = False
 # Variable global para almacenar la referencia al hilo de ejecución
@@ -101,10 +102,12 @@ def login():
             data = {"username": username, "password": password}
             response, data_from_db = loginApp.get_user(data)
             permisology = data_from_db.permisology
+            username = data_from_db.username
             if response == True:
                 # Si las credenciales son correctas, inicia sesión con Flask-Login
                 user = User(username)
                 session['permisology'] = permisology  # Almacena el rol en la sesión
+                session['username'] = username
                 login_user(user)
                 flash('Inicio de sesión exitoso', 'success')
                 return redirect('/main')
@@ -125,11 +128,12 @@ def login():
 #@login_required
 def begin():
     permisology = session['permisology']
+    username = session['username']
     
     if permisology == "admin":
-        return render_template('admin_main.html')
+        return render_template('admin_main.html', username=username)
     else:
-        return "Hola usuario no admin"
+        return render_template('employee_main.html', username=username)
 
 
 
@@ -306,11 +310,70 @@ def delete_user(user_id):
     
     
 
+#---Payment routes---
+
+
+# Add new payment route
+
+@app.route('/add-payment', methods=['GET', 'POST'])
+def add_payment():
+    pass 
+
+
+
+#---Ticket routes---
+
+
+# Ticket index route
+
+@app.route('/ticket')
+def ticket_index():
+    connection = TicketConnection(loginApp.database)
+    connection2 = VehicleConnection(loginApp.database)
+    connection3 = StatusConnection(loginApp.database)
+    
+    all_tickets = connection.read_all_tickets()
+    paid_tickets = connection.read_paid_tickets()
+    unpaid_tickets = connection.read_unpaid_tickets()
+    canceled_tickets = connection.read_canceled_tickets()
+    
+    vehicle_types = connection2.read_all_vehicle_types()
+    statuses = connection3.read_all_statuses()
+    
+    return render_template('ticket.html', all_tickets=all_tickets, paid_tickets=paid_tickets, unpaid_tickets=unpaid_tickets, canceled_tickets=canceled_tickets, vehicle_types=vehicle_types, statuses=statuses)
+
+
+# Ticket search route
+
+@app.route('/ticket-search/<string:ticket_id>')
+def ticket_search_index(ticket_id):
+    connection = TicketConnection(loginApp.database)
+    ticket = connection.read_one_ticket(ticket_id)
+    return render_template('ticket_search.html', ticket=ticket)
+
+
+# Ticket filter functions
+
+@app.template_filter('get_vehicle_type_name')
+def get_vehicle_type_name(vehicle_types, vehicle_type_id):
+    for vehicle_type in vehicle_types:
+        if vehicle_type.vehicle_type_id == vehicle_type_id:
+            return vehicle_type.name
+    return None
+
+@app.template_filter('get_status_name')
+def get_status_name(statuses, status_id):
+    for status in statuses:
+        if status.status_id == status_id:
+            return status.name
+    return None
+
+    
 #---Currency routes---
 
 
 
-# Currency type index route
+# Currency index route
 
 @app.route('/currency')
 def currency_index():
@@ -374,8 +437,6 @@ def delete_currency(currency_id):
     
     
 #---Payment method routes---
-
-
 
 # Payment method type index route
 

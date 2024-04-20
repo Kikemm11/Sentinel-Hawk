@@ -1,0 +1,165 @@
+{% if message %}
+<script>
+  window.onload = function() {
+    alert("{{ message }}");
+  };
+</script>
+{% endif %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tickets</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Tickets</h1>
+        
+
+        <!--Barra de búsqueda-->
+
+        <div class="row mb-3">
+            <div class="col">
+                <br>
+                <input type="text" class="form-control" id="searchInput" placeholder="Search By ID">
+            </div>
+
+            <!--Botón de búsqueda-->
+
+            <div class="col-auto">
+                <br>
+                <button class="btn btn-primary" id="searchBtn"><i class="fas fa-search"></i> Search</button>
+            </div>
+
+            <!--Botón de búsqueda-->
+        </div>
+
+        <!--Barra de búsqueda-->
+
+
+        <!--Tabla de tickets-->
+
+        <table class="table mt-3">
+            <thead class="thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Vehicle Type</th>
+                    <th>Charge</th>
+                    <th>Status</th>
+                    <th>Action</th> 
+                </tr>
+            </thead>
+            <tbody>
+                {% for ticket in unpaid_tickets %}
+                <tr id="ticketRow{{ ticket.ticket_id }}">
+                    <td>{{ ticket.ticket_id }}</td>
+                    <td class="editable" data-id="{{ ticket.ticket_id }}">
+                        {{ vehicle_types|get_vehicle_type_name(ticket.vehicle_type_id) }}
+                    </td>
+                    <td class="editable" data-id="{{ ticket.ticket_id }}">{{ ticket.charge }}</td>
+                    <td class="editable" data-id="{{ ticket.ticket_id }}">
+                        {{ statuses|get_status_name(ticket.status_id) }}
+                    </td>
+                    <td>
+                        <button id="addTicketPaymentBtn" type="button" class="btn btn-primary payment-btn" data-id="{{ ticket.ticket_id }}" data-charge="{{ ticket.charge }}"><i></i> Payment</button>
+                    </td>
+                </tr>
+
+                <!--Pop up Crear pago-->
+
+                <div class="modal fade" id="addTicketPaymentModal" tabindex="-1" aria-labelledby="addTicketPaymentModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="addTicketPaymentModalLabel">Ticket Payment</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form method="POST" action="/add-payment" id="addTicketPaymentForm">
+                                    <div class="form-group">
+                                        <label for="paymentTicketId">Ticket ID</label>
+                                        <input type="text" class="form-control" id="paymentTicketId" name="paymentTicketId">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="paymentCharge">Charge</label>
+                                        <input type="text" class="form-control" id="paymentCharge" name="paymentCharge">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="paymentCurrency">Currency</label>
+                                        <input type="text" class="form-control" id="paymentCurrency" name="paymentCurrency">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="paymentMethod">Payment Method</label>
+                                        <input type="text" class="form-control" id="paymentMethod" name="paymentMethod">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="paymentExchangeRate">Exchange Rate</label>
+                                        <input type="text" class="form-control" id="paymentExchangeRate" name="paymentExchangeRate">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="paymentLocalCurrency">Local Currency Charge</label>
+                                        <input type="text" class="form-control" id="paymentLocalCurrency" name="paymentLocalCurrency">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                        <button type="submit" class="btn btn-primary" id="addBtn">Save</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!--Pop up Crear pago-->
+
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div style="text-align: center;">
+        <div style="margin-top: 20px;">
+            <a href="/main" style="text-decoration: none; color: #007bff; font-weight: bold;">Back to menu</a>
+        </div>
+    </div>
+
+
+    <!--Tabla de tickets-->
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#addTicketPaymentBtn').click(function() {
+                $('#addTicketPaymentModal').modal('show');
+            });
+
+            $('#addBtn').click(function() {
+                // Get the values from the form fields
+                var paymentTicketId = $('#paymentTicketId').val();
+                var paymentCharge = $('#paymentCharge').val();
+                var paymentCurrency = $('#paymentCurrency').val();
+                var paymentMethod = $('#paymentMethod').val();
+                var paymentExchangeRate = $('#paymentExchangeRate').val();
+                var paymentLocalCurrency = $('#paymentLocalCurrency').val();
+            
+                // Submit the form
+                $('#TicketPayment').submit();
+            });
+        });
+    </script>
+    <script>
+        document.getElementById("searchBtn").addEventListener("click", function() {
+            var searchValue = document.getElementById("searchInput").value;
+            // Construct the URL with the search query as a parameter
+            var url = "/ticket-search/" + encodeURIComponent(searchValue);
+            // Redirect the user to the search results page
+            window.location.href = url;
+        });
+    </script>
+</body>
+</html>

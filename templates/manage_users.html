@@ -71,8 +71,8 @@
                             <div class="form-group">
                                 <label for="userPermisology">Choose User Permisology:</label>
                                 <select id="userPermisology" name="userPermisology">
-                                    <option value="admin">Admin</option>
-                                    <option value="security">Security Guard</option>
+                                    <option value="admin">Administrator</option>
+                                    <option value="employee">Employee</option>
                                 </select>
                             </div>
                             <div class="modal-footer">
@@ -84,6 +84,7 @@
                 </div>
             </div>
         </div>
+        
         
         
         <!--Pop up Crear usuario-->
@@ -138,8 +139,8 @@
                                     <div class="form-group">
                                         <label for="newUserPermisology">Choose User Permisology:</label>
                                         <select id="newUserPermisology" name="newUserPermisology">
-                                            <option value="admin">Admin</option>
-                                            <option value="security">Security Guard</option>
+                                            <option value="admin">Administrator</option>
+                                            <option value="employee">Employee</option>
                                         </select>
                                     </div>
                                     <div class="modal-footer">
@@ -158,6 +159,11 @@
                 {% endfor %}
             </tbody>
         </table>
+    </div>
+    <div style="text-align: center;">
+        <div style="margin-top: 20px;">
+            <a href="/main" style="text-decoration: none; color: #007bff; font-weight: bold;">Back to menu</a>
+        </div>
     </div>
 
 
