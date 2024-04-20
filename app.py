@@ -99,10 +99,12 @@ def login():
             password = request.form['password']
             
             data = {"username": username, "password": password}
-            response = loginApp.get_user(data)
+            response, data_from_db = loginApp.get_user(data)
+            permisology = data_from_db.permisology
             if response == True:
                 # Si las credenciales son correctas, inicia sesión con Flask-Login
                 user = User(username)
+                session['permisology'] = permisology  # Almacena el rol en la sesión
                 login_user(user)
                 flash('Inicio de sesión exitoso', 'success')
                 return redirect('/main')
@@ -122,7 +124,12 @@ def login():
 @app.route('/main')
 #@login_required
 def begin():
-    return render_template('admin_main.html')
+    permisology = session['permisology']
+    
+    if permisology == "admin":
+        return render_template('admin_main.html')
+    else:
+        return "Hola usuario no admin"
 
 
 

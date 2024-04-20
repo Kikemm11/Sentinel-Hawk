@@ -17,11 +17,11 @@ def get_user(data):
         
     if data_from_db and bcrypt.checkpw(password.encode('utf-8'), data_from_db.password.encode('utf-8')):
         
-        return True
+        return True, data_from_db
         # Aquí puedes hacer lo que necesites si la contraseña es válida
     else:
         
-        return False
+        return False, data_from_db
         # Aquí puedes hacer lo que necesites si la contraseña no es válida
         
         
