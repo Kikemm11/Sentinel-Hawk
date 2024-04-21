@@ -2,6 +2,7 @@
 #************************************************************************************
 from os import name
 import sys
+"""
 sys.path.append("/home/dasl/sentinel_last_2/sentinel_hawk/models/detection/ByteTrack")
 from yolox.tracker.byte_tracker import BYTETracker, STrack
 from onemetric.cv.utils.iou import box_iou_batch
@@ -389,4 +390,5 @@ def iniciarDeteccion():
 # if __name__ == "__main__": 
     
 #     iniciarDeteccion()
+"""
     

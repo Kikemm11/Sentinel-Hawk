@@ -35,9 +35,13 @@
                 <tbody>
                     <tr id="ticketRow{{ ticket.ticket_id }}">
                         <td>{{ ticket.ticket_id }}</td>
-                        <td class="editable" data-id="{{ ticket.ticket_id }}">{{ ticket.vehicle_type_id }}</td>
+                        <td class="editable" data-id="{{ ticket.ticket_id }}">
+                            {{ vehicle_types|get_vehicle_type_name(ticket.vehicle_type_id) }}
+                        </td>
                         <td class="editable" data-id="{{ ticket.ticket_id }}">{{ ticket.charge }}</td>
-                        <td class="editable" data-id="{{ ticket.ticket_id }}">{{ ticket.status_id }}</td>
+                        <td class="editable" data-id="{{ ticket.ticket_id }}">
+                            {{ statuses|get_status_name(ticket.status_id) }}
+                        </td>
                         <td>
                             <button id="addTicketPaymentBtn" type="button" class="btn btn-primary payment-btn" data-id="{{ ticket.ticket_id }}" data-charge="{{ ticket.charge }}"><i></i> Payment</button>
                         </td>
@@ -65,12 +69,12 @@
                                             <input type="number" class="form-control" id="paymentCharge" name="paymentCharge" step="any" disabled>
                                         </div>
                                         <div class="form-group">
-                                            <label for="paymentCurrency">Currency</label>
-                                            <input type="number" class="form-control" id="paymentCurrency" name="paymentCurrency">
+                                            <label for="paymentCurrency">Currency:</label>
+                                            <select id="paymentCurrency" name="paymentCurrency"></select>
                                         </div>
                                         <div class="form-group">
-                                            <label for="paymentMethod">Payment Method</label>
-                                            <input type="number" class="form-control" id="paymentMethod" name="paymentMethod">
+                                            <label for="paymentMethod">Payment Method:</label>
+                                            <select id="paymentMethod" name="paymentMethod"></select>
                                         </div>
                                         <div class="form-group">
                                             <label for="paymentExchangeRate">Exchange Rate</label>
@@ -79,6 +83,10 @@
                                         <div class="form-group">
                                             <label for="paymentLocalCurrency">Local Currency Charge</label>
                                             <input type="number" class="form-control" id="paymentLocalCurrency" name="paymentLocalCurrency" step="any">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="newTicketStatus">Change Ticket Status:</label>
+                                            <select id="newTicketStatus" name="newTicketStatus"></select>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -132,6 +140,65 @@
                     $('#TicketPayment').submit();
                 });
             });
+        </script>
+        <script>
+        
+            var currency_data = [
+            {% for currency in currencies %}
+                {
+                    id: {{ currency.currency_id }},
+                    name: "{{ currency.name }}"
+                },
+            {% endfor %}
+            ];
+    
+            var currency_field = "paymentCurrency"
+    
+    
+            var ticket_status_data = [
+            {% for status in statuses %}
+                {
+                    id: {{ status.status_id }},
+                    name: "{{ status.name }}"
+                },
+            {% endfor %}
+            ];
+    
+            var ticket_status_field = "newTicketStatus"
+    
+    
+            var payment_method_data = [
+            {% for method in payment_methods %}
+                {
+                    id: {{ method.payment_method_id }},
+                    name: "{{ method.name }}"
+                },
+            {% endfor %}
+            ];
+    
+            var payment_method_field = "paymentMethod"
+    
+        
+            // Function to populate options dynamically
+            function populateSelectOptions(records,field) {
+                var select = document.getElementById(field);
+        
+                // Clear existing options
+                select.innerHTML = "";
+        
+                // Add an option for each record
+                records.forEach(function(record) {
+                    var option = document.createElement("option");
+                    option.value = record.id;
+                    option.textContent = record.name;
+                    select.appendChild(option);
+                });
+            }
+        
+            // Call the function to populate options
+            populateSelectOptions(currency_data,currency_field);
+            populateSelectOptions(payment_method_data, payment_method_field);
+            populateSelectOptions(ticket_status_data, ticket_status_field);
         </script>
     </body>
 {% else %}

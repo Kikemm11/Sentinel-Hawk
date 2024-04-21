@@ -12,7 +12,7 @@ from models.currencyConnection import CurrencyConnection
 from models.payment_methodConnection import PaymentMethodConnection
 from models.ticketConnection import TicketConnection
 from models.status2Connection import StatusConnection
-
+"""
 import threading  # Importa el módulo threading para detener los procesos en ejecución
 from models.deteccion import iniciarDeteccion
 from models.statusConnection import DatabaseManager
@@ -20,6 +20,7 @@ from models.statusConnection import DatabaseManager
 button_active = False
 # Variable global para almacenar la referencia al hilo de ejecución
 execution_thread = None
+"""
 
 app = Flask(__name__)
 
@@ -37,7 +38,7 @@ login_manager.init_app(app)
 class User(UserMixin):
     def __init__(self, id):
         self.id = id
-
+"""
 #---------------------------- detection funtions -----------------------------
 
 # Código que quieres ejecutar cuando el botón está activo
@@ -65,7 +66,7 @@ def stop_execution():
 
 #--------------------------------------------------------------
 
-
+"""
 
 
 # Set the different routes involoved lin the web application
@@ -348,9 +349,19 @@ def ticket_index():
 
 @app.route('/ticket-search/<string:ticket_id>')
 def ticket_search_index(ticket_id):
+    
     connection = TicketConnection(loginApp.database)
+    vehicle_type_connection = VehicleConnection(loginApp.database)
+    status_connection = StatusConnection(loginApp.database)
+    payment_method_connection = PaymentMethodConnection(loginApp.database)
+    currency_connection = CurrencyConnection(loginApp.database)
+    
     ticket = connection.read_one_ticket(ticket_id)
-    return render_template('ticket_search.html', ticket=ticket)
+    vehicle_types = vehicle_type_connection.read_all_vehicle_types()
+    statuses = status_connection.read_all_statuses()
+    payment_methods = payment_method_connection.read_all_payment_methods()
+    currencies = currency_connection.read_all_currencies()
+    return render_template('ticket_search.html', ticket=ticket, vehicle_types=vehicle_types, statuses=statuses, payment_methods=payment_methods, currencies=currencies)
 
 
 # Ticket filter functions

@@ -159,7 +159,6 @@
                 var paymentExchangeRate = $('#paymentExchangeRate').val();
                 var paymentLocalCurrency = $('#paymentLocalCurrency').val();
                 // Submit the form
-                // Perform AJAX request or submit form data as needed
             });
         });
         
@@ -169,6 +168,8 @@
         // Initially hide all ticket rows except unpaid ones
         $('.ticket-row').hide();
          // Show unpaid ticket rows
+        $('.ticket-row[data-status="2"]').show();
+ 
 
 
         // Filter tickets based on status
@@ -272,7 +273,6 @@
         });
     
         // Initially display records for the first page
-        $('.ticket-row[data-status="2"]').show();
         updatePagination();
     </script>
     <script>
