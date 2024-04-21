@@ -328,19 +328,20 @@ def add_payment():
 
 @app.route('/ticket')
 def ticket_index():
-    connection = TicketConnection(loginApp.database)
-    connection2 = VehicleConnection(loginApp.database)
-    connection3 = StatusConnection(loginApp.database)
+    ticket_connection = TicketConnection(loginApp.database)
+    vehicle_type_connection = VehicleConnection(loginApp.database)
+    status_connection = StatusConnection(loginApp.database)
+    payment_method_connection = PaymentMethodConnection(loginApp.database)
+    currency_connection = CurrencyConnection(loginApp.database)
     
-    all_tickets = connection.read_all_tickets()
-    paid_tickets = connection.read_paid_tickets()
-    unpaid_tickets = connection.read_unpaid_tickets()
-    canceled_tickets = connection.read_canceled_tickets()
+    all_tickets = ticket_connection.read_all_tickets()
     
-    vehicle_types = connection2.read_all_vehicle_types()
-    statuses = connection3.read_all_statuses()
+    vehicle_types = vehicle_type_connection.read_all_vehicle_types()
+    statuses = status_connection.read_all_statuses()
+    payment_methods = payment_method_connection.read_all_payment_methods()
+    currencies = currency_connection.read_all_currencies()
     
-    return render_template('ticket.html', all_tickets=all_tickets, paid_tickets=paid_tickets, unpaid_tickets=unpaid_tickets, canceled_tickets=canceled_tickets, vehicle_types=vehicle_types, statuses=statuses)
+    return render_template('ticket.html', all_tickets=all_tickets, vehicle_types=vehicle_types, statuses=statuses, payment_methods=payment_methods, currencies=currencies)
 
 
 # Ticket search route

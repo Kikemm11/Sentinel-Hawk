@@ -1,11 +1,3 @@
-{% if message %}
-<script>
-  window.onload = function() {
-    alert("{{ message }}");
-  };
-</script>
-{% endif %}
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,30 +10,35 @@
     <div class="container">
         <h1>Tickets</h1>
         
-
         <!--Barra de búsqueda-->
-
         <div class="row mb-3">
             <div class="col">
-                <br>
                 <input type="text" class="form-control" id="searchInput" placeholder="Search By ID">
             </div>
-
             <!--Botón de búsqueda-->
-
             <div class="col-auto">
-                <br>
                 <button class="btn btn-primary" id="searchBtn"><i class="fas fa-search"></i> Search</button>
             </div>
-
             <!--Botón de búsqueda-->
         </div>
-
         <!--Barra de búsqueda-->
 
+        <!--Barra de filtro por estado-->
+        <div class="row">
+            <div class="col">
+                <div class="btn-group" role="group" aria-label="Status Filter">
+                    <button type="button" class="btn btn-secondary" id="unpaidTicketsBtn">Unpaid Tickets</button>
+                    <button type="button" class="btn btn-secondary" id="paidTicketsBtn">Paid Tickets</button>
+                    <button type="button" class="btn btn-secondary" id="canceledTicketsBtn">Canceled Tickets</button>
+                    <button type="button" class="btn btn-secondary" id="allTicketsBtn">All Tickets</button>
+                    
+                    <!-- Add more buttons for other statuses as needed -->
+                </div>
+            </div>
+        </div>
+        <!--Barra de filtro por estado-->
 
         <!--Tabla de tickets-->
-
         <table class="table mt-3">
             <thead class="thead-dark">
                 <tr>
@@ -53,8 +50,8 @@
                 </tr>
             </thead>
             <tbody>
-                {% for ticket in unpaid_tickets %}
-                <tr id="ticketRow{{ ticket.ticket_id }}">
+                {% for ticket in all_tickets %}
+                <tr class="ticket-row" data-status="{{ ticket.status_id }}">
                     <td>{{ ticket.ticket_id }}</td>
                     <td class="editable" data-id="{{ ticket.ticket_id }}">
                         {{ vehicle_types|get_vehicle_type_name(ticket.vehicle_type_id) }}
@@ -64,12 +61,9 @@
                         {{ statuses|get_status_name(ticket.status_id) }}
                     </td>
                     <td>
-                        <button id="addTicketPaymentBtn" type="button" class="btn btn-primary payment-btn" data-id="{{ ticket.ticket_id }}" data-charge="{{ ticket.charge }}"><i></i> Payment</button>
+                        <button class="btn btn-primary add-ticket-payment-btn payment-btn" data-id="{{ ticket.ticket_id }}" data-charge="{{ ticket.charge }}"><i></i> Payment</button>
                     </td>
                 </tr>
-
-                <!--Pop up Crear pago-->
-
                 <div class="modal fade" id="addTicketPaymentModal" tabindex="-1" aria-labelledby="addTicketPaymentModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -80,30 +74,34 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <form method="POST" action="/add-payment" id="addTicketPaymentForm">
+                                <form method="POST" action="/ticket-payment" id="addTicketPaymentForm">
                                     <div class="form-group">
                                         <label for="paymentTicketId">Ticket ID</label>
-                                        <input type="text" class="form-control" id="paymentTicketId" name="paymentTicketId">
+                                        <input type="number" class="form-control" id="paymentTicketId" name="paymentTicketId" disabled>
                                     </div>
                                     <div class="form-group">
                                         <label for="paymentCharge">Charge</label>
-                                        <input type="text" class="form-control" id="paymentCharge" name="paymentCharge">
+                                        <input type="number" class="form-control" id="paymentCharge" name="paymentCharge" step="any" disabled>
                                     </div>
                                     <div class="form-group">
-                                        <label for="paymentCurrency">Currency</label>
-                                        <input type="text" class="form-control" id="paymentCurrency" name="paymentCurrency">
+                                        <label for="paymentCurrency">Currency:</label>
+                                        <select id="paymentCurrency" name="paymentCurrency"></select>
                                     </div>
                                     <div class="form-group">
-                                        <label for="paymentMethod">Payment Method</label>
-                                        <input type="text" class="form-control" id="paymentMethod" name="paymentMethod">
+                                        <label for="paymentMethod">Payment Method:</label>
+                                        <select id="paymentMethod" name="paymentMethod"></select>
                                     </div>
                                     <div class="form-group">
                                         <label for="paymentExchangeRate">Exchange Rate</label>
-                                        <input type="text" class="form-control" id="paymentExchangeRate" name="paymentExchangeRate">
+                                        <input type="number" class="form-control" id="paymentExchangeRate" name="paymentExchangeRate" step="any">
                                     </div>
                                     <div class="form-group">
                                         <label for="paymentLocalCurrency">Local Currency Charge</label>
-                                        <input type="text" class="form-control" id="paymentLocalCurrency" name="paymentLocalCurrency">
+                                        <input type="number" class="form-control" id="paymentLocalCurrency" name="paymentLocalCurrency" step="any">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="newTicketStatus">Change Ticket Status:</label>
+                                        <select id="newTicketStatus" name="newTicketStatus"></select>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -120,26 +118,39 @@
                 {% endfor %}
             </tbody>
         </table>
+        <!--Tabla de tickets-->
     </div>
+
+        <!-- Pagination Controls -->
+
+    <div class="pagination" >
+        <button class="btn btn-primary" id="prevPageBtn">Previous</button>
+        <span id="currentPage"></span>
+        <button class="btn btn-primary" id="nextPageBtn">Next</button>
+    </div>
+
     <div style="text-align: center;">
         <div style="margin-top: 20px;">
             <a href="/main" style="text-decoration: none; color: #007bff; font-weight: bold;">Back to menu</a>
         </div>
     </div>
 
-
-    <!--Tabla de tickets-->
-
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
         $(document).ready(function() {
-            $('#addTicketPaymentBtn').click(function() {
+            $('.add-ticket-payment-btn').click(function() {
+                var ticketId = $(this).data('id');
+                var charge = $(this).data('charge');
                 $('#addTicketPaymentModal').modal('show');
+                // Set the values in the modal based on the clicked row
+                $('#paymentTicketId').val(ticketId);
+                $('#paymentCharge').val(charge);
             });
-
-            $('#addBtn').click(function() {
+        
+            $('#addTicketPaymentForm').submit(function(event) {
+                event.preventDefault();
                 // Get the values from the form fields
                 var paymentTicketId = $('#paymentTicketId').val();
                 var paymentCharge = $('#paymentCharge').val();
@@ -147,11 +158,122 @@
                 var paymentMethod = $('#paymentMethod').val();
                 var paymentExchangeRate = $('#paymentExchangeRate').val();
                 var paymentLocalCurrency = $('#paymentLocalCurrency').val();
-            
                 // Submit the form
-                $('#TicketPayment').submit();
+                // Perform AJAX request or submit form data as needed
             });
         });
+        
+    </script> 
+    <script>
+
+        // Initially hide all ticket rows except unpaid ones
+        $('.ticket-row').hide();
+         // Show unpaid ticket rows
+
+
+        // Filter tickets based on status
+        function filterTickets(status) {
+            $('.ticket-row').hide(); // Hide all ticket rows
+            
+            // Show ticket rows based on status
+            if (status === 'all') {
+                $('.ticket-row').show(); // Show all ticket rows
+            } else {
+                $('.ticket-row[data-status="' + status + '"]').show(); // Show ticket rows with matching status
+            }
+        }
+
+
+        // Function to show or hide payment button based on ticket status
+        function togglePaymentButton(status) {
+            if (status === '2') {
+                $('.payment-btn').show();
+            } else {
+                $('.payment-btn').hide();
+            }
+        }
+
+        // Event listener for all tickets button
+        $('#allTicketsBtn').click(function() {
+            filterTickets('all');
+            togglePaymentButton('all');
+        });
+
+        // Event listener for paid tickets button
+        $('#paidTicketsBtn').click(function() {
+            filterTickets(1);
+            togglePaymentButton('1');
+        });
+
+        // Event listener for unpaid tickets button
+        $('#unpaidTicketsBtn').click(function() {
+            filterTickets(2);
+            togglePaymentButton('2');
+        });
+
+        // Event listener for unpaid tickets button
+        $('#canceledTicketsBtn').click(function() {
+            filterTickets(3);
+            togglePaymentButton('3');
+        });
+        // Add more event listeners for other status buttons as needed
+    </script>
+    <script>
+        var currentPage = 1;
+        var recordsPerPage = 5; // Change this to the desired number of records per page
+        var totalRows; // Initialize totalPages with a default value
+    
+        // Function to display records for the current page
+        function displayRecordsForPage(page, rows) {
+            var startIndex = (page - 1) * recordsPerPage;
+            var endIndex = startIndex + recordsPerPage;
+    
+            // Slice the visible rows based on the current page
+            rows.hide();
+            rows.slice(startIndex, endIndex).show();
+    
+            $('#currentPage').text('Page ' + page);
+        }
+    
+        // Function to update pagination based on the current filter
+        function updatePagination() {
+            // Get only visible rows based on the current filter
+            totalRows = $('.ticket-row:visible');
+            // Calculate the total number of pages based on visible rows
+            totalPages = Math.ceil(totalRows.length / recordsPerPage);
+            // Update current page if it exceeds the total number of pages
+            if (currentPage > totalPages) {
+                currentPage = totalPages;
+            }
+            displayRecordsForPage(currentPage, totalRows);
+        }
+    
+        // Event listeners for filter buttons
+        $('#allTicketsBtn, #paidTicketsBtn, #unpaidTicketsBtn, #canceledTicketsBtn').click(function() {
+            updatePagination();
+        });
+    
+        // Event listener for previous page button
+        $('#prevPageBtn').click(function() {
+            if (currentPage > 1) {
+                currentPage--;
+                displayRecordsForPage(currentPage, totalRows);
+            }
+        });
+    
+        // Event listener for next page button
+        $('#nextPageBtn').click(function() {
+
+            totalPages = Math.ceil(totalRows.length / recordsPerPage);
+            if (currentPage < totalPages) {
+                currentPage++;
+                displayRecordsForPage(currentPage, totalRows);
+            }
+        });
+    
+        // Initially display records for the first page
+        $('.ticket-row[data-status="2"]').show();
+        updatePagination();
     </script>
     <script>
         document.getElementById("searchBtn").addEventListener("click", function() {
@@ -161,6 +283,65 @@
             // Redirect the user to the search results page
             window.location.href = url;
         });
+    </script>
+    <script>
+        
+        var currency_data = [
+        {% for currency in currencies %}
+            {
+                id: {{ currency.currency_id }},
+                name: "{{ currency.name }}"
+            },
+        {% endfor %}
+        ];
+
+        var currency_field = "paymentCurrency"
+
+
+        var ticket_status_data = [
+        {% for status in statuses %}
+            {
+                id: {{ status.status_id }},
+                name: "{{ status.name }}"
+            },
+        {% endfor %}
+        ];
+
+        var ticket_status_field = "newTicketStatus"
+
+
+        var payment_method_data = [
+        {% for method in payment_methods %}
+            {
+                id: {{ method.payment_method_id }},
+                name: "{{ method.name }}"
+            },
+        {% endfor %}
+        ];
+
+        var payment_method_field = "paymentMethod"
+
+    
+        // Function to populate options dynamically
+        function populateSelectOptions(records,field) {
+            var select = document.getElementById(field);
+    
+            // Clear existing options
+            select.innerHTML = "";
+    
+            // Add an option for each record
+            records.forEach(function(record) {
+                var option = document.createElement("option");
+                option.value = record.id;
+                option.textContent = record.name;
+                select.appendChild(option);
+            });
+        }
+    
+        // Call the function to populate options
+        populateSelectOptions(currency_data,currency_field);
+        populateSelectOptions(payment_method_data, payment_method_field);
+        populateSelectOptions(ticket_status_data, ticket_status_field);
     </script>
 </body>
 </html>

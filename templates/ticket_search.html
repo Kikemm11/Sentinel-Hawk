@@ -58,27 +58,27 @@
                                     <form method="POST" action="/ticket-payment" id="addTicketPaymentForm">
                                         <div class="form-group">
                                             <label for="paymentTicketId">Ticket ID</label>
-                                            <input type="text" class="form-control" id="paymentTicketId" name="paymentTicketId">
+                                            <input type="number" class="form-control" id="paymentTicketId" name="paymentTicketId" disabled>
                                         </div>
                                         <div class="form-group">
                                             <label for="paymentCharge">Charge</label>
-                                            <input type="text" class="form-control" id="paymentCharge" name="paymentCharge">
+                                            <input type="number" class="form-control" id="paymentCharge" name="paymentCharge" step="any" disabled>
                                         </div>
                                         <div class="form-group">
                                             <label for="paymentCurrency">Currency</label>
-                                            <input type="text" class="form-control" id="paymentCurrency" name="paymentCurrency">
+                                            <input type="number" class="form-control" id="paymentCurrency" name="paymentCurrency">
                                         </div>
                                         <div class="form-group">
                                             <label for="paymentMethod">Payment Method</label>
-                                            <input type="text" class="form-control" id="paymentMethod" name="paymentMethod">
+                                            <input type="number" class="form-control" id="paymentMethod" name="paymentMethod">
                                         </div>
                                         <div class="form-group">
                                             <label for="paymentExchangeRate">Exchange Rate</label>
-                                            <input type="text" class="form-control" id="paymentExchangeRate" name="paymentExchangeRate">
+                                            <input type="number" class="form-control" id="paymentExchangeRate" name="paymentExchangeRate" step="any">
                                         </div>
                                         <div class="form-group">
                                             <label for="paymentLocalCurrency">Local Currency Charge</label>
-                                            <input type="text" class="form-control" id="paymentLocalCurrency" name="paymentLocalCurrency">
+                                            <input type="number" class="form-control" id="paymentLocalCurrency" name="paymentLocalCurrency" step="any">
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -111,7 +111,12 @@
         <script>
             $(document).ready(function() {
                 $('#addTicketPaymentBtn').click(function() {
+                    var ticketId = $(this).data('id');
+                    var charge = $(this).data('charge');
                     $('#addTicketPaymentModal').modal('show');
+                    // Set the values in the modal based on the clicked row
+                    $('#paymentTicketId').val(ticketId);
+                    $('#paymentCharge').val(charge);
                 });
     
                 $('#addBtn').click(function() {

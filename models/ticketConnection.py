@@ -46,7 +46,7 @@ class TicketConnection:
 
     def read_all_tickets(self): 
         session = self.SessionLocal()
-        result = session.query(Ticket).all()
+        result = session.query(Ticket).order_by(Ticket.ticket_id.desc()).all()
         session.close()
         return result
     
