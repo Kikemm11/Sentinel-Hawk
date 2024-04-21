@@ -14,7 +14,7 @@ from models.ticketConnection import TicketConnection
 from models.status2Connection import StatusConnection
 
 import threading  # Importa el módulo threading para detener los procesos en ejecución
-#from models.deteccion import iniciarDeteccion
+from models.deteccion import iniciarDeteccion
 from models.statusConnection import DatabaseManager
 # Variable global para controlar si el botón está activo o no
 button_active = False
@@ -42,8 +42,8 @@ class User(UserMixin):
 
 # Código que quieres ejecutar cuando el botón está activo
 def execute_code():
-    #iniciarDeteccion()
-    print("detectando")
+    iniciarDeteccion()
+    #print("detectando")
 
 
 # Función para iniciar la ejecución del código en un hilo separado

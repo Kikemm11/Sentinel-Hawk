@@ -28,8 +28,9 @@ import time
 from PIL import Image
 
 from models.vehicle_typeConnection import VehicleConnection 
-from models.ticketConection import TicketConnection
-from models.statusConecction import  DatabaseManager
+from models.ticketConnection import TicketConnection
+from models.statusConnection import DatabaseManager
+
 
 # from vehicle_typeConnection import VehicleConnection 
 # from ticketConection import TicketConnection
@@ -77,7 +78,7 @@ class Vehiculo:
 
 def exportPostgres(tipo):
     conn = None
-    database = "postgresql://dasl0201:123456@localhost:5432/sentinel_hawk"
+    database = "postgresql://sentinel:sentinel@localhost:5432/sentinel_hawk"
     
     connection = VehicleConnection(database)
 
@@ -278,7 +279,7 @@ def iniciarDeteccion():
     i= 0
     box_annotator = BoxAnnotator(thickness=4, text_thickness=4, text_scale=2)
     
-    database = "postgresql://dasl0201:123456@localhost:5432/sentinel_hawk"
+    database = "postgresql://sentinel:sentinel@localhost:5432/sentinel_hawk"
     db_manager = DatabaseManager(database)
     
     while True:    
