@@ -44,6 +44,9 @@
                         </td>
                         <td>
                             <button id="addTicketPaymentBtn" type="button" class="btn btn-primary payment-btn" data-id="{{ ticket.ticket_id }}" data-charge="{{ ticket.charge }}"><i></i> Payment</button>
+                            <form method="POST" action="/cancel-ticket/{{ ticket.ticket_id }}" class="delete-form d-inline">
+                                <button type="submit" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Cancel</button>
+                            </form>
                         </td>
                     </tr>
     
@@ -166,7 +169,7 @@
                     },
                 {% endif %}
             {% endfor %}
-        ];
+            ];
     
             var ticket_status_field = "newTicketStatus"
     
@@ -204,6 +207,22 @@
             populateSelectOptions(payment_method_data, payment_method_field);
             populateSelectOptions(ticket_status_data, ticket_status_field);
         </script>
+        <script>
+
+
+            function filterPaymentButton(status) {
+                
+                if (status !== 2) {
+                    $('.payment-btn').hide();
+                    $('.btn-danger').hide();
+                } else {
+                    $('.payment-btn').show(); 
+                    $('.btn-danger').show();
+                }
+            }
+
+            filterPaymentButton({{ ticket.status_id }})
+        </script> 
     </body>
 {% else %}
     <body style="font-family: Arial, sans-serif; margin: 0; padding: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; background-color: #f4f4f4;">

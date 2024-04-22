@@ -69,6 +69,9 @@
                     </td>
                     <td>
                         <button class="btn btn-primary add-ticket-payment-btn payment-btn" data-id="{{ ticket.ticket_id }}" data-charge="{{ ticket.charge }}"><i></i> Payment</button>
+                        <form method="POST" action="/cancel-ticket/{{ ticket.ticket_id }}" class="delete-form d-inline">
+                            <button type="submit" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Cancel</button>
+                        </form>
                     </td>
                 </tr>
                 <div class="modal fade" id="addTicketPaymentModal" tabindex="-1" aria-labelledby="addTicketPaymentModalLabel" aria-hidden="true">
@@ -198,8 +201,10 @@
         function togglePaymentButton(status) {
             if (status === '2') {
                 $('.payment-btn').show();
+                $('.btn-danger').show();
             } else {
                 $('.payment-btn').hide();
+                $('.btn-danger').hide();
             }
         }
 

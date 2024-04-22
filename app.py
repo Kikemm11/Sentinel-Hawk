@@ -376,6 +376,18 @@ def ticket_search_index(ticket_id):
     return render_template('ticket_search.html', ticket=ticket, vehicle_types=vehicle_types, statuses=statuses, payment_methods=payment_methods, currencies=currencies, exchange_rate=usd_price)
 
 
+# Cancel ticket route
+
+@app.route('/cancel-ticket/<int:ticket_id>', methods=['GET', 'POST'])
+def cancel_ticket(ticket_id):
+
+    connection = TicketConnection(loginApp.database)
+    updated_ticket = connection.update_ticket(ticket_id, 3)
+                
+    return redirect('/ticket')
+
+
+
 # Ticket filter functions
 
 @app.template_filter('get_vehicle_type_name')
