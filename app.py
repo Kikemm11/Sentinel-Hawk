@@ -546,10 +546,10 @@ def add_ticket_payment():
         payment_method = int(request.form['paymentMethod'])
         currency = int(request.form['paymentCurrency'])
         status = int(request.form['newTicketStatus'])
-        exchange_rate = int(request.form['paymentExchangeRate'])
+        exchange_rate = request.form['paymentExchangeRate']
         local_currency = float(request.form['paymentLocalCurrency'])
 
-        data = {"ticket_id":ticket_id, "charge":charge, "currency_id":currency, "payment_method_id":payment_method, "exchange_rate_id":exchange_rate, "local_currency": local_currency}
+        data = {"ticket_id":ticket_id, "charge":charge, "currency_id":currency, "payment_method_id":payment_method, "exchange_rate":exchange_rate, "local_currency": local_currency}
         print(data)
         payment_connection = PaymentConnection(loginApp.database)
         ticket_connection = TicketConnection(loginApp.database)
