@@ -4,6 +4,7 @@ from flask_login import LoginManager, login_user, login_required, logout_user, U
 import bcrypt
 from flask_cors import CORS
 import os
+from datetime import datetime
 import time
 import loginApp
 from models.vehicle_typeConnection import VehicleConnection
@@ -12,6 +13,8 @@ from models.currencyConnection import CurrencyConnection
 from models.payment_methodConnection import PaymentMethodConnection
 from models.ticketConnection import TicketConnection
 from models.status2Connection import StatusConnection
+from models.paymentConnection import PaymentConnection
+
 """
 import threading  # Importa el módulo threading para detener los procesos en ejecución
 from models.deteccion import iniciarDeteccion
@@ -311,17 +314,6 @@ def delete_user(user_id):
     
     
 
-#---Payment routes---
-
-
-# Add new payment route
-
-@app.route('/add-payment', methods=['GET', 'POST'])
-def add_payment():
-    pass 
-
-
-
 #---Ticket routes---
 
 
@@ -336,13 +328,17 @@ def ticket_index():
     currency_connection = CurrencyConnection(loginApp.database)
     
     all_tickets = ticket_connection.read_all_tickets()
-    
+       
     vehicle_types = vehicle_type_connection.read_all_vehicle_types()
     statuses = status_connection.read_all_statuses()
     payment_methods = payment_method_connection.read_all_payment_methods()
     currencies = currency_connection.read_all_currencies()
     
-    return render_template('ticket.html', all_tickets=all_tickets, vehicle_types=vehicle_types, statuses=statuses, payment_methods=payment_methods, currencies=currencies)
+    response = requests.get("https://pydolarvenezuela-api.vercel.app/api/v1/dollar?page=bcv")
+    data = response.json()
+    usd_price = data['monitors']['usd']['price']
+    
+    return render_template('ticket.html', all_tickets=all_tickets, vehicle_types=vehicle_types, statuses=statuses, payment_methods=payment_methods, currencies=currencies, exchange_rate=usd_price)
 
 
 # Ticket search route
@@ -361,7 +357,12 @@ def ticket_search_index(ticket_id):
     statuses = status_connection.read_all_statuses()
     payment_methods = payment_method_connection.read_all_payment_methods()
     currencies = currency_connection.read_all_currencies()
-    return render_template('ticket_search.html', ticket=ticket, vehicle_types=vehicle_types, statuses=statuses, payment_methods=payment_methods, currencies=currencies)
+    
+    response = requests.get("https://pydolarvenezuela-api.vercel.app/api/v1/dollar?page=bcv")
+    data = response.json()
+    usd_price = data['monitors']['usd']['price']
+    
+    return render_template('ticket_search.html', ticket=ticket, vehicle_types=vehicle_types, statuses=statuses, payment_methods=payment_methods, currencies=currencies, exchange_rate=usd_price)
 
 
 # Ticket filter functions
@@ -508,6 +509,36 @@ def delete_payment_method(payment_method_id):
         #return resultado['message']
     else:
         return "Error: " + resultado['message'] 
+    
+
+
+#---Payment routes---
+
+# Add new payment route
+
+@app.route('/ticket-payment', methods=['GET', 'POST'])
+def add_ticket_payment():
+
+    if 'paymentMethod' in request.form and 'paymentCurrency' in request.form and 'newTicketStatus' in request.form and 'ticketId' in request.form:
+        
+        ticket_id = int(request.form['ticketId'])
+        charge = float(request.form['paymentCharge'])
+        payment_method = int(request.form['paymentMethod'])
+        currency = int(request.form['paymentCurrency'])
+        status = int(request.form['newTicketStatus'])
+        exchange_rate = int(request.form['paymentExchangeRate'])
+        local_currency = float(request.form['paymentLocalCurrency'])
+
+        data = {"ticket_id":ticket_id, "charge":charge, "currency_id":currency, "payment_method_id":payment_method, "exchange_rate_id":exchange_rate, "local_currency": local_currency}
+        print(data)
+        payment_connection = PaymentConnection(loginApp.database)
+        ticket_connection = TicketConnection(loginApp.database)
+        
+        payment_index = payment_connection.write_payment(data)
+        updated_ticket = ticket_connection.update_ticket(ticket_id, status)
+        all_tickets = ticket_connection.read_all_tickets()
+        
+        return redirect('/ticket')
     
     
     

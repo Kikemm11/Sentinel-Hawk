@@ -77,13 +77,12 @@ class TicketConnection:
 
     #Update ticket function
 
-    def update_ticket(self, ticket_id, data):
+    def update_ticket(self, ticket_id, status):
         try:
             session = self.SessionLocal()
             ticket = session.query(Ticket).filter(Ticket.ticket_id == ticket_id).first()
             if ticket:
-                ticket.name = data.get('name')
-                ticket.charge = data.get('charge')
+                ticket.status_id = status
                 session.commit()
                 return {'success': True, 'message': 'ticket type updated successfully.'}
             else:
