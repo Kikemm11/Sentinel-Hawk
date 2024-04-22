@@ -15,8 +15,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 
-
-
     {% if vehicle_type %}
     <body>
     <div class="container">
@@ -28,7 +26,7 @@
                     <th>ID</th>
                     <th>Type Name</th>
                     <th>Charge</th>
-                    <th>Actions</th> 
+                    <th>Action</th> 
                 </tr>
             </thead>
             <tbody>
@@ -38,9 +36,6 @@
                     <td class="editable" data-id="{{ vehicle_type.vehicle_type_id }}">{{ vehicle_type.charge }}</td>
                     <td>
                         <button type="button" class="btn btn-primary update-btn" data-id="{{ vehicle_type.vehicle_type_id }}" data-name="{{ vehicle_type.name }}"><i class="fas fa-edit"></i> Update</button>
-                        <form method="POST" action="/delete-vehicle/{{ vehicle_type.vehicle_type_id }}" class="delete-form d-inline">
-                            <button type="submit" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Delete</button>
-                        </form>
                     </td>
                 </tr>
                 <div class="modal fade" id="updateVehicleModal" tabindex="-1" aria-labelledby="updateVehicleModalLabel" aria-hidden="true">

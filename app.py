@@ -161,8 +161,9 @@ def vehicle_type_search_index(vehicle_name):
     vehicle = connection.read_one_vehicle_type(vehicle_name)
     return render_template('vehicle_search.html', vehicle_type=vehicle)
 
-# Add new vehicle route
+# Add new vehicle route (No needed)
 
+"""
 @app.route('/add-vehicle', methods=['GET', 'POST'])
 def add_vehicle_type():
 
@@ -175,8 +176,11 @@ def add_vehicle_type():
         connection = VehicleConnection(loginApp.database)
         vehicle_types = connection.write_vehicle_type(data)
         return redirect('/vehicle-type')  
+        
+"""
 
 # Update vehicle route
+
 
 @app.route('/update-vehicle', methods=['GET', 'POST'])
 def update_vehicle_type():
@@ -192,8 +196,10 @@ def update_vehicle_type():
                 
         return redirect('/vehicle-type')       
 
-# Delete vehicle route
 
+# Delete vehicle route (No needed)
+
+"""
 @app.route('/delete-vehicle/<int:vehicle_id>', methods=['POST'])
 def delete_vehicle_type(vehicle_id):
  
@@ -204,7 +210,7 @@ def delete_vehicle_type(vehicle_id):
         #return resultado['message']
     else:
         return "Error: " + resultado['message']
-    
+""" 
     
     
 #---User routes--- 
