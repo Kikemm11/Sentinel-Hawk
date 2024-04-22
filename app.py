@@ -309,12 +309,17 @@ def update_user():
 
 @app.route('/delete-user/<int:user_id>', methods=['POST'])
 def delete_user(user_id):
- 
+    
     connection = UserConnection(loginApp.database)
+    users = connection.read_all_users()
+ 
+    if user_id == 1:
+        message = "Sorry, you cannot delete the admin user"
+        return render_template('manage_users.html', message=message, tipo='danger', users=users)  
+ 
     resultado = connection.delete_user(user_id)
     if resultado['success']:
         return redirect('/manage-users')  
-        #return resultado['message']
     else:
         return "Error: " + resultado['message']
     
