@@ -580,6 +580,34 @@ form.sign-in-form {
     position: relative;
     z-index: 1;
   }
+
+
+  .logout-btn {
+    position: absolute;
+    display: block;
+    bottom: -4%;
+    left: 7%;
+    transform: translate(-50%, -50%);
+  }
+
+  .logout-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    padding: 5px 30px; 
+    font-size: 15px;
+    background-color: #00003A;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    letter-spacing: 2px;
+  }
+  
+  .logout-btn:hover {
+    background-color: #ff9900e0;
+  }
   
   
   

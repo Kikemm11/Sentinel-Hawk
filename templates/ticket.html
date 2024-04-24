@@ -38,12 +38,14 @@
                     <button type="button" class="btn btn-secondary" id="paidTicketsBtn">Paid Tickets</button>
                     <button type="button" class="btn btn-secondary" id="canceledTicketsBtn">Canceled Tickets</button>
                     <button type="button" class="btn btn-secondary" id="allTicketsBtn">All Tickets</button>
-                    
-                    <!-- Add more buttons for other statuses as needed -->
                 </div>
             </div>
         </div>
         <!--Barra de filtro por estado-->
+
+        <div class="col" style="text-align: rigth; margin-top: 20px;">
+            <span id="currentPageNumber"></span>
+        </div>
 
         <!--Tabla de tickets-->
         <table class="table mt-3">
@@ -138,7 +140,7 @@
         <span id="currentPage"></span>
         <button class="btn btn-primary" id="nextPageBtn">Next</button>
     </div>
-
+    
     <div style="text-align: center;">
         <div style="margin-top: 20px;">
             <a href="/main" style="text-decoration: none; color: #007bff; font-weight: bold;">Back to menu</a>
@@ -257,6 +259,9 @@
         function updatePagination() {
             // Get only visible rows based on the current filter
             totalRows = $('.ticket-row:visible');
+            
+            currentPageNumber = totalRows.length
+            $('#currentPageNumber').text('Number of tickets: ' + currentPageNumber);
             // Calculate the total number of pages based on visible rows
             totalPages = Math.ceil(totalRows.length / recordsPerPage);
             // Update current page if it exceeds the total number of pages
