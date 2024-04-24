@@ -15,7 +15,6 @@ from models.ticketConnection import TicketConnection
 from models.status2Connection import StatusConnection
 from models.paymentConnection import PaymentConnection
 
-"""
 import threading  # Importa el módulo threading para detener los procesos en ejecución
 from models.deteccion import iniciarDeteccion
 from models.statusConnection import DatabaseManager
@@ -23,7 +22,7 @@ from models.statusConnection import DatabaseManager
 button_active = False
 # Variable global para almacenar la referencia al hilo de ejecución
 execution_thread = None
-"""
+
 
 app = Flask(__name__)
 
@@ -41,7 +40,7 @@ login_manager.init_app(app)
 class User(UserMixin):
     def __init__(self, id):
         self.id = id
-"""
+
 #---------------------------- detection funtions -----------------------------
 
 # Código que quieres ejecutar cuando el botón está activo
@@ -69,7 +68,7 @@ def stop_execution():
 
 #--------------------------------------------------------------
 
-"""
+
 
 
 # Set the different routes involoved lin the web application

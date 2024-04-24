@@ -2,7 +2,6 @@
 #************************************************************************************
 from os import name
 import sys
-"""
 sys.path.append("/home/dasl/sentinel_last_2/sentinel_hawk/models/detection/ByteTrack")
 from yolox.tracker.byte_tracker import BYTETracker, STrack
 from onemetric.cv.utils.iou import box_iou_batch
@@ -31,11 +30,6 @@ from PIL import Image
 from models.vehicle_typeConnection import VehicleConnection 
 from models.ticketConnection import TicketConnection
 from models.statusConnection import DatabaseManager
-
-
-# from vehicle_typeConnection import VehicleConnection 
-# from ticketConection import TicketConnection
-# from statusConecction import  DatabaseManager
 
 Base = declarative_base()
 
@@ -387,7 +381,7 @@ def iniciarDeteccion():
     
             
 
-# if __name__ == "__main__": 
+if __name__ == "__main__": 
     
-#     iniciarDeteccion()
-"""    
+    iniciarDeteccion()
+   
