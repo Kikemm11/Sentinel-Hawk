@@ -487,6 +487,16 @@ COPY public.vehicle_type (vehicle_type_id, name, charge) FROM stdin;
 
 
 --
+-- Data for Name: vehicle_type; Type: TABLE DATA; Schema: public; Owner: sentinel
+--
+
+COPY public.deteccion_status (id, status) FROM stdin;
+1	false
+
+\.
+
+
+--
 -- Name: currency_currency_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sentinel
 --
 

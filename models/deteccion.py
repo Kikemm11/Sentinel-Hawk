@@ -121,7 +121,7 @@ def exportPostgres(tipo):
             #"tipo": str(line_counter),
             "vehicle_type_id": vehicle_update.vehicle_type_id,
             "charge": vehicle_update.charge,
-            "status_id": 1
+            "status_id": 2
             
         }
         
@@ -194,7 +194,7 @@ def match_detections_with_tracks(
 # Carga el modelo        
 def prepararModelo():        
     # settings
-    MODEL = "/home/dasl/sentinel_last_2/sentinel_hawk/models/detection/yolov8n.pt"
+    MODEL = "/home/vit/sentinel_last/sentinel_hawk/models/detection/yolov8n.pt"
     
     model = YOLO(MODEL)
     model.fuse()
@@ -226,7 +226,7 @@ def iniciarDeteccion():
     # urlCam = str(cam["cam"]) 
     urlCam = "rtsp://admin:placa123@192.168.60.4:554/snl/live/1/1"    
     path = urlCam # URL camara
-    capture = cv2.VideoCapture("/home/dasl/sentinel_last_2/sentinel_hawk/models/detection/04.40.00-04.50.00[M][0@0][0].mp4") # URL camara
+    capture = cv2.VideoCapture("models/detection/04.40.00-04.50.00[M][0@0][0].mp4") # URL camara
     
     width = int(capture.get(cv2.CAP_PROP_FRAME_WIDTH)) # Obtiene el ancho de la camara
     height = int(capture.get(cv2.CAP_PROP_FRAME_HEIGHT)) # Obtiene el alto de la camara
@@ -362,13 +362,13 @@ def iniciarDeteccion():
             
                 
             
-            # cv2.imshow("Camara", frameM)
+            cv2.imshow("Camara", frameM)
                 
-            # if cv2.waitKey(1) & 0xFF == ord('q'):
-            #     cv2.destroyAllWindows()
-            #     break
-            # if cv2.getWindowProperty("Camara", cv2.WND_PROP_VISIBLE) < 1:
-            #     break  
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                cv2.destroyAllWindows()
+                break
+            if cv2.getWindowProperty("Camara", cv2.WND_PROP_VISIBLE) < 1:
+                break  
         
 
         except IndexError:
