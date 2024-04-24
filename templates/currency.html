@@ -92,7 +92,7 @@
             </thead>
             <tbody>
                 {% for currency in currencies %}
-                <tr id="currencyRow{{ currency.currency_id }}">
+                <tr class= "currency-row" data-name="{{ currency.name }}">
                     <td>{{ currency.currency_id }}</td>
                     <td class="editable" data-id="{{ currency.currency_id }}">{{ currency.name }}</td>
                     <td class="editable" data-id="{{ currency.currency_id }}">{{ currency.code }}</td>
@@ -160,19 +160,14 @@
                 var currencyId = $(this).data('id');
                 var currencyName = $(this).data('name');
                 $('#updateCurrencyModalLabel').text('Update ' + currencyName);
-                // Set the data-id attribute for the "Guardar cambios" button
-                $('#saveChangesBtn').data('id', currencyId);
                 $('#updateCurrencyModal').modal('show');
             });
     
             $('#saveChangesBtn').click(function() {
-                // Get the values from the form fields
-                var currencyId = $(this).data('id');
+
                 var newCurrencyName = $('#newCurrencyName').val();
                 var newCurrencyCode = $('#newCurrencyCode').val();
-            
-                // Submit the form
-                $('#updateCurrencyForm' + currencyId).submit();
+                $('#updateCurrencyForm').submit();
             });
         });
     </script>
@@ -193,13 +188,23 @@
         });
     </script>
     <script>
-        document.getElementById("searchBtn").addEventListener("click", function() {
-            var searchValue = document.getElementById("searchInput").value;
-            // Construct the URL with the search query as a parameter
-            var url = "/currency-search/" + encodeURIComponent(searchValue);
-            // Redirect the user to the search results page
-            window.location.href = url;
-        });
+        function filterCurrencies(name) {
+            $('.currency-row').hide();
+            
+            $('.currency-row[data-name="' + name + '"]').show();
+        }
+    
+        $(document).ready(function() {
+            $('#searchBtn').click(function() {
+                var searchValue = $('#searchInput').val();
+                if (searchValue === ""){
+                    $('.currency-row').show(); 
+                }
+                else{
+                filterCurrencies(searchValue);
+                }
+            });
+        });        
     </script>
 </body>
 </html>

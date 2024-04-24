@@ -15,6 +15,7 @@ from models.ticketConnection import TicketConnection
 from models.status2Connection import StatusConnection
 from models.paymentConnection import PaymentConnection
 
+"""
 import threading  # Importa el módulo threading para detener los procesos en ejecución
 from models.deteccion import iniciarDeteccion
 from models.statusConnection import DatabaseManager
@@ -22,6 +23,7 @@ from models.statusConnection import DatabaseManager
 button_active = False
 # Variable global para almacenar la referencia al hilo de ejecución
 execution_thread = None
+"""
 
 app = Flask(__name__)
 
@@ -39,7 +41,7 @@ login_manager.init_app(app)
 class User(UserMixin):
     def __init__(self, id):
         self.id = id
-
+"""
 #---------------------------- detection funtions -----------------------------
 
 # Código que quieres ejecutar cuando el botón está activo
@@ -67,6 +69,7 @@ def stop_execution():
 
 #--------------------------------------------------------------
 
+"""
 
 
 # Set the different routes involoved lin the web application
@@ -291,7 +294,7 @@ def update_user():
     if 'newUsername' in request.form and 'newUserPassword' in request.form and 'newUserPermisology' in request.form:
         
         username = request.form['newUsername']
-        password = request.form['newUserPassword']
+        password = bcrypt.hashpw(request.form['newUserPassword'].encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
         permisology = request.form['newUserPermisology']
         user_id = request.form['userId']
 
@@ -546,10 +549,10 @@ def add_ticket_payment():
         payment_method = int(request.form['paymentMethod'])
         currency = int(request.form['paymentCurrency'])
         status = int(request.form['newTicketStatus'])
-        exchange_rate = int(request.form['paymentExchangeRate'])
+        exchange_rate = float(request.form['paymentExchangeRate'])
         local_currency = float(request.form['paymentLocalCurrency'])
 
-        data = {"ticket_id":ticket_id, "charge":charge, "currency_id":currency, "payment_method_id":payment_method, "exchange_rate_id":exchange_rate, "local_currency": local_currency}
+        data = {"ticket_id":ticket_id, "charge":charge, "currency_id":currency, "payment_method_id":payment_method, "exchange_rate":exchange_rate, "local_currency": local_currency}
         print(data)
         payment_connection = PaymentConnection(loginApp.database)
         ticket_connection = TicketConnection(loginApp.database)

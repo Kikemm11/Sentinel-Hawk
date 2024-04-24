@@ -61,6 +61,7 @@ class UserConnection:
             session = self.SessionLocal()
             user = session.query(User).filter(User.id == user_id).first()
             if user:
+                print (user_id)
                 user.username = data.get('username')
                 user.password = data.get('password')
                 user.permisology = data.get('permisology')

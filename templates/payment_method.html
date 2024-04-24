@@ -87,7 +87,7 @@
             </thead>
             <tbody>
                 {% for method in payment_methods %}
-                <tr id="methodRow{{ method.payment_method_id }}">
+                <tr class= "payment_method-row" data-name = "{{method.name}}">
                     <td>{{ method.payment_method_id }}</td>
                     <td class="editable" data-id="{{ method.payment_method_id }}">{{ method.name }}</td>
                     <td>
@@ -150,18 +150,13 @@
                 var paymentMethodId = $(this).data('id');
                 var paymentMethodName = $(this).data('name');
                 $('#updatePaymentMethodModalLabel').text('Update ' + paymentMethodName);
-                // Set the data-id attribute for the "Guardar cambios" button
-                $('#saveChangesBtn').data('id', paymentMethodId);
                 $('#updatePaymentMethodModal').modal('show');
             });
     
             $('#saveChangesBtn').click(function() {
-                // Get the values from the form fields
-                var paymentMethodId = $(this).data('id');
+
                 var newPaymentMethodName = $('#newPaymentMethodName').val();
-               
-                // Submit the form
-                $('#updatePaymentMethodForm' + newPaymentMethodId).submit();
+                $('#updatePaymentMethodForm').submit();
             });
         });
     </script>
@@ -181,13 +176,23 @@
         });
     </script>
     <script>
-        document.getElementById("searchBtn").addEventListener("click", function() {
-            var searchValue = document.getElementById("searchInput").value;
-            // Construct the URL with the search query as a parameter
-            var url = "/payment-method-search/" + encodeURIComponent(searchValue);
-            // Redirect the user to the search results page
-            window.location.href = url;
-        });
+        function filterPaymentMethods(name) {
+            $('.payment_method-row').hide();
+            
+            $('.payment_method-row[data-name="' + name + '"]').show();
+        }
+    
+        $(document).ready(function() {
+            $('#searchBtn').click(function() {
+                var searchValue = $('#searchInput').val();
+                if (searchValue === ""){
+                    $('.payment_method-row').show(); 
+                }
+                else{
+                filterPaymentMethods(searchValue);
+                }
+            });
+        });  
     </script>
 </body>
 </html>

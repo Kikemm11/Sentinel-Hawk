@@ -52,7 +52,7 @@
             </thead>
             <tbody>
                 {% for vehicle_type in vehicle_types %}
-                <tr id="vehicleRow{{ vehicle_type.vehicle_type_id }}">
+                <tr class="vehicle_type-row" data-name="{{vehicle_type.name}}">
                     <td>{{ vehicle_type.vehicle_type_id }}</td>
                     <td class="editable" data-id="{{ vehicle_type.vehicle_type_id }}">{{ vehicle_type.name }}</td>
                     <td class="editable" data-id="{{ vehicle_type.vehicle_type_id }}">{{ vehicle_type.charge }}</td>
@@ -113,29 +113,34 @@
                 var vehicleId = $(this).data('id');
                 var vehicleName = $(this).data('name');
                 $('#updateVehicleModalLabel').text('Update ' + vehicleName);
-                // Set the data-id attribute for the "Guardar cambios" button
-                $('#saveChangesBtn').data('id', vehicleId);
                 $('#updateVehicleModal').modal('show');
             });
     
             $('#saveChangesBtn').click(function() {
-                // Get the values from the form fields
-                var vehicleId = $(this).data('id');
+
                 var newVehicleCharge = $('#newVehicleCharge').val();
-            
-                // Submit the form
-                $('#updateVehicleForm' + vehicleId).submit();
+                $('#updateVehicleForm').submit();
             });
         });
     </script>
     <script>
-        document.getElementById("searchBtn").addEventListener("click", function() {
-            var searchValue = document.getElementById("searchInput").value;
-            // Construct the URL with the search query as a parameter
-            var url = "/vehicle-search/" + encodeURIComponent(searchValue);
-            // Redirect the user to the search results page
-            window.location.href = url;
-        });
+        function filterVehicleTypes(name) {
+            $('.vehicle_type-row').hide();
+            
+            $('.vehicle_type-row[data-name="' + name + '"]').show();
+        }
+    
+        $(document).ready(function() {
+            $('#searchBtn').click(function() {
+                var searchValue = $('#searchInput').val();
+                if (searchValue === ""){
+                    $('.vehicle_type-row').show(); 
+                }
+                else{
+                filterVehicleTypes(searchValue);
+                }
+            });
+        });  
     </script>
 </body>
 </html>

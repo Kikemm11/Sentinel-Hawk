@@ -104,7 +104,7 @@
             </thead>
             <tbody>
                 {% for user in users %}
-                <tr id="userRow{{ user.id }}">
+                <tr class="user-row" data-name="{{ user.username }}">
                     <td>{{ user.id }}</td>
                     <td class="editable" data-id="{{ user.id }}">{{ user.username }}</td>
                     <td class="editable" data-id="{{ user.id }}">{{ user.permisology }}</td>
@@ -180,19 +180,17 @@
                 var username = $(this).data('name');
                 $('#updateUserModalLabel').text('Update ' + username);
                 // Set the data-id attribute for the "Guardar cambios" button
-                $('#saveChangesBtn').data('id', userId);
                 $('#updateUserModal').modal('show');
             });
     
             $('#saveChangesBtn').click(function() {
                 // Get the values from the form fields
-                var userId = $(this).data('id');
                 var newUsername = $('#newUsername').val();
                 var newUserPassword = $('#newUserPassword').val();
                 var newUserPermisology = $('#newUserPermisology').val();
             
                 // Submit the form
-                $('#updateUserForm' + userId).submit();
+                $('#updateUserForm').submit();
             });
         });
     </script>
@@ -215,13 +213,25 @@
         });
     </script>
     <script>
-        document.getElementById("searchBtn").addEventListener("click", function() {
-            var searchValue = document.getElementById("searchInput").value;
-            // Construct the URL with the search query as a parameter
-            var url = "/user-search/" + encodeURIComponent(searchValue);
-            // Redirect the user to the search results page
-            window.location.href = url;
+
+        function filterUsers(username) {
+            $('.user-row').hide();
+            
+            $('.user-row[data-name="' + username + '"]').show();
+        }
+    
+        $(document).ready(function() {
+            $('#searchBtn').click(function() {
+                var searchValue = $('#searchInput').val();
+                if (searchValue === ""){
+                    $('.user-row').show(); 
+                }
+                else{
+                filterUsers(searchValue);
+                }
+            });
         });
+
     </script>
 </body>
 </html>

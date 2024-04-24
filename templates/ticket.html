@@ -58,7 +58,7 @@
             </thead>
             <tbody>
                 {% for ticket in all_tickets %}
-                <tr class="ticket-row" data-status="{{ ticket.status_id }}">
+                <tr class="ticket-row" data-status="{{ ticket.status_id }}" data-id="{{ ticket.ticket_id }}">
                     <td>{{ ticket.ticket_id }}</td>
                     <td class="editable" data-id="{{ ticket.ticket_id }}">
                         {{ vehicle_types|get_vehicle_type_name(ticket.vehicle_type_id) }}
@@ -186,8 +186,11 @@
 
         // Filter tickets based on status
         function filterTickets(status) {
-            $('.ticket-row').hide(); // Hide all ticket rows
-            
+
+            if ($('.ticket-row:visible').length !== 0){
+                $('.ticket-row').hide(); // Hide all ticket rows
+            }
+              
             // Show ticket rows based on status
             if (status === 'all') {
                 $('.ticket-row').show(); // Show all ticket rows
@@ -290,13 +293,23 @@
         updatePagination();
     </script>
     <script>
-        document.getElementById("searchBtn").addEventListener("click", function() {
-            var searchValue = document.getElementById("searchInput").value;
-            // Construct the URL with the search query as a parameter
-            var url = "/ticket-search/" + encodeURIComponent(searchValue);
-            // Redirect the user to the search results page
-            window.location.href = url;
-        });
+        function filterTicketsSearch(id) {
+            $('.ticket-row').hide();
+        
+            $('.ticket-row[data-id="' + id + '"]').show();
+        }
+    
+        $(document).ready(function() {
+            $('#searchBtn').click(function() {
+                var searchValue = $('#searchInput').val();
+                if (searchValue === ""){
+                    $('.ticket-row[data-status="2"]').show();
+                }
+                else{
+                filterTicketsSearch(searchValue);
+                }
+            });
+        });  
     </script>
     <script>
         
