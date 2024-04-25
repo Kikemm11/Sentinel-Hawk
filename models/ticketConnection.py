@@ -4,6 +4,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, Float, TIMESTAMP, func
 from sqlalchemy.exc import IntegrityError
+from datetime import datetime, date
 
 app = Flask(__name__)
 
@@ -75,6 +76,13 @@ class TicketConnection:
         result = result = session.query(Ticket).filter(Ticket.status_id == 3).order_by(Ticket.ticket_id.desc()).all()
         session.close()
         return result
+    
+    def read_today_tickets(self):
+        session = self.SessionLocal()
+        today = date.today()
+        result = session.query(Ticket).filter(func.date(Ticket.created_at) == today).all()
+        session.close()
+        return result  
 
     #Update ticket function
 

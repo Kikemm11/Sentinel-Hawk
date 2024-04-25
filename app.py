@@ -556,13 +556,12 @@ def add_ticket_payment():
         local_currency = float(request.form['paymentLocalCurrency'])
 
         data = {"ticket_id":ticket_id, "charge":charge, "currency_id":currency, "payment_method_id":payment_method, "exchange_rate":exchange_rate, "local_currency": local_currency}
-        print(data)
-        payment_connection = PaymentConnection(loginApp.database)
+        
+        payment_connection = PaymentConnection(loginApp.database) 
         ticket_connection = TicketConnection(loginApp.database)
         
         payment_index = payment_connection.write_payment(data)
         updated_ticket = ticket_connection.update_ticket(ticket_id, status)
-        all_tickets = ticket_connection.read_all_tickets()
         
         return redirect('/ticket')
     
@@ -573,16 +572,27 @@ def add_ticket_payment():
 @app.route('/daily-operations', methods=['GET'])
 def daily_operations():
  
-    connection = PaymentConnection(loginApp.database)
-    payments = connection.read_today_payments()
+    payment_connection = PaymentConnection(loginApp.database)
+    payments = payment_connection.read_today_payments()
     
-    total_usd = sum([payment.charge for payment in payments])
-    total_bs = sum([payment.local_currency for payment in payments])
+    ticket_connection = TicketConnection(loginApp.database)
+    tickets = ticket_connection.read_today_tickets()
     
+    tickets_payment_dict = { 1:0, 2:0, 3:0}
+    tickets_vehicle_type_dict = { 1:0, 2:0, 3:0, 4:0}
+    payment_usd = 0
+    payment_local = 0
     
+    for payment in payments:
+        payment_usd += payment.charge
+        payment_local += payment.local_currency
     
-    
-    return render_template('payment_method_search.html', payment_method=payment_method)
+    for ticket in tickets:
+        tickets_payment_dict[ticket.status_id] += 1
+        tickets_vehicle_type_dict[ticket.vehicle_type_id] += 1
+        
+            
+    return render_template('daily_operations.html', tickets_payment_dict=tickets_payment_dict, tickets_vehicle_type_dict=tickets_vehicle_type_dict, payment_usd=payment_usd, payment_local=payment_local)
 
 
 
