@@ -4,6 +4,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, Float, TIMESTAMP, SmallInteger, func
 from sqlalchemy.exc import IntegrityError
+from datetime import datetime, date
 
 app = Flask(__name__)
 
@@ -59,6 +60,14 @@ class PaymentConnection:
     def read_one_payment(self, payment_id):
         session = self.SessionLocal()
         result = session.query(Payment).filter(Payment.payment_id == payment_id).first()
+        session.close()
+        return result
+    
+    
+    def read_today_payments(self):
+        session = self.SessionLocal()
+        today = date.today()
+        result = session.query(Payment).filter(func.date(Payment.created_at) == today).all()
         session.close()
         return result   
 

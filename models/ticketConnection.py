@@ -2,7 +2,7 @@ from flask import Flask, render_template
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String, Float
+from sqlalchemy import Column, Integer, String, Float, TIMESTAMP, func
 from sqlalchemy.exc import IntegrityError
 
 app = Flask(__name__)
@@ -16,6 +16,7 @@ class Ticket(Base):
     vehicle_type_id = Column(Integer, nullable=False)
     charge = Column(Float, nullable=False)
     status_id = Column(Integer, nullable=False)
+    created_at = Column(TIMESTAMP, nullable=True, server_default=func.now())
 
 class TicketConnection:
     conn = None

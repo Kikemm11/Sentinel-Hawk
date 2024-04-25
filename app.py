@@ -15,6 +15,8 @@ from models.ticketConnection import TicketConnection
 from models.status2Connection import StatusConnection
 from models.paymentConnection import PaymentConnection
 
+"""
+
 import threading  # Importa el módulo threading para detener los procesos en ejecución
 from models.deteccion import iniciarDeteccion
 from models.statusConnection import DatabaseManager
@@ -22,6 +24,8 @@ from models.statusConnection import DatabaseManager
 button_active = False
 # Variable global para almacenar la referencia al hilo de ejecución
 execution_thread = None
+
+"""
 
 
 app = Flask(__name__)
@@ -40,6 +44,8 @@ login_manager.init_app(app)
 class User(UserMixin):
     def __init__(self, id):
         self.id = id
+        
+"""
 
 #---------------------------- detection funtions -----------------------------
 
@@ -68,7 +74,7 @@ def stop_execution():
 
 #--------------------------------------------------------------
 
-
+"""
 
 
 # Set the different routes involoved lin the web application
@@ -137,7 +143,6 @@ def begin():
         return render_template('admin_main.html', username=username)
     else:
         return render_template('employee_main.html', username=username)
-
 
 
 #---Vehcile routes---
@@ -240,7 +245,6 @@ def user_search_index(username):
 def add_user():
     
     
-
     if 'username1' in request.form and 'password1' in request.form and 'password2' in request.form and 'userPermisology' in request.form:
         
             connection = UserConnection(loginApp.database)
@@ -563,7 +567,29 @@ def add_ticket_payment():
         return redirect('/ticket')
     
     
+# Daily Operations route
+
+
+@app.route('/daily-operations', methods=['GET'])
+def daily_operations():
+ 
+    connection = PaymentConnection(loginApp.database)
+    payments = connection.read_today_payments()
     
+    total_usd = sum([payment.charge for payment in payments])
+    total_bs = sum([payment.local_currency for payment in payments])
+    
+    
+    
+    
+    return render_template('payment_method_search.html', payment_method=payment_method)
+
+
+
+
+    
+    
+"""
   
 #---------------------------- deteccion ---------------------------------------------
 
@@ -592,7 +618,7 @@ def toggle_button():
 #-------------------------------------------------------------------------------------    
     
 
-
+"""
 
        
 
