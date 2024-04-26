@@ -64,12 +64,14 @@
         const user_message = document.querySelector("#user-message");
         const admin_buttons = document.querySelector(".admin-buttons");
         const user = document.querySelector("#user");
+        const logout = document.querySelector(".logout-btn");
       
         settings_btn.addEventListener("click", () => {
           container.classList.add("sign-up-mode");
           user_message.style.display = 'none';
           user.style.display = 'none';
           admin_buttons.style.display = 'none';
+          logout.style.display = 'none';
         });
       
         main_btn.addEventListener("click", () => {
@@ -85,10 +87,12 @@
             user_message.style.display = 'none'; 
             user.style.display = 'none'; 
             admin_buttons.style.display = 'none';
+            logout.style.display = 'none';
         } else {
             user_message.style.display = 'block'; 
             user.style.display = 'block'; 
             admin_buttons.style.display = 'block';
+            logout.style.display = 'block';
         }
           
         });
