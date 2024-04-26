@@ -590,9 +590,13 @@ def daily_operations():
     for ticket in tickets:
         tickets_payment_dict[ticket.status_id] += 1
         tickets_vehicle_type_dict[ticket.vehicle_type_id] += 1
+    
+    response = requests.get("https://pydolarvenezuela-api.vercel.app/api/v1/dollar?page=bcv")
+    data = response.json()
+    usd_price = data['monitors']['usd']['price']
         
             
-    return render_template('daily_operations.html', tickets_payment_dict=tickets_payment_dict, tickets_vehicle_type_dict=tickets_vehicle_type_dict, payment_usd=payment_usd, payment_local=payment_local)
+    return render_template('daily_operations.html', tickets_payment_dict=tickets_payment_dict, tickets_vehicle_type_dict=tickets_vehicle_type_dict, payment_usd=payment_usd, payment_local=payment_local, usd_price=usd_price)
 
 
 

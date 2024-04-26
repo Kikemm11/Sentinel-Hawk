@@ -1,21 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My HTML File</title>
-    <!-- Add any additional meta tags, CSS, or JavaScript links here -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="static/daily_operations.css">
+  <link rel="icon" href="static/assets/img/sentinel_icon.png" type="image/x-icon">
+  <title>Daily Operations</title>
 </head>
 <body>
-    <!-- Your HTML content goes here -->
-    <h1>Hello, World!</h1>
-    <br>
-    <p>total usd: {{payment_usd}}</p>
-    <br>
-    <p>total bs: {{payment_local}}</p>
-    <br>
-    <p>Paid tickets: {{tickets_payment_dict[1]}}   Unpaid tickets: {{tickets_payment_dict[2]}}   Canceled tickets: {{tickets_payment_dict[3]}}  </p>
-    <br>
-    <p>Car: {{tickets_vehicle_type_dict[1]}}   Truck: {{tickets_vehicle_type_dict[2]}}   Bus: {{tickets_vehicle_type_dict[3]}}      Motorcycles: {{tickets_vehicle_type_dict[4]}}  </p>
-</body>
+  <div class="container">
+    <div class="panels-container">
+      <div class="panel left-panel">
+        <div class="content">
+          <button class="btn back-btn" onclick="window.location.href='/main'">Back</button>
+          <img src="static/assets/img/sentinel.png" alt="Logo" class="logo">
+          <div class="message" id="user-message">Daily Operations</div>
+          <img src="static/assets/img/cash.png" alt="Cash" class="cash">
+          <div class="exchange_rate" id="user-message">{{usd_price}} Bs/$</div>
+          <div class="earnings">Earnings:</div>
+          <div class="total_earnings">{{payment_usd}} $ // {{payment_local}} Bs</div>
+          <div class="vehicle_label">Vehicle types</div>
+          <div class="ticket_label">Ticket statuses</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="vehicle_pie_chart">
+    <canvas id="pie-chart1"></canvas>
+  </div>
+  <div id="ticket_pie_chart">
+    <canvas id="pie-chart2"></canvas>
+  </div>
+  <script>
+
+    var data1 = {
+      labels: ['Car', 'Truck', 'Bus', 'Motorcycle'],
+      datasets: [{
+        data: [{{ tickets_vehicle_type_dict[1] }}, {{ tickets_vehicle_type_dict[2] }}, {{ tickets_vehicle_type_dict[3] }}, {{ tickets_vehicle_type_dict[4] }}], 
+        backgroundColor: ['#F2AA33', '#1898D0 ', '#F5ED41', '#0A447D'] 
+      }]
+    };
+
+    var options = {
+      responsive: true,
+      maintainAspectRatio: false 
+    };
+
+    var ctx1 = document.getElementById('pie-chart1').getContext('2d');
+
+    var myPieChart1 = new Chart(ctx1, {
+      type: 'pie',
+      data: data1,
+      options: options
+    });
+
+    var data2 = {
+      labels: ['Paid', 'Unpaid', 'Canceled'],
+      datasets: [{
+        data: [{{tickets_payment_dict[1]}}, {{tickets_payment_dict[2]}}, {{tickets_payment_dict[3]}}], 
+        backgroundColor: ['#74D87A', '#77BAF5', '#F57777 '] 
+      }]
+    };
+
+    var ctx2 = document.getElementById('pie-chart2').getContext('2d');
+
+    var myPieChart2 = new Chart(ctx2, {
+      type: 'pie',
+      data: data2,
+      options: options
+    });
+  </script>
+    </body>
 </html>
