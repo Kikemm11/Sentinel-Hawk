@@ -5,7 +5,7 @@ while the admin rol is able to control all the system settings and review its re
 
 Inside this repository you will be provided with:
 
--The sentinel hawk source code.
+- The sentinel hawk source code.
 - One .txt file named libs.txt with all the needed dependencies to get the project up and running.
 - One .sql file containing the database structure and initial data to connect to the web application ready to be restored.
 
