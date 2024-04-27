@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="static/revenues.css">
+  <link rel="icon" href="static/assets/img/sentinel_icon.png" type="image/x-icon">
+
+  <title>Revenues</title>
+</head>
+<body>
+    <div class="container">
+        
+        <div class="panels-container">
+            
+          <div class="panel left-panel">
+            <div class="content">
+              <button class="btn back-btn" onclick="window.location.href='/main'">Back</button>
+              <img src="static/assets/img/sentinel.png" alt="Logo" class="logo">
+              <div class="message" id="user-message">Reveneus</div>
+              <form id="date-form">
+                <label for="start-date">Start Date:</label>
+                <input type="date" id="start-date" name="start_date">
+                <label for="end-date">End Date:</label>
+                <input type="date" id="end-date" name="end_date">
+                <button type="submit">Submit</button>
+            </form>
+
+
+            <div id="chart-container">
+                
+                <div class="earnings" id="earnings">Earnings:</div>
+                <div class="total_earnings" id="total_earnings">{{payment_usd}} $ // {{payment_local}} Bs</div>
+
+            </div>
+            <canvas id="myPieChart"></canvas>
+
+
+              <img src="static/assets/img/cash.png" alt="Cash" class="cash">
+              <div class="exchange_rate" id="user-message">{{usd_price}} Bs/$</div>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+    <script>
+        var myPieChart; // Declarar la variable del gráfico fuera de la función para que sea accesible en todo el ámbito
+
+$(document).ready(function() {
+    $('#date-form').submit(function(event) {
+        event.preventDefault(); // Evitar que el formulario se envíe normalmente
+
+        var formData = $(this).serialize(); // Serializar los datos del formulario
+
+        // Enviar la solicitud AJAX al servidor
+        $.ajax({
+            type: 'POST',
+            url: '/revenues', // La ruta de Flask que maneja la solicitud
+            data: formData,
+            success: function(response) {
+                // Utilizar los datos directamente
+                var paymentUsd = response.payment_usd;
+                var paymentLocal = response.payment_local;
+                var tickets_vehicle_type_dict = response.tickets_vehicle_type_dict
+
+                // Actualizar el contenido de los elementos HTML con los nuevos valores
+                $('#total_earnings').text(paymentUsd + ' $ // ' + paymentLocal + ' Bs');
+
+                // Imprimir los datos recibidos en la consola
+                console.log('Payment USD:', paymentUsd);
+                console.log('Payment Local:', paymentLocal);
+
+                // Actualizar el gráfico con los datos recibidos del servidor
+                updateChart(tickets_vehicle_type_dict);
+            },
+            error: function(xhr, status, error) {
+                // Manejar errores si la solicitud falla
+                console.error(error);
+            }
+        });
+    });
+});
+
+function updateChart(tickets_vehicle_type_dict) {
+    if (!myPieChart) {
+        // Si el gráfico no existe, crear uno nuevo
+        var ctx = document.getElementById('myPieChart').getContext('2d');
+        myPieChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                datasets: [{
+                    data: [tickets_vehicle_type_dict[1], tickets_vehicle_type_dict[2], tickets_vehicle_type_dict[3], tickets_vehicle_type_dict[4]],
+                    backgroundColor: ['#F2AA33', '#1898D0 ', '#F5ED41', '#0A447D'],
+                    borderColor: [
+                        '#F2AA33',
+                        '#1898D0',
+                        '#F5ED41',
+                        '#0A447D',
+                    ],
+                    borderWidth: 1
+                }],
+                labels: ['Car', 'Truck', 'Bus', 'Motorcycle']
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: 'Payment Distribution'
+                }
+            }
+        });
+    } else {
+        // Si el gráfico ya existe, actualizar los datos
+        myPieChart.data.datasets[0].data = [tickets_vehicle_type_dict[1], tickets_vehicle_type_dict[2], tickets_vehicle_type_dict[3], tickets_vehicle_type_dict[4]];
+        myPieChart.update();
+    }
+}
+
+    </script>
+
+    </body>
+</html>

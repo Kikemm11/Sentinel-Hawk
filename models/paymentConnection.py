@@ -5,6 +5,9 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, Float, TIMESTAMP, SmallInteger, func
 from sqlalchemy.exc import IntegrityError
 from datetime import datetime, date
+from sqlalchemy import and_
+from sqlalchemy import cast, Date
+
 
 app = Flask(__name__)
 
@@ -88,3 +91,24 @@ class PaymentConnection:
             return {'success': False, 'message': f'Error trying to delete payment: {str(e)}'}
         finally:
             session.close()
+            
+    
+            
+            
+        
+    def read_payments_in_interval(self, start_date, end_date):
+        try:
+            session = self.SessionLocal()
+            
+            # Filtrar los pagos dentro del intervalo de fechas
+            result = session.query(Payment).filter(
+                and_(
+                    cast(Payment.created_at, Date) >= cast(start_date, Date),
+                    cast(Payment.created_at, Date) <= cast(end_date, Date)
+                )
+            ).all()
+
+            session.close()
+            return {'success': True, 'data': result}
+        except Exception as e:
+            return {'success': False, 'message': f'Error al intentar recuperar pagos en el intervalo: {str(e)}'}

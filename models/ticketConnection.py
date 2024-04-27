@@ -5,6 +5,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, Float, TIMESTAMP, func
 from sqlalchemy.exc import IntegrityError
 from datetime import datetime, date
+from sqlalchemy import and_
 
 app = Flask(__name__)
 
@@ -119,6 +120,21 @@ class TicketConnection:
             return {'success': False, 'message': f'The ticket type was not found with the provided ID.: {str(e)}'}
         finally:
             session.close()
+            
+    
+    def read_ticket_in_interval(self, start_date, end_date):
+        try:
+            session = self.SessionLocal()
+            result = session.query(Ticket).filter(
+                and_(
+                    Ticket.created_at >= start_date,
+                    Ticket.created_at <= end_date
+                )
+            ).all()
+            session.close()
+            return {'success': True, 'data': result}
+        except Exception as e:
+            return {'success': False, 'message': f'Error trying to retrieve payments in interval: {str(e)}'}        
 
 
 
