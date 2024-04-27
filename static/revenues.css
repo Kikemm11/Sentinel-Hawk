@@ -331,7 +331,7 @@ input {
   .from-date {
     position: absolute;
     top: 23vh;
-    right: 30vw;
+    right: 29vw;
     transform: translateY(-50%);
     font-family: 'Poppins', sans-serif;
     font-weight: 700;
@@ -348,7 +348,7 @@ input {
   .to-date {
     position: absolute;
     top: 31vh;
-    right: 30vw;
+    right: 29vw;
     transform: translateY(-50%);
     font-family: 'Poppins', sans-serif;
     font-weight: 700;
@@ -359,6 +359,25 @@ input {
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+
+
+  #start-date {
+    padding: 6px;
+    border: 2px solid #00003A;
+    border-radius: 15px;
+    box-sizing: border-box;
+    margin-left: 15px;
+    margin-bottom: 7px;
+  }
+  
+  #end-date {
+    padding: 6px;
+    border: 2px solid #00003A;
+    border-radius: 15px;
+    box-sizing: border-box;
+    margin-left: 15px;
+    margin-bottom: 7px;
   }
 
 
@@ -398,7 +417,7 @@ input {
     position: absolute;
     display: block;
     top: 35vh;
-    right: 30vw;
+    right: 31.5vw;
     transform: translate(-50%, -50%);
   }
   
@@ -407,14 +426,16 @@ input {
     align-items: center;
     justify-content: center;
     margin-top: 20px;
-    padding: 7px 30px; 
-    font-size: 13px;
+    padding: 7px 20px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400; 
+    font-size: 12px;
+    color:#fff;
     background-color: #00003A;
-    color: #fff;
     border: none;
-    border-radius: 10px;
+    border-radius: 15px;
     cursor: pointer;
-    letter-spacing: 2px;
+    letter-spacing: 1px;
   }
   
   .submit-btn:hover {

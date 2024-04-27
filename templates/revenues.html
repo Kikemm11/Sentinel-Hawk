@@ -26,14 +26,12 @@
                     <div class='from-date'>
                         <label for="start-date">From: </label>
                         <input type="date" id="start-date" name="start_date">
-                        </div>
-                        <div class='to-date'>
+                    </div>
+                    <div class='to-date'>
                         <label for="end-date">To: </label>
                         <input type="date" id="end-date" name="end_date">
-                        </div>
-                        <div class='submit-btn'>
-                        <button type="submit">Search</button>
                     </div>
+                    <button type="submit" class="submit-btn" id="submit-btn">Search</button>
                 </form>
                 <div class="earnings" id="earnings">Earnings</div>
                 <div class="total_earnings" id="total_earnings">{{payment_usd}} $ // {{payment_local}} Bs</div>
@@ -211,6 +209,16 @@ function updateChart(tickets_vehicle_type_dict, count_payments_methods) {
         myPieChart2.update();
     }
 }
+    </script>
+    <script>
+    $('#submit-btn').click(function() {
+        // Get the values from the form fields
+        var start_date = $('#start_date').val();
+        var end_date = $('#end_date').val();
+    
+        // Submit the form
+        $('#date-form').submit();
+    });
     </script>
     </body>
  </html>
