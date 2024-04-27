@@ -618,24 +618,45 @@ def daily_operations():
 
 
 
+   
 # Revenues route
 
 
+# @app.route('/revenues', methods=['GET'])
+# def reveneus():
+ 
+#     payment_connection = PaymentConnection(loginApp.database)
+    
+#     result =  payment_connection.read_payments_in_interval(datetime(2024, 4, 26), datetime(2024, 4, 27))
+    
+#     print(result)
+#     if result['success']:
+#         payments_in_interval = result['data']
+#         for payment in payments_in_interval:
+#             print(payment.payment_id, payment.created_at)
+#     else:
+#         print("Error:", result['message'])
+        
+            
+#     #return render_template('revenues.html', tickets_payment_dict=tickets_payment_dict, tickets_vehicle_type_dict=tickets_vehicle_type_dict, payment_usd=payment_usd, payment_local=payment_local, usd_price=usd_price)
+#     return "hola"
+
 @app.route('/revenues', methods=['GET', 'POST'])
 def revenues():
-    
     payment_connection = PaymentConnection(loginApp.database)
-    ticket_connection = TicketConnection(loginApp.database)
-    
     response = requests.get("https://pydolarvenezuela-api.vercel.app/api/v1/dollar?page=bcv")
     data = response.json()
     usd_price = data['monitors']['usd']['price'] 
-    
     if request.method == 'POST':
+        
+        ticket_connection = TicketConnection(loginApp.database)
+        
         
         start_date = request.form['start_date']
         end_date = request.form['end_date']
         
+        # print("start_date",start_date, type(start_date))
+        # print("end_date: ",end_date)
         
         # Realizar la consulta utilizando las fechas proporcionadas
         result = payment_connection.read_payments_in_interval(start_date, end_date)
@@ -660,7 +681,17 @@ def revenues():
         for ticket in tickets:
             tickets_payment_dict[ticket.status_id] += 1
             tickets_vehicle_type_dict[ticket.vehicle_type_id] += 1
-                
+        
+        
+         
+        
+        print("payment_usd: ",payment_usd, "tipo: ", type(payment_usd))
+        print("payment_local: ",payment_local, "tipo: ", type(payment_local))
+        print("usd_price: ",usd_price)
+        print("tickets_vehicle_type_dict: ", tickets_vehicle_type_dict) 
+            
+            
+        
         
         if result['success']:
 

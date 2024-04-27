@@ -84,23 +84,7 @@ class TicketConnection:
         today = date.today()
         result = session.query(Ticket).filter(func.date(Ticket.created_at) == today).all()
         session.close()
-        return result
-    
-    
-    def read_ticket_in_interval(self, start_date, end_date):
-        try:
-            session = self.SessionLocal()
-            result = session.query(Ticket).filter(
-                and_(
-                    func.date(Ticket.created_at) >= start_date,
-                    func.date(Ticket.created_at) <= end_date
-                )
-            ).all()
-            session.close()
-            return {'success': True, 'data': result}
-        except Exception as e:
-            return {'success': False, 'message': f'Error trying to retrieve payments in interval: {str(e)}'}        
-  
+        return result  
 
     #Update ticket function
 
@@ -120,7 +104,6 @@ class TicketConnection:
         finally:
             session.close()
 
-
     #Delete user function
 
     def delete_ticket(self, ticket_id):
@@ -138,3 +121,25 @@ class TicketConnection:
             return {'success': False, 'message': f'The ticket type was not found with the provided ID.: {str(e)}'}
         finally:
             session.close()
+            
+    
+    def read_ticket_in_interval(self, start_date, end_date):
+        try:
+            session = self.SessionLocal()
+            result = session.query(Ticket).filter(
+                and_(
+
+                    cast(Ticket.created_at, Date) >= cast(start_date, Date),
+                    cast(Ticket.created_at, Date) <= cast(end_date, Date)
+                
+                )
+            ).all()
+            session.close()
+            return {'success': True, 'data': result}
+        except Exception as e:
+            return {'success': False, 'message': f'Error trying to retrieve payments in interval: {str(e)}'}        
+
+
+
+
+
