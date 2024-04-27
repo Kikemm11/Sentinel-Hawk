@@ -1,0 +1,16 @@
+version: '3'
+services:
+  my_service:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+
+    environment:
+      - DISPLAY=$DISPLAY
+    networks:
+      - display_net
+
+networks:
+  display_net:
+    driver: bridge
+

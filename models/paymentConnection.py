@@ -7,6 +7,10 @@ from sqlalchemy.exc import IntegrityError
 from datetime import datetime, date
 from sqlalchemy import and_
 from sqlalchemy import cast, Date
+from sqlalchemy import func, join
+from sqlalchemy.orm import aliased
+from models.payment_methodConnection import PaymentMethod
+
 
 
 app = Flask(__name__)
@@ -112,3 +116,37 @@ class PaymentConnection:
             return {'success': True, 'data': result}
         except Exception as e:
             return {'success': False, 'message': f'Error al intentar recuperar pagos en el intervalo: {str(e)}'}
+        
+        
+    def count_payments_by_method(self, start_date, end_date):
+        try:
+            session = self.SessionLocal()
+
+            payment_method_alias = aliased(PaymentMethod)
+            query = session.query(
+                Payment.payment_method_id,
+                payment_method_alias.name,
+                func.count()
+            ).join(
+                payment_method_alias,
+                Payment.payment_method_id == payment_method_alias.payment_method_id
+            ).filter(
+                and_(
+                    cast(Payment.created_at, Date) >= cast(start_date, Date),
+                    cast(Payment.created_at, Date) <= cast(end_date, Date)
+                )
+            ).group_by(
+                Payment.payment_method_id,
+                payment_method_alias.name
+            ).all()
+
+            return query
+        except Exception as e:
+            return {'success': False, 'message': f'Error trying to count payments by method: {str(e)}'}
+        finally:
+            session.close()    
+        
+    
+    
+        
+    

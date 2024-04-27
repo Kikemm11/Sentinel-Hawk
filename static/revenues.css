@@ -375,7 +375,7 @@ input {
   }
   #chart-container {
     position: absolute;
-    top: 60%;
+    top: 40%;
     right: 5%;
     transform: translateY(-50%);
     font-family: 'Poppins', sans-serif;
@@ -389,13 +389,47 @@ input {
     justify-content: center;
 }
 
-#myPieChart {
-    position: absolute; /* Cambiar a absoluta */
+/* #myPieChart {
+    position: absolute;
     bottom: 5vh;
     right: 20vw;
     width: 310px; 
     height: 310px; 
+} */
+
+#myPieChart {
+  position: absolute;
+  top: 80%;
+  right: 5%;
+  transform: translateY(-50%);
+  font-family: 'Poppins', sans-serif;
+  font-weight: 900;
+  font-size: 30px;
+  color: #00003A;
+  padding: 30px 50px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
+#myPieChart2 {
+  position: absolute;
+  top: 80%;
+  right: 25%;
+  transform: translateY(-50%);
+  font-family: 'Poppins', sans-serif;
+  font-weight: 900;
+  font-size: 30px;
+  color: #00003A;
+  padding: 30px 50px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
 
 
 

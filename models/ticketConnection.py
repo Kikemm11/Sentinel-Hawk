@@ -6,6 +6,7 @@ from sqlalchemy import Column, Integer, String, Float, TIMESTAMP, func
 from sqlalchemy.exc import IntegrityError
 from datetime import datetime, date
 from sqlalchemy import and_
+from sqlalchemy import cast, Date
 
 app = Flask(__name__)
 
@@ -127,8 +128,10 @@ class TicketConnection:
             session = self.SessionLocal()
             result = session.query(Ticket).filter(
                 and_(
-                    Ticket.created_at >= start_date,
-                    Ticket.created_at <= end_date
+
+                    cast(Ticket.created_at, Date) >= cast(start_date, Date),
+                    cast(Ticket.created_at, Date) <= cast(end_date, Date)
+                
                 )
             ).all()
             session.close()

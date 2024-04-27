@@ -38,6 +38,7 @@
 
             </div>
             <canvas id="myPieChart"></canvas>
+            <canvas id="myPieChart2"></canvas>
 
 
               <img src="static/assets/img/cash.png" alt="Cash" class="cash">
@@ -66,6 +67,7 @@ $(document).ready(function() {
                 var paymentUsd = response.payment_usd;
                 var paymentLocal = response.payment_local;
                 var tickets_vehicle_type_dict = response.tickets_vehicle_type_dict
+                var count_payments_methods  = response.count_payments_methods
 
                 // Actualizar el contenido de los elementos HTML con los nuevos valores
                 $('#total_earnings').text(paymentUsd + ' $ // ' + paymentLocal + ' Bs');
@@ -75,7 +77,7 @@ $(document).ready(function() {
                 console.log('Payment Local:', paymentLocal);
 
                 // Actualizar el gráfico con los datos recibidos del servidor
-                updateChart(tickets_vehicle_type_dict);
+                updateChart(tickets_vehicle_type_dict, count_payments_methods);
             },
             error: function(xhr, status, error) {
                 // Manejar errores si la solicitud falla
@@ -85,7 +87,7 @@ $(document).ready(function() {
     });
 });
 
-function updateChart(tickets_vehicle_type_dict) {
+function updateChart(tickets_vehicle_type_dict, count_payments_methods) {
     if (!myPieChart) {
         // Si el gráfico no existe, crear uno nuevo
         var ctx = document.getElementById('myPieChart').getContext('2d');
@@ -112,9 +114,57 @@ function updateChart(tickets_vehicle_type_dict) {
                 }
             }
         });
+
+        var ctx = document.getElementById('myPieChart2').getContext('2d');
+
+        // Suponiendo que count_payments_methods es un diccionario con los métodos de pago y sus cantidades
+        var paymentData = [];
+        for (var method in count_payments_methods) {
+            paymentData.push(count_payments_methods[method]);
+        }
+
+        // Suponiendo que tickets_vehicle_type_dict es un diccionario con los tipos de vehículo y sus cantidades
+        var vehicleData = [];
+        for (var type in tickets_vehicle_type_dict) {
+            vehicleData.push(tickets_vehicle_type_dict[type]);
+        }
+
+        myPieChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                datasets: [{
+                    data: paymentData,
+                    backgroundColor: ['#492042', '#1898D0', '#FFA07A', '#00FF7F'], // Agrega más colores si es necesario
+                    borderColor: ['#492042', '#1898D0', '#FFA07A', '#00FF7F'], // Mismo número de colores que backgroundColor
+                    borderWidth: 1
+                }],
+                labels: Object.keys(count_payments_methods) // Utiliza las claves del diccionario como etiquetas
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: 'Payment Distribution'
+                }
+            }
+        });
+
     } else {
         // Si el gráfico ya existe, actualizar los datos
         myPieChart.data.datasets[0].data = [tickets_vehicle_type_dict[1], tickets_vehicle_type_dict[2], tickets_vehicle_type_dict[3], tickets_vehicle_type_dict[4]];
+        myPieChart.update();
+
+
+             // Si el gráfico ya existe, actualizar los datos y las etiquetas
+        var paymentData = [];
+        var paymentLabels = [];
+
+        for (var method in count_payments_methods) {
+            paymentLabels.push(method);
+            paymentData.push(count_payments_methods[method]);
+        }
+
+        myPieChart.data.labels = paymentLabels;
+        myPieChart.data.datasets[0].data = paymentData;
         myPieChart.update();
     }
 }

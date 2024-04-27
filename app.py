@@ -80,6 +80,24 @@ def stop_execution():
 # Set the different routes involoved lin the web application
 
 
+def count_payments_by_method(start_date, end_date):
+        try:
+            payment_conn = PaymentConnection("postgresql://sentinel:sentinel@localhost:5432/sentinel_hawk")
+            result = payment_conn.count_payments_by_method(start_date, end_date)
+            # Inicializar un diccionario vacío
+            payment_counts = {}
+
+            # Iterar sobre cada tupla en el resultado
+            for payment_method_id, name, count in result:
+                # Agregar el nombre del método de pago y el recuento de pagos al diccionario
+                payment_counts[name] = count
+            
+            return payment_counts
+        except Exception as e:
+            return {'success': False, 'message': f'Error trying to count payments by method: {str(e)}'}
+
+
+
 #---General routes---
 
 
@@ -630,17 +648,23 @@ def revenues():
     data = response.json()
     usd_price = data['monitors']['usd']['price'] 
     if request.method == 'POST':
+        
+        ticket_connection = TicketConnection(loginApp.database)
+        
+        
         start_date = request.form['start_date']
         end_date = request.form['end_date']
         
-        print("start_date",start_date, type(start_date))
-        print("end_date: ",end_date)
+        # print("start_date",start_date, type(start_date))
+        # print("end_date: ",end_date)
         
         # Realizar la consulta utilizando las fechas proporcionadas
         result = payment_connection.read_payments_in_interval(start_date, end_date)
-        
-        ticket_connection = TicketConnection(loginApp.database)
         tickets_result = ticket_connection.read_ticket_in_interval(start_date, end_date)
+               
+            
+        count_payments_methods = count_payments_by_method(start_date, end_date)
+
         
         payments = result['data']
         tickets = tickets_result['data']
@@ -672,7 +696,12 @@ def revenues():
         if result['success']:
 
             # Renderizar la tabla de pagos dentro de la misma plantilla
-            return jsonify(payment_usd=payment_usd, payment_local=payment_local,tickets_vehicle_type_dict=tickets_vehicle_type_dict, usd_price=usd_price)
+            return jsonify(payment_usd=payment_usd, 
+                           payment_local=payment_local,
+                           tickets_vehicle_type_dict=tickets_vehicle_type_dict,
+                           usd_price=usd_price,
+                           count_payments_methods=count_payments_methods)
+            
         else:
             error_message = result['message']
             return jsonify({'error': error_message})

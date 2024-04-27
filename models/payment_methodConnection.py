@@ -4,6 +4,10 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, Float
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy import func
+from sqlalchemy.orm import declarative_base
+
+
 
 app = Flask(__name__)
 
@@ -88,3 +92,7 @@ class PaymentMethodConnection:
             return {'success': False, 'message': f'Error trying to delete payment method: {str(e)}'}
         finally:
             session.close()
+            
+    
+
+

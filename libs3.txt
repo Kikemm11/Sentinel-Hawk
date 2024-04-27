@@ -1,0 +1,13 @@
+tensorflow==2.13.0
+torch==2.0.1
+torchvision==0.15.2
+tqdm==4.64.1
+scipy==1.10.1
+loguru==0.7.0
+thop==0.1.1.post2209072238
+lap==0.4.0
+onemetric==0.1.2
+dataclasses==0.6
+dataclasses-json==0.6.1
+ultralytics==8.0.161
+typing-inspect==0.9.0
