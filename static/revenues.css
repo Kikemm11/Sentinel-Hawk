@@ -422,6 +422,38 @@ input {
   }
 
 
+  .vehicle_label {
+    position: absolute;
+    top: 40vh;
+    right: 0vw;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 25px;
+    color: #00003A;
+    padding: 30px 100px;
+    border-radius: 10px;
+    display: flex; 
+    align-items: center;
+    justify-content: center;
+  }
+
+
+  .payment_methods_label {
+    position: absolute;
+    top: 40vh;
+    right: 25vw;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 25px;
+    color: #00003A;
+    padding: 30px 100px;
+    border-radius: 10px;
+    display: flex; 
+    align-items: center;
+    justify-content: center;
+  }
+
+
   #vehicle_pie_chart {
     position: fixed;
     bottom: 21px;

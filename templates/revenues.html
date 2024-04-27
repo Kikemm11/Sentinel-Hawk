@@ -37,6 +37,8 @@
                 </form>
                 <div class="earnings" id="earnings">Earnings</div>
                 <div class="total_earnings" id="total_earnings">{{payment_usd}} $ // {{payment_local}} Bs</div>
+                <div class="vehicle_label">Vehicle types</div>
+                <div class="payment_methods_label">Payment methods</div>
 
                 <div id="vehicle_pie_chart">
                     <canvas id="myPieChart"></canvas>
@@ -73,7 +75,7 @@ $(document).ready(function() {
                 var count_payments_methods  = response.count_payments_methods
 
                 // Actualizar el contenido de los elementos HTML con los nuevos valores
-                $('#total_earnings').text(paymentUsd + ' $ // ' + paymentLocal + ' Bs');
+                $('#total_earnings').text(paymentUsd.toFixed(2) + ' $ // ' + paymentLocal.toFixed(2) + ' Bs');
 
                 // Imprimir los datos recibidos en la consola
                 console.log('Payment USD:', paymentUsd);
