@@ -243,6 +243,7 @@ CREATE TABLE public.ticket (
     vehicle_type_id smallint NOT NULL,
     charge real NOT NULL,
     status_id smallint NOT NULL,
+    created_at timestamp without time zone DEFAULT now(),
     CONSTRAINT valid_charge CHECK ((charge > (0.0)::double precision))
 );
 
@@ -461,7 +462,7 @@ COPY public.status (status_id, name) FROM stdin;
 -- Data for Name: ticket; Type: TABLE DATA; Schema: public; Owner: sentinel
 --
 
-COPY public.ticket (ticket_id, vehicle_type_id, charge, status_id) FROM stdin;
+COPY public.ticket (ticket_id, vehicle_type_id, charge, status_id, created_at) FROM stdin;
 \.
 
 
@@ -470,7 +471,7 @@ COPY public.ticket (ticket_id, vehicle_type_id, charge, status_id) FROM stdin;
 --
 
 COPY public.users (id, username, password, permisology) FROM stdin;
-13	admin	$2b$12$WreM6PI1qX9fmA6.Pn7xLOS3kfXscGVYdpgWu/K9XRnjuvMMZRxDq	admin
+1	admin	$2b$12$WreM6PI1qX9fmA6.Pn7xLOS3kfXscGVYdpgWu/K9XRnjuvMMZRxDq	admin
 \.
 
 
@@ -507,14 +508,14 @@ SELECT pg_catalog.setval('public.currency_currency_id_seq', 1, false);
 -- Name: deteccion_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sentinel
 --
 
-SELECT pg_catalog.setval('public.deteccion_id_seq', 89, true);
+SELECT pg_catalog.setval('public.deteccion_id_seq', 2, true);
 
 
 --
 -- Name: deteccion_status_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sentinel
 --
 
-SELECT pg_catalog.setval('public.deteccion_status_id_seq', 1, true);
+SELECT pg_catalog.setval('public.deteccion_status_id_seq', 2, true);
 
 
 --
@@ -535,28 +536,28 @@ SELECT pg_catalog.setval('public.payment_payment_id_seq', 1, false);
 -- Name: status_status_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sentinel
 --
 
-SELECT pg_catalog.setval('public.status_status_id_seq', 3, true);
+SELECT pg_catalog.setval('public.status_status_id_seq', 4, true);
 
 
 --
 -- Name: ticket_ticket_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sentinel
 --
 
-SELECT pg_catalog.setval('public.ticket_ticket_id_seq', 670, true);
+SELECT pg_catalog.setval('public.ticket_ticket_id_seq', 1, true);
 
 
 --
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sentinel
 --
 
-SELECT pg_catalog.setval('public.users_id_seq', 13, true);
+SELECT pg_catalog.setval('public.users_id_seq', 2, true);
 
 
 --
 -- Name: vehicle_type_vehicle_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sentinel
 --
 
-SELECT pg_catalog.setval('public.vehicle_type_vehicle_type_id_seq', 12, true);
+SELECT pg_catalog.setval('public.vehicle_type_vehicle_type_id_seq', 5, true);
 
 
 --
