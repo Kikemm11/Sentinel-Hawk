@@ -77,6 +77,26 @@ class PaymentConnection:
         result = session.query(Payment).filter(func.date(Payment.created_at) == today).all()
         session.close()
         return result   
+    
+    
+    def read_payments_in_interval(self, start_date, end_date):
+        try:
+            session = self.SessionLocal()
+            
+            # Filtrar los pagos dentro del intervalo de fechas
+            result = session.query(Payment).filter(
+                and_(
+                    cast(Payment.created_at, Date) >= cast(start_date, Date),
+                    cast(Payment.created_at, Date) <= cast(end_date, Date)
+                )
+            ).all()
+
+            session.close()
+            return {'success': True, 'data': result}
+        except Exception as e:
+            return {'success': False, 'message': f'Error al intentar recuperar pagos en el intervalo: {str(e)}'}
+        
+        
 
     #Delete payment method function
 
@@ -97,27 +117,9 @@ class PaymentConnection:
             session.close()
             
     
+    #Count payment methods function   
             
-            
-        
-    def read_payments_in_interval(self, start_date, end_date):
-        try:
-            session = self.SessionLocal()
-            
-            # Filtrar los pagos dentro del intervalo de fechas
-            result = session.query(Payment).filter(
-                and_(
-                    cast(Payment.created_at, Date) >= cast(start_date, Date),
-                    cast(Payment.created_at, Date) <= cast(end_date, Date)
-                )
-            ).all()
-
-            session.close()
-            return {'success': True, 'data': result}
-        except Exception as e:
-            return {'success': False, 'message': f'Error al intentar recuperar pagos en el intervalo: {str(e)}'}
-        
-        
+                
     def count_payments_by_method(self, start_date, end_date):
         try:
             session = self.SessionLocal()
@@ -132,8 +134,8 @@ class PaymentConnection:
                 Payment.payment_method_id == payment_method_alias.payment_method_id
             ).filter(
                 and_(
-                    cast(Payment.created_at, Date) >= cast(start_date, Date),
-                    cast(Payment.created_at, Date) <= cast(end_date, Date)
+                    func.date(Payment.created_at) >= start_date,
+                    func.date(Payment.created_at) <= end_date
                 )
             ).group_by(
                 Payment.payment_method_id,
