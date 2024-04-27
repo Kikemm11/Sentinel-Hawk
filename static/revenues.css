@@ -285,38 +285,6 @@ input {
   }
 
 
-  
-
-  .exchange_rate {
-    position: absolute;
-    bottom: 3vh;
-    left: 8.5vw;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 450;
-    font-size: 25px;
-    color: #00003A;
-    background-color: #74D87A;
-    padding: 2px 15px;
-    border-radius: 20px;
-    display: flex; 
-    align-items: center;
-    justify-content: center;
-  }
-
-  .cash {
-    position: absolute;
-    bottom: 0.5vh;
-    left: 5vw;
-    transform: translateX(-50%);
-    width: 80px;
-    height: auto;
-    z-index: 1;
-  }
-
-
- 
-
-
   .back-btn {
     position: absolute;
     display: block;
@@ -330,8 +298,8 @@ input {
     align-items: center;
     justify-content: center;
     margin-top: 20px;
-    padding: 7px 30px; 
-    font-size: 13px;
+    padding: 10px 40px; 
+    font-size: 15px;
     background-color: #00003A;
     color: #fff;
     border: none;
@@ -346,8 +314,8 @@ input {
 
   .message {
     position: absolute;
-    top: -5vh; /* Ajusta la posición vertical del mensaje */
-    right: -4vw; /* Ajusta la posición horizontal del mensaje */
+    top: -5vh; 
+    right: 5vw; 
     font-family: 'Poppins', sans-serif;
     font-weight: 900;
     font-size: 60px;
@@ -358,76 +326,118 @@ input {
     align-items: center;
     justify-content: center;
   }
-  #date-form {
+
+
+  .from-date {
     position: absolute;
-    top: 20%;
-    right: 5%;
+    top: 23vh;
+    right: 30vw;
     transform: translateY(-50%);
     font-family: 'Poppins', sans-serif;
-    font-weight: 900;
-    font-size: 30px; /* Ajusta el tamaño del texto */
+    font-weight: 700;
+    font-size: 25px; 
     color: #00003A;
-    padding: 30px 50px;
+    padding: 7px 20px;
     border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
   }
-  #chart-container {
+
+
+  .to-date {
     position: absolute;
-    top: 40%;
-    right: 5%;
+    top: 31vh;
+    right: 30vw;
     transform: translateY(-50%);
     font-family: 'Poppins', sans-serif;
-    font-weight: 900;
-    font-size: 30px;
+    font-weight: 700;
+    font-size: 25px; 
     color: #00003A;
-    padding: 30px 50px;
+    padding: 7px 20px;
     border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-}
+  }
 
-/* #myPieChart {
+
+  .earnings {
     position: absolute;
-    bottom: 5vh;
-    right: 20vw;
-    width: 310px; 
-    height: 310px; 
-} */
+    top: 15.5vh;
+    right:0vw;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 25px;
+    color: #00003A;
+    padding: 30px 100px;
+    border-radius: 10px;
+    display: flex; 
+    align-items: center;
+    justify-content: center;
+  }
 
-#myPieChart {
-  position: absolute;
-  top: 80%;
-  right: 5%;
-  transform: translateY(-50%);
-  font-family: 'Poppins', sans-serif;
-  font-weight: 900;
-  font-size: 30px;
-  color: #00003A;
-  padding: 30px 50px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 
-#myPieChart2 {
-  position: absolute;
-  top: 80%;
-  right: 25%;
-  transform: translateY(-50%);
-  font-family: 'Poppins', sans-serif;
-  font-weight: 900;
-  font-size: 30px;
-  color: #00003A;
-  padding: 30px 50px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+  .total_earnings {
+    position: absolute;
+    top: 23.5vh;
+    right: 0vw;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 20px;
+    color: #00003A;
+    padding: 30px 100px;
+    border-radius: 10px;
+    display: flex; 
+    align-items: center;
+    justify-content: center;
+  }
+
+
+  .submit-btn {
+    position: absolute;
+    display: block;
+    top: 35vh;
+    right: 30vw;
+    transform: translate(-50%, -50%);
+  }
+  
+  .submit-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    padding: 7px 30px; 
+    font-size: 13px;
+    background-color: #00003A;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    letter-spacing: 2px;
+  }
+  
+  .submit-btn:hover {
+    background-color: #ff9900e0;
+  }
+
+
+  #vehicle_pie_chart {
+    position: fixed;
+    bottom: 21px;
+    right: 45px;
+    width: 275px; 
+    height: 275px; 
+  }
+
+
+  #payment_method_pie_chart {
+    position: fixed;
+    bottom: 19px;
+    right: 400px;
+    width: 275px; 
+    height: 275px; 
+  }
 
 
 

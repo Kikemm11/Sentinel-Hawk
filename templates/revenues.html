@@ -21,35 +21,38 @@
             <div class="content">
               <button class="btn back-btn" onclick="window.location.href='/main'">Back</button>
               <img src="static/assets/img/sentinel.png" alt="Logo" class="logo">
-              <div class="message" id="user-message">Reveneus</div>
-              <form id="date-form">
-                <label for="start-date">Start Date:</label>
-                <input type="date" id="start-date" name="start_date">
-                <label for="end-date">End Date:</label>
-                <input type="date" id="end-date" name="end_date">
-                <button type="submit">Submit</button>
-            </form>
-
-
-            <div id="chart-container">
-                
-                <div class="earnings" id="earnings">Earnings:</div>
+              <div class="message" id="user-message">Revenues</div>
+                <form id="date-form">
+                    <div class='from-date'>
+                        <label for="start-date">From: </label>
+                        <input type="date" id="start-date" name="start_date">
+                        </div>
+                        <div class='to-date'>
+                        <label for="end-date">To: </label>
+                        <input type="date" id="end-date" name="end_date">
+                        </div>
+                        <div class='submit-btn'>
+                        <button type="submit">Search</button>
+                    </div>
+                </form>
+                <div class="earnings" id="earnings">Earnings</div>
                 <div class="total_earnings" id="total_earnings">{{payment_usd}} $ // {{payment_local}} Bs</div>
 
-            </div>
-            <canvas id="myPieChart"></canvas>
-            <canvas id="myPieChart2"></canvas>
+                <div id="vehicle_pie_chart">
+                    <canvas id="myPieChart"></canvas>
+                </div>
 
-
-              <img src="static/assets/img/cash.png" alt="Cash" class="cash">
-              <div class="exchange_rate" id="user-message">{{usd_price}} Bs/$</div>
+                <div id="payment_method_pie_chart">
+                    <canvas id="myPieChart2"></canvas>
+                </div>
             </div>
           </div>
         </div>
-      </div>
-  
+    </div>
     <script>
-        var myPieChart; // Declarar la variable del gráfico fuera de la función para que sea accesible en todo el ámbito
+        //AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        var myPieChart1; // Declarar la variable del gráfico fuera de la función para que sea accesible en todo el ámbito
+        var myPieChart2; 
 
 $(document).ready(function() {
     $('#date-form').submit(function(event) {
@@ -88,73 +91,111 @@ $(document).ready(function() {
 });
 
 function updateChart(tickets_vehicle_type_dict, count_payments_methods) {
-    if (!myPieChart) {
-        // Si el gráfico no existe, crear uno nuevo
-        var ctx = document.getElementById('myPieChart').getContext('2d');
-        myPieChart = new Chart(ctx, {
-            type: 'pie',
-            data: {
-                datasets: [{
-                    data: [tickets_vehicle_type_dict[1], tickets_vehicle_type_dict[2], tickets_vehicle_type_dict[3], tickets_vehicle_type_dict[4]],
-                    backgroundColor: ['#F2AA33', '#1898D0 ', '#F5ED41', '#0A447D'],
-                    borderColor: [
-                        '#F2AA33',
-                        '#1898D0',
-                        '#F5ED41',
-                        '#0A447D',
-                    ],
-                    borderWidth: 1
-                }],
-                labels: ['Car', 'Truck', 'Bus', 'Motorcycle']
-            },
-            options: {
-                title: {
-                    display: true,
-                    text: 'Payment Distribution'
+
+
+    if (!myPieChart1 || !myPieChart2) {
+
+
+        if (!myPieChart1){
+
+            // Si el gráfico no existe, crear uno nuevo
+
+            var ctx = document.getElementById('myPieChart').getContext('2d');
+            myPieChart1 = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    datasets: [{
+                        data: [tickets_vehicle_type_dict[1], tickets_vehicle_type_dict[2], tickets_vehicle_type_dict[3], tickets_vehicle_type_dict[4]],
+                        backgroundColor: ['#F2AA33', '#1898D0 ', '#F5ED41', '#0A447D'],
+                        borderColor: [
+                            '#F2AA33',
+                            '#1898D0',
+                            '#F5ED41',
+                            '#0A447D',
+                        ],
+                        borderWidth: 1
+                    }],
+                    labels: ['Car', 'Truck', 'Bus', 'Motorcycle']
+                },
+                options: {
+                    title: {
+                        display: true,
+                        text: 'Payment Distribution'
+                    }
                 }
-            }
-        });
+            });
+        }else{
 
-        var ctx = document.getElementById('myPieChart2').getContext('2d');
+            // Si myPieChart1 ya existe, actualizar los datos
 
-        // Suponiendo que count_payments_methods es un diccionario con los métodos de pago y sus cantidades
-        var paymentData = [];
-        for (var method in count_payments_methods) {
-            paymentData.push(count_payments_methods[method]);
+            myPieChart1.data.datasets[0].data = [tickets_vehicle_type_dict[1], tickets_vehicle_type_dict[2], tickets_vehicle_type_dict[3], tickets_vehicle_type_dict[4]];
+            myPieChart1.update();
         }
 
-        // Suponiendo que tickets_vehicle_type_dict es un diccionario con los tipos de vehículo y sus cantidades
-        var vehicleData = [];
-        for (var type in tickets_vehicle_type_dict) {
-            vehicleData.push(tickets_vehicle_type_dict[type]);
-        }
 
-        myPieChart = new Chart(ctx, {
-            type: 'pie',
-            data: {
-                datasets: [{
-                    data: paymentData,
-                    backgroundColor: ['#492042', '#1898D0', '#FFA07A', '#00FF7F'], // Agrega más colores si es necesario
-                    borderColor: ['#492042', '#1898D0', '#FFA07A', '#00FF7F'], // Mismo número de colores que backgroundColor
-                    borderWidth: 1
-                }],
-                labels: Object.keys(count_payments_methods) // Utiliza las claves del diccionario como etiquetas
-            },
-            options: {
-                title: {
-                    display: true,
-                    text: 'Payment Distribution'
-                }
+        if (!myPieChart2){
+
+            // Si el gráfico no existe, crear uno nuevo
+
+            var ctx = document.getElementById('myPieChart2').getContext('2d');
+
+            // Suponiendo que count_payments_methods es un diccionario con los métodos de pago y sus cantidades
+            var paymentData = [];
+            for (var method in count_payments_methods) {
+                paymentData.push(count_payments_methods[method]);
             }
-        });
+
+            // Suponiendo que tickets_vehicle_type_dict es un diccionario con los tipos de vehículo y sus cantidades
+            var vehicleData = [];
+            for (var type in tickets_vehicle_type_dict) {
+                vehicleData.push(tickets_vehicle_type_dict[type]);
+            }
+
+            myPieChart2 = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    datasets: [{
+                        data: paymentData,
+                        backgroundColor: ['#492042', '#1898D0', '#FFA07A', '#00FF7F'], // Agrega más colores si es necesario
+                        borderColor: ['#492042', '#1898D0', '#FFA07A', '#00FF7F'], // Mismo número de colores que backgroundColor
+                        borderWidth: 1
+                    }],
+                    labels: Object.keys(count_payments_methods) // Utiliza las claves del diccionario como etiquetas
+                },
+                options: {
+                    title: {
+                        display: true,
+                        text: 'Payment Distribution'
+                    }
+                }
+            });
+        }else{
+
+            // Si myPieChart2 ya existe, actualizar los datos y las etiquetas
+
+            var paymentData = [];
+            var paymentLabels = [];
+
+            for (var method in count_payments_methods) {
+                paymentLabels.push(method);
+                paymentData.push(count_payments_methods[method]);
+            }
+
+            myPieChart2.data.labels = paymentLabels;
+            myPieChart2.data.datasets[0].data = paymentData;
+            myPieChart2.update();
+        }
 
     } else {
-        // Si el gráfico ya existe, actualizar los datos
-        myPieChart.data.datasets[0].data = [tickets_vehicle_type_dict[1], tickets_vehicle_type_dict[2], tickets_vehicle_type_dict[3], tickets_vehicle_type_dict[4]];
-        myPieChart.update();
+
+        // Si myPieChart1 ya existe, actualizar los datos
+
+        myPieChart1.data.datasets[0].data = [tickets_vehicle_type_dict[1], tickets_vehicle_type_dict[2], tickets_vehicle_type_dict[3], tickets_vehicle_type_dict[4]];
+        myPieChart1.update();
 
 
-             // Si el gráfico ya existe, actualizar los datos y las etiquetas
+        // Si myPieChart2 ya existe, actualizar los datos y las etiquetas
+
         var paymentData = [];
         var paymentLabels = [];
 
@@ -163,13 +204,11 @@ function updateChart(tickets_vehicle_type_dict, count_payments_methods) {
             paymentData.push(count_payments_methods[method]);
         }
 
-        myPieChart.data.labels = paymentLabels;
-        myPieChart.data.datasets[0].data = paymentData;
-        myPieChart.update();
+        myPieChart2.data.labels = paymentLabels;
+        myPieChart2.data.datasets[0].data = paymentData;
+        myPieChart2.update();
     }
 }
-
     </script>
-
     </body>
-</html>
+ </html>
