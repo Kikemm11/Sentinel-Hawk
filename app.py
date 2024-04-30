@@ -4,7 +4,7 @@ from flask_login import LoginManager, login_user, login_required, logout_user, U
 import bcrypt
 from flask_cors import CORS
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 import time
 import loginApp
 from models.vehicle_typeConnection import VehicleConnection
@@ -628,9 +628,10 @@ def revenues():
     
     if request.method == 'POST':
           
-        start_date = request.form['start_date']
-        end_date = request.form['end_date']
-               
+        start_date = datetime.strptime(request.form['start_date'], "%Y-%m-%d")
+        end_date = datetime.strptime(request.form['end_date'], "%Y-%m-%d")
+        
+             
         # Realizar la consulta utilizando las fechas proporcionadas
         result = payment_connection.read_payments_in_interval(start_date, end_date)
         tickets_result = ticket_connection.read_ticket_in_interval(start_date, end_date)         
@@ -641,25 +642,36 @@ def revenues():
         
         tickets_payment_dict = { 1:0, 2:0, 3:0}
         tickets_vehicle_type_dict = { 1:0, 2:0, 3:0, 4:0}
+        incomes_per_day = []
+        dates = []
         payment_usd = 0
-        payment_local = 0
         
-        for payment in payments:
-            payment_usd += payment.charge
-            payment_local += payment.local_currency
-    
+        current_date = start_date
+        
+        while current_date <= end_date:
+            incomes_per_day.append(payment_connection.read_date_payments(current_date.strftime("%Y-%m-%d")))
+            dates.append(current_date.strftime("%Y-%m-%d"))
+            current_date += timedelta(days=1)
+            
+
+        payment_usd = sum(incomes_per_day)
+        
         for ticket in tickets:
             tickets_payment_dict[ticket.status_id] += 1
             tickets_vehicle_type_dict[ticket.vehicle_type_id] += 1
+            
+        
     
         
         if result['success']:
+            
+            print(incomes_per_day)
 
             # Renderizar la tabla de pagos dentro de la misma plantilla
-            return jsonify(payment_usd=payment_usd, 
-                           payment_local=payment_local,
+            return jsonify(payment_usd=payment_usd,
                            tickets_vehicle_type_dict=tickets_vehicle_type_dict,
-                           count_payments_methods=count_payments_methods)
+                           count_payments_methods=count_payments_methods,
+                           incomes_per_day=incomes_per_day, dates= dates)
             
         else:
             error_message = result['message']

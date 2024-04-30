@@ -381,7 +381,7 @@ input {
   }
 
 
-  .earnings {
+  .incomes {
     position: absolute;
     top: 15.5vh;
     right:0vw;
@@ -397,7 +397,7 @@ input {
   }
 
 
-  .total_earnings {
+  .total_incomes {
     position: absolute;
     top: 23.5vh;
     right: 0vw;
@@ -490,6 +490,14 @@ input {
     right: 400px;
     width: 275px; 
     height: 275px; 
+  }
+
+  #incomes_bar_chart {
+    position: fixed;
+    bottom: 230px;
+    right: 45px;
+    width: 300px; 
+    height: 300px; 
   }
 
 

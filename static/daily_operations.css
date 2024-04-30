@@ -470,7 +470,7 @@ form.sign-in-form {
   }
 
 
-  .earnings {
+  .incomes {
     position: absolute;
     top: 18vh;
     right: 29vw;
@@ -485,7 +485,7 @@ form.sign-in-form {
     justify-content: center;
   }
 
-  .total_earnings {
+  .total_incomes {
     position: absolute;
     top: 19vh;
     right: 5vw;

@@ -33,26 +33,34 @@
                     </div>
                     <button type="submit" class="submit-btn" id="submit-btn">Search</button>
                 </form>
-                <div class="earnings" id="earnings">Earnings</div>
-                <div class="total_earnings" id="total_earnings">{{payment_usd}} $ // {{payment_local}} Bs</div>
+                <!--
+                <div class="incomes" id="incomes">Incomes:</div>
+                <div class="total_incomes" id="total_incomes">{{payment_usd}} $ </div>
+                -->
                 <div class="vehicle_label">Vehicle types</div>
                 <div class="payment_methods_label">Payment methods</div>
+                
+                <div id="incomes_bar_chart">
+                    <canvas id="myBarChart"></canvas>
+                </div>
 
                 <div id="vehicle_pie_chart">
                     <canvas id="myPieChart"></canvas>
                 </div>
-
+                
                 <div id="payment_method_pie_chart">
                     <canvas id="myPieChart2"></canvas>
                 </div>
+
             </div>
           </div>
         </div>
     </div>
-    <script>
-        //AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+<script>
+        
         var myPieChart1; // Declarar la variable del gráfico fuera de la función para que sea accesible en todo el ámbito
         var myPieChart2; 
+        var myBarChart;
 
 $(document).ready(function() {
     $('#date-form').submit(function(event) {
@@ -68,19 +76,17 @@ $(document).ready(function() {
             success: function(response) {
                 // Utilizar los datos directamente
                 var paymentUsd = response.payment_usd;
-                var paymentLocal = response.payment_local;
                 var tickets_vehicle_type_dict = response.tickets_vehicle_type_dict
                 var count_payments_methods  = response.count_payments_methods
+                var incomes_per_day = response.incomes_per_day
+                var datesLabel = response.dates
 
                 // Actualizar el contenido de los elementos HTML con los nuevos valores
-                $('#total_earnings').text(paymentUsd.toFixed(2) + ' $ // ' + paymentLocal.toFixed(2) + ' Bs');
+                $('#total_incomes').text(paymentUsd.toFixed(2) + ' $');
 
-                // Imprimir los datos recibidos en la consola
-                console.log('Payment USD:', paymentUsd);
-                console.log('Payment Local:', paymentLocal);
 
                 // Actualizar el gráfico con los datos recibidos del servidor
-                updateChart(tickets_vehicle_type_dict, count_payments_methods);
+                updateChart(tickets_vehicle_type_dict, count_payments_methods, incomes_per_day, datesLabel);
             },
             error: function(xhr, status, error) {
                 // Manejar errores si la solicitud falla
@@ -90,10 +96,95 @@ $(document).ready(function() {
     });
 });
 
-function updateChart(tickets_vehicle_type_dict, count_payments_methods) {
+function updateChart(tickets_vehicle_type_dict, count_payments_methods, incomes_per_day, datesLabel) {
+
+    if (!myPieChart1 && !myPieChart2 && !myBarChart){
 
 
-    if (!myPieChart1 || !myPieChart2) {
+        var ctx = document.getElementById('myPieChart').getContext('2d');
+            myPieChart1 = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    datasets: [{
+                        data: [tickets_vehicle_type_dict[1], tickets_vehicle_type_dict[2], tickets_vehicle_type_dict[3], tickets_vehicle_type_dict[4]],
+                        backgroundColor: ['#F2AA33', '#1898D0 ', '#F5ED41', '#0A447D'],
+                        borderColor: [
+                            '#F2AA33',
+                            '#1898D0',
+                            '#F5ED41',
+                            '#0A447D',
+                        ],
+                        borderWidth: 1
+                    }],
+                    labels: ['Car', 'Truck', 'Bus', 'Motorcycle']
+                },
+                options: {
+                    title: {
+                        display: true,
+                        text: 'Payment Distribution'
+                    }
+                }
+            });
+
+
+
+            var ctx = document.getElementById('myPieChart2').getContext('2d');
+
+            // Suponiendo que count_payments_methods es un diccionario con los métodos de pago y sus cantidades
+            var paymentData = [];
+            for (var method in count_payments_methods) {
+                paymentData.push(count_payments_methods[method]);
+            }
+
+            // Suponiendo que tickets_vehicle_type_dict es un diccionario con los tipos de vehículo y sus cantidades
+            var vehicleData = [];
+            for (var type in tickets_vehicle_type_dict) {
+                vehicleData.push(tickets_vehicle_type_dict[type]);
+            }
+
+            myPieChart2 = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    datasets: [{
+                        data: paymentData,
+                        backgroundColor: ['#492042', '#1898D0', '#FFA07A', '#00FF7F'], // Agrega más colores si es necesario
+                        borderColor: ['#492042', '#1898D0', '#FFA07A', '#00FF7F'], // Mismo número de colores que backgroundColor
+                        borderWidth: 1
+                    }],
+                    labels: Object.keys(count_payments_methods) // Utiliza las claves del diccionario como etiquetas
+                },
+                options: {
+                    title: {
+                        display: true,
+                        text: 'Payment Distribution'
+                    }
+                }
+            });
+
+            var ctx = document.getElementById('myBarChart').getContext('2d');
+
+            myBarChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    datasets: [{
+                        label: "Income",
+                        data: incomes_per_day,
+                        backgroundColor: ["#00003A"], 
+                        borderColor: ["#00003A"], 
+                        borderWidth: 1
+                    }],
+                    labels: datesLabel 
+                },
+                options: {
+                    title: {
+                        display: true,
+                        text: 'Incomes Per Day'
+                    }
+                }
+            });
+
+    }
+    else if (!myPieChart1 || !myPieChart2 || !myBarChart) {
 
 
         if (!myPieChart1){
@@ -130,6 +221,12 @@ function updateChart(tickets_vehicle_type_dict, count_payments_methods) {
 
             myPieChart1.data.datasets[0].data = [tickets_vehicle_type_dict[1], tickets_vehicle_type_dict[2], tickets_vehicle_type_dict[3], tickets_vehicle_type_dict[4]];
             myPieChart1.update();
+
+            // Si myBarChart ya existe, actualizar los datos, las etiquetas y los colores
+
+            myBarChart.data.labels = datesLabel;
+            myBarChart.data.datasets[0].data = incomes_per_day;
+            myBarChart.update();
         }
 
 
@@ -184,6 +281,61 @@ function updateChart(tickets_vehicle_type_dict, count_payments_methods) {
             myPieChart2.data.labels = paymentLabels;
             myPieChart2.data.datasets[0].data = paymentData;
             myPieChart2.update();
+
+
+            // Si myBarChart ya existe, actualizar los datos, las etiquetas y los colores
+
+            myBarChart.data.labels = datesLabel;
+            myBarChart.data.datasets[0].data = incomes_per_day;
+            myBarChart.update();
+        }
+
+        if (!myBarChart){
+
+
+            var ctx = document.getElementById('myBarChart').getContext('2d');
+
+            myBarChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    datasets: [{
+                        data: incomes_per_day,
+                        backgroundColor: generateRandomColors(incomes_per_day.length), 
+                        borderColor: generateRandomColors(incomes_per_day.length), 
+                        borderWidth: 1
+                    }],
+                    labels: datesLabel 
+                },
+                options: {
+                    title: {
+                        display: true,
+                        text: 'Incomes Per Day'
+                    }
+                }
+            });
+        }
+        else{
+
+            // Si myPieChart1 ya existe, actualizar los datos
+
+            myPieChart1.data.datasets[0].data = [tickets_vehicle_type_dict[1], tickets_vehicle_type_dict[2], tickets_vehicle_type_dict[3], tickets_vehicle_type_dict[4]];
+            myPieChart1.update();
+
+
+            // Si myPieChart2 ya existe, actualizar los datos y las etiquetas
+
+            var paymentData = [];
+            var paymentLabels = [];
+
+            for (var method in count_payments_methods) {
+                paymentLabels.push(method);
+                paymentData.push(count_payments_methods[method]);
+            }
+
+            myPieChart2.data.labels = paymentLabels;
+            myPieChart2.data.datasets[0].data = paymentData;
+            myPieChart2.update();
+
         }
 
     } else {
@@ -207,6 +359,12 @@ function updateChart(tickets_vehicle_type_dict, count_payments_methods) {
         myPieChart2.data.labels = paymentLabels;
         myPieChart2.data.datasets[0].data = paymentData;
         myPieChart2.update();
+
+        // Si myBarChart ya existe, actualizar los datos, las etiquetas y los colores
+
+        myBarChart.data.labels = datesLabel;
+        myBarChart.data.datasets[0].data = incomes_per_day;
+        myBarChart.update();
     }
 }
     </script>

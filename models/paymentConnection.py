@@ -76,14 +76,25 @@ class PaymentConnection:
         today = date.today()
         result = session.query(Payment).filter(func.date(Payment.created_at) == today).all()
         session.close()
-        return result   
+        return result
+    
+    def read_date_payments(self, date):
+        session = self.SessionLocal()
+        result = 0
+        
+        payments = session.query(Payment).filter(func.date(Payment.created_at) == date).all()
+        
+        for payment in payments:
+            result += payment.charge
+            
+        session.close()
+        return result     
     
     
     def read_payments_in_interval(self, start_date, end_date):
         try:
             session = self.SessionLocal()
             
-            # Filtrar los pagos dentro del intervalo de fechas
             result = session.query(Payment).filter(
                 and_(
                     func.date(Payment.created_at) >= start_date,
