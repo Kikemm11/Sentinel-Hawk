@@ -242,3 +242,21 @@ input {
   background-color: #ff9900e0;
 }
   
+.logout-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+  padding: 5px 30px; 
+  font-size: 25px;
+  background-color:  #E8B11E;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  letter-spacing: -80px;
+}
+  
+.logout-btn:hover {
+  color: #00003A;
+} 

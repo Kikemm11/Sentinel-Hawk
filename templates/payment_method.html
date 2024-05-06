@@ -13,19 +13,15 @@
     <link rel="icon" href="static/assets/img/sentinel_icon.png" type="image/x-icon">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="static/tablesVe.css"> <!-- Importa el archivo CSS aquí -->
 </head>
 <body>
     <div class="container">
         <h1>Payment Methods</h1>
 
-        <!--Botón de agregar metodo de pago-->
 
-        <button id="addPaymentMethodBtn" class="btn btn-success"><i class="fas fa-plus"></i> Add Payment Method</button>
-
-        <!--Botón de agregar metodo de pago-->
 
         <!--Barra de búsqueda-->
-
         <div class="row mb-3">
             <div class="col">
                 <br>
@@ -33,19 +29,15 @@
             </div>
 
             <!--Botón de búsqueda-->
-
             <div class="col-auto">
                 <br>
                 <button class="btn btn-primary" id="searchBtn"><i class="fas fa-search"></i> Search</button>
             </div>
-
             <!--Botón de búsqueda-->
         </div>
-
         <!--Barra de búsqueda-->
 
-        <!--Pop up Crear metodo de pago-->
-
+        <!--Pop up Crear método de pago-->
         <div class="modal fade" id="addPaymentMethodModal" tabindex="-1" aria-labelledby="addPaymentMethodModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -70,19 +62,19 @@
                 </div>
             </div>
         </div>
-        
-        
-        <!--Pop up Crear metodo de pago-->
+        <!--Pop up Crear método de pago-->
 
-
-        <!--Tabla de metodos de pago-->
-
-        <table class="table mt-3">
+        <!--Tabla de métodos de pago-->
+        <div class="table-container">
+            <table class="table mt-3">
             <thead class="thead-dark">
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
                     <th>Actions</th> 
+                    <!--Botón de agregar método de pago-->
+                    <button id="addPaymentMethodBtn" class="btn btn-success add-payment-btn"><i class="fas fa-plus"></i> Add</button>
+                    <!--Botón de agregar método de pago-->
                 </tr>
             </thead>
             <tbody>
@@ -98,13 +90,12 @@
                     </td>
                 </tr>
 
-                <!--Pop up Actualizar metodo de pago-->
-
-                <div class="modal fade" id="updatePaymentMethodModal" tabindex="-1" aria-labelledby="updatePaymentMethodModalLabel" aria-hidden="true">
+                <!--Pop up Actualizar método de pago-->
+                <div class="modal fade" id="updatePaymentMethodModal{{ method.payment_method_id }}" tabindex="-1" aria-labelledby="updatePaymentMethodModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="updatePaymentMethodModalLabel">Update</h5>
+                                <h5 class="modal-title" id="updatePaymentMethodModalLabel">Update {{ method.name }}</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -113,33 +104,32 @@
                                 <form method="POST" action="/update-payment-method" id="updatePaymentMethodForm{{ method.payment_method_id }}">
                                     <div class="form-group">
                                         <label for="newPaymentMethodName">New Name</label>
-                                        <input type="text" class="form-control" id="newPaymentMethodName" name="newPaymentMethodName">
+                                        <input type="text" class="form-control" id="newPaymentMethodName{{ method.payment_method_id }}" name="newPaymentMethodName">
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                                         <input type="hidden" name="paymentMethodId" value="{{ method.payment_method_id }}">
-                                        <button type="submit" class="btn btn-primary" id="saveChangesBtn">Save Changes</button>
+                                        <button type="submit" class="btn btn-primary save-changes-btn">Save Changes</button>
                                     </div>
                                 </form>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <!--Pop up Actualizar metodo de pago-->
-
+                <!--Pop up Actualizar método de pago-->
                 {% endfor %}
             </tbody>
         </table>
     </div>
-    <div style="text-align: center;">
-        <div style="margin-top: 20px;">
-            <a href="/main" style="text-decoration: none; color: #007bff; font-weight: bold;">Back to menu</a>
-        </div>
     </div>
 
-
-    <!--Tabla de metodos de pago-->
+    <!--Botón "Back to menu"-->
+    <div style="text-align: center;">
+        <div style="margin-top: 20px;">
+            <a href="/main" class="back-to-menu-btn"><i class="fas fa-arrow-left"></i> Back to menu</a>
+        </div>
+    </div>
+    <!--Botón "Back to menu"-->
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
@@ -149,36 +139,30 @@
             $('.update-btn').click(function() {
                 var paymentMethodId = $(this).data('id');
                 var paymentMethodName = $(this).data('name');
-                $('#updatePaymentMethodModalLabel').text('Update ' + paymentMethodName);
-                $('#updatePaymentMethodModal').modal('show');
+                $('#updatePaymentMethodModal' + paymentMethodId + 'Label').text('Update ' + paymentMethodName);
+                $('#updatePaymentMethodModal' + paymentMethodId).modal('show');
             });
     
-            $('#saveChangesBtn').click(function() {
-
-                var newPaymentMethodName = $('#newPaymentMethodName').val();
-                $('#updatePaymentMethodForm').submit();
+            $('.save-changes-btn').click(function() {
+                var paymentMethodId = $(this).closest('form').find('input[name="paymentMethodId"]').val();
+                var newPaymentMethodName = $('#newPaymentMethodName' + paymentMethodId).val();
+                $('#updatePaymentMethodForm' + paymentMethodId).submit();
             });
         });
-    </script>
-    <script>
+
         $(document).ready(function() {
             $('#addPaymentMethodBtn').click(function() {
                 $('#addPaymentMethodModal').modal('show');
             });
 
             $('#addBtn').click(function() {
-                // Get the values from the form fields
-                var newPaymentMethodName = $('#newPaymentMethodName').val();
-            
-                // Submit the form
+                var newPaymentMethodName = $('#paymentMethodName').val();
                 $('#addPaymentMethodForm').submit();
             });
         });
-    </script>
-    <script>
+
         function filterPaymentMethods(name) {
             $('.payment_method-row').hide();
-            
             $('.payment_method-row[data-name="' + name + '"]').show();
         }
     
@@ -189,10 +173,10 @@
                     $('.payment_method-row').show(); 
                 }
                 else{
-                filterPaymentMethods(searchValue);
+                    filterPaymentMethods(searchValue);
                 }
             });
-        });  
+        });
     </script>
 </body>
 </html>

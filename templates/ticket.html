@@ -12,6 +12,7 @@
     <link rel="icon" href="static/assets/img/sentinel_icon.png" type="image/x-icon">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="static/tablesVe.css"> <!-- Importa el archivo CSS aquí -->
 </head>
 <body>
     <div class="container">
@@ -43,12 +44,13 @@
         </div>
         <!--Barra de filtro por estado-->
 
-        <div class="col" style="text-align: rigth; margin-top: 20px;">
+        <div class="col" style="text-align: right; margin-top: 20px;">
             <span id="currentPageNumber"></span>
         </div>
 
         <!--Tabla de tickets-->
-        <table class="table mt-3">
+        <div class="table-container">
+            <table class="table mt-3">
             <thead class="thead-dark">
                 <tr>
                     <th>ID</th>
@@ -56,6 +58,14 @@
                     <th>Charge</th>
                     <th>Status</th>
                     <th>Action</th> 
+                    <div style="text-align: center;">
+                        <div class="pagination">
+                            <button class="btn btn-primary" id="prevPageBtn">Previous</button>
+                            <span id="currentPage"></span>
+                            <button class="btn btn-primary" id="nextPageBtn">Next</button>
+                        </div>
+                    </div>
+                    
                 </tr>
             </thead>
             <tbody>
@@ -124,22 +134,16 @@
                         </div>
                     </div>
                 </div>
-                
-                <!--Pop up Crear pago-->
-
                 {% endfor %}
             </tbody>
         </table>
+    </div>
         <!--Tabla de tickets-->
     </div>
 
-        <!-- Pagination Controls -->
+    <!-- Pagination Controls -->
 
-    <div class="pagination" >
-        <button class="btn btn-primary" id="prevPageBtn">Previous</button>
-        <span id="currentPage"></span>
-        <button class="btn btn-primary" id="nextPageBtn">Next</button>
-    </div>
+
     
     <div style="text-align: center;">
         <div style="margin-top: 20px;">

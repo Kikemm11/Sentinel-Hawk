@@ -165,19 +165,18 @@ input {
   justify-content: center;
   margin-top: 20px;
   padding: 5px 30px; 
-  font-size: 15px;
-  background-color: #00003A;
+  font-size: 25px;
+  background-color:  #E8B11E;
   color: #fff;
   border: none;
   border-radius: 10px;
   cursor: pointer;
-  letter-spacing: 2px;
+  letter-spacing: -80px;
 }
   
 .logout-btn:hover {
-  background-color: #ff9900e0;
-}
-
+  color: #00003A;
+} 
   
   
   

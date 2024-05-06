@@ -1,0 +1,94 @@
+/* static/tablesVe.css */
+
+/* Establece el color de fondo de la página */
+body {
+    background-image: url('./assets/img/fondo.png'); /* Ruta de la imagen relativa a la ubicación del archivo CSS */
+    background-size: cover; /* Ajusta la imagen para que cubra todo el fondo */
+    background-position: top center;
+}
+
+/* Establece el contorno de la tabla */
+.table-container {
+    border: 1px solid #ccc; /* Agrega un borde gris a la tabla */
+    border-radius: 10px; /* Agrega bordes redondeados a la tabla */
+    background-color: #e7e7e7; /* Establece el color de fondo de la tabla como blanco */
+    padding: 20px; /* Añade un relleno interior a la tabla */
+    margin: 20px auto; /* Centra la tabla en la página */
+}
+
+/* Estilos para los botones */
+.btn-primary {
+    background-color: #00003A; /* Cambia el color de fondo del botón a azul */
+    border-color: #00003A; /* Cambia el color del borde del botón a azul */
+    color: #ffffff; /* Cambia el color del texto del botón a blanco */
+}
+
+.btn-primary:hover {
+    background-color: #00003A; /* Cambia el color de fondo del botón al pasar el ratón por encima */
+    border-color: #00003A; /* Cambia el color del borde del botón al pasar el ratón por encima */
+}
+
+.btn-primary:focus, .btn-primary.focus {
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5); /* Cambia el color del efecto de sombra al enfocar el botón */
+}
+
+.btn-primary.disabled, .btn-primary:disabled {
+    background-color: #E8B11E; /* Cambia el color de fondo del botón cuando está deshabilitado */
+    border-color: #E8B11E; /* Cambia el color del borde del botón cuando está deshabilitado */
+}
+
+.btn-primary:not(:disabled):not(.disabled):active, .btn-primary:not(:disabled):not(.disabled).active,
+.show > .btn-primary.dropdown-toggle {
+    background-color: #00003A; /* Cambia el color de fondo del botón cuando se activa */
+    border-color: #00003A; /* Cambia el color del borde del botón cuando se activa */
+    background-image: none;
+}
+
+.btn-primary:not(:disabled):not(.disabled):active:focus, .btn-primary:not(:disabled):not(.disabled).active:focus,
+.show > .btn-primary.dropdown-toggle:focus {
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5); /* Cambia el color del efecto de sombra al activar el botón y enfocarlo */
+}
+
+h1 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 900;
+    font-size: 50px; /* Ajusta el tamaño según tu preferencia */
+    color: #fff;
+    padding: 10px 20px; /* Ajusta el padding según tu preferencia */
+    border-radius: 10px;
+    display: inline-block; /* Cambia el display a inline-block */
+    margin-right: 0px; /* Agrega margen a la derecha para separar del botón */
+}
+
+/* Estilos para el botón "Back to menu" */
+.back-to-menu-btn {
+    font-size: 16px; 
+    cursor: pointer;
+    white-space: nowrap;
+    text-align: center
+  }
+
+  /* Estilos para el botón "Agregar método de pago" */
+.add-payment-btn {
+    background-color: #1d7537; /* Cambia el color de fondo del botón a amarillo */
+    border-color: #1d7537; /* Cambia el color del borde del botón a amarillo */
+    color: #ffffff; /* Cambia el color del texto del botón a blanco */
+    margin-top: 20px; /* Ajusta el margen superior */
+    font-size: 16px; /* Ajusta el tamaño del texto */
+    border-radius: 10px; /* Agrega bordes redondeados */
+    padding: 5px 30px; /* Ajusta el relleno del botón */
+}
+
+.add-payment-btn:hover {
+    background-color: #ccc; /* Cambia el color de fondo al pasar el ratón */
+    border-color: #ccc; /* Cambia el color del borde al pasar el ratón */
+}
+
+.add-payment-btn:focus, .add-payment-btn.focus {
+    box-shadow: 0 0 0 0.2rem rgba(232, 177, 30, 0.5); /* Cambia el color del efecto de sombra al enfocar */
+}
+
+.add-payment-btn:active, .add-payment-btn.active {
+    background-color: #ccc; /* Cambia el color de fondo al hacer clic */
+    border-color: #ccc; /* Cambia el color del borde al hacer clic */
+}

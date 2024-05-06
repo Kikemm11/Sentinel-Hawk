@@ -14,6 +14,9 @@
     <div class="panels-container">
       <div class="panel left-panel">
         <div class="content">
+          <button class="btn logout-btn" onclick="window.location.href='/logout'" style="position: absolute; top: 10px; left: 10px;">
+            <i class="fas fa-sign-out-alt"></i> <!-- Icono de salida -->
+          </button>
           <img src="static/assets/img/sentinel.png" alt="Logo" class="logo">
           <div class="message" id="user-message">Hello.</div>
           <div class="user" id="user">{{ username }}</div>
@@ -34,12 +37,14 @@
           <button class="btn transparent" id="settings-btn">
             Settings
           </button>
-          <button class="btn logout-btn" onclick="window.location.href='/logout'">Logout</button>
+
         </div>
       </div>
       <div class="panel right-panel">
         <div class="content">
+
           <img src="static/assets/img/settings.png" alt="Gears" class="settings">
+          <h2 class="settings-title">Settings</h2>
           <!-- Main button -->
           <br>
           <br>

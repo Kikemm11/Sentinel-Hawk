@@ -2,8 +2,8 @@
 #************************************************************************************
 from os import name
 import sys
-"""
-sys.path.append("/home/dasl/sentinel_last_2/sentinel_hawk/models/detection/ByteTrack")
+
+sys.path.append("/home/dasl/sentinel2/sentinel/models/detection/ByteTrack")
 from yolox.tracker.byte_tracker import BYTETracker, STrack
 from onemetric.cv.utils.iou import box_iou_batch
 from dataclasses import dataclass
@@ -189,7 +189,7 @@ def match_detections_with_tracks(
 # Carga el modelo        
 def prepararModelo():        
     # settings
-    MODEL = "/home/vit/sentinel_last/sentinel_hawk/models/detection/yolov8n.pt"
+    MODEL = "/home/dasl/sentinel2/sentinel/models/detection/yolov8n.pt"
     
     model = YOLO(MODEL)
     model.fuse()
@@ -221,7 +221,7 @@ def iniciarDeteccion():
     # urlCam = str(cam["cam"]) 
     urlCam = "rtsp://admin:placa123@192.168.60.4:554/snl/live/1/1"    
     path = urlCam # URL camara
-    capture = cv2.VideoCapture("models/detection/04.40.00-04.50.00[M][0@0][0].mp4") # URL camara
+    capture = cv2.VideoCapture("/home/dasl/sentinel2/sentinel/models/detection/04.40.00-04.50.00[M][0@0][0].mp4") # URL camara
     
     width = int(capture.get(cv2.CAP_PROP_FRAME_WIDTH)) # Obtiene el ancho de la camara
     height = int(capture.get(cv2.CAP_PROP_FRAME_HEIGHT)) # Obtiene el alto de la camara
@@ -382,8 +382,4 @@ def iniciarDeteccion():
     
             
 
-if __name__ == "__main__": 
-    
-    iniciarDeteccion()
-   
-"""
+

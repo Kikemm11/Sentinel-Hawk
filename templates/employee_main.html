@@ -15,7 +15,9 @@
       <div class="panel left-panel">
         <div class="content">
           <img src="static/assets/img/sentinel.png" alt="Logo" class="logo">
-          <button class="btn logout-btn" onclick="window.location.href='/logout'">Logout</button>
+          <button class="btn logout-btn" onclick="window.location.href='/logout'" style="position: absolute; top: 10px; left: 10px;">
+            <i class="fas fa-sign-out-alt"></i> <!-- Icono de salida -->
+          </button>
           <div class="message" id="user-message">Hello.</div>
           <div class="user" id="user">{{ username }}</div>
           <div class="employee-buttons">

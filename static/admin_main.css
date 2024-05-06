@@ -273,8 +273,8 @@ input {
 
 .logo {
   position: relative;
-  top: 10px;
-  left: 34%;
+  top: -40px;
+  left: 20%;
   transform: translateX(-50%);
   width: 260px;
   height: auto;
@@ -283,7 +283,7 @@ input {
 
 .settings {
   position: relative;
-  top: -50px;
+  top: -100px;
   left: 75%;
   transform: translateX(-50%);
   width: 700px;
@@ -293,10 +293,12 @@ input {
 
 #main-btn {
   position: absolute;
-  right: -10px; 
-  bottom: 10px; 
-  padding: 15px 30px; 
-  font-size: 12px; 
+  right: 100px; 
+  bottom: 85px; 
+  font-size: 14px; 
+  cursor: pointer;
+  white-space: nowrap;
+  text-align: center
 }
 
 .settings-buttons {
@@ -324,7 +326,7 @@ input {
 }
 
 .settings-buttons button:hover {
-  background-color: #2980b9;
+  background-color: #acacac;
 }
 
 .admin-buttons {
@@ -351,7 +353,7 @@ input {
 }
   
 .admin-btn:hover {
-  background-color: #2980b9;
+  background-color: #acacac;
 }
 
 
@@ -389,11 +391,11 @@ input {
   position: absolute;
   bottom: -30%;
   right: 30%;
-  padding: 10px 20px;
+  padding: 10px 35px;
   color: #fff;
   border: none;
   cursor: pointer;
-  border-radius: 5px;
+  border-radius: 30px;
 }
   
 .toggleCheckbox {
@@ -408,7 +410,7 @@ input {
   right: 0;
   bottom: 0;
   background-color: #00003A;
-  border-radius: 34px;
+  border-radius: 40px;
   transition: background-color 0.3s;
 }
   
@@ -429,20 +431,26 @@ input {
 }
   
 .toggleCheckbox:checked + .toggleLabel:before {
-  transform: translateX(160px);
+  transform: translateX(100px);
 }
   
 .toggleText {
   position: relative;
   z-index: 1;
+  font-size: 16px; /* Ajusta el tamaño del texto */
+  line-height: 26px; /* Ajusta la altura de línea para centrar verticalmente */
+  text-align: center; /* Centra el texto horizontalmente */
+  width: calc(100% - 60px); /* Ajusta el ancho del texto según el botón */
+  left: 0%; /* Centra horizontalmente el texto */
+  transform: translateX(-50%); /* Centra horizontalmente el texto */
 }
 
 
 .logout-btn {
-  position: absolute;
+  position: relative;
   display: block;
   bottom: -4%;
-  left: 7%;
+  left: 30%;
   transform: translate(-50%, -50%);
 }
 
@@ -452,15 +460,46 @@ input {
   justify-content: center;
   margin-top: 20px;
   padding: 5px 30px; 
-  font-size: 15px;
-  background-color: #00003A;
+  font-size: 25px;
+  background-color:  #E8B11E;
   color: #fff;
   border: none;
   border-radius: 10px;
   cursor: pointer;
-  letter-spacing: 2px;
+  letter-spacing: -80px;
 }
   
 .logout-btn:hover {
-  background-color: #ff9900e0;
+  color: #00003A;
 }  
+
+#settings-btn {
+  position: relative; /* Cambiado de absolute a relative */
+  display: block;
+  bottom: 20%; /* Mantenido */
+  left: 42%; /* Mantenido */
+  transform: translate(-50%, -50%); /* Mantenido */
+}
+
+.container .content p {
+  position: relative; /* Añadido */
+  top: -100px; /* Ajusta este valor según sea necesario */
+  left: 45%; /* Centrar horizontalmente */
+  transform: translateX(-50%); /* Centrar horizontalmente */
+  font-size: 20px; /* Tamaño de fuente ajustado */
+  color: #fff; /* Color de texto */
+  width: 80%; /* Anchura del contenedor */
+  max-width: 600px; /* Ancho máximo */
+  text-align: center; /* Alineación de texto centrada */
+  margin-top: 20px; /* Espacio superior */
+}
+
+/* Estilos CSS para el título */
+.settings-title {
+  position: absolute; /* Establece la posición como absoluta */
+  top: 250px; /* Posición vertical desde la parte superior */
+  left: 450px; /* Posición horizontal desde la izquierda */
+  font-size: 40px; /* Tamaño de fuente del título */
+  color: #fff; /* Color del texto */
+}
+

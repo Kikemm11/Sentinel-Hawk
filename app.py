@@ -15,7 +15,6 @@ from models.ticketConnection import TicketConnection
 from models.status2Connection import StatusConnection
 from models.paymentConnection import PaymentConnection
 
-"""
 
 import threading  # Importa el módulo threading para detener los procesos en ejecución
 from models.deteccion import iniciarDeteccion
@@ -25,7 +24,7 @@ button_active = False
 # Variable global para almacenar la referencia al hilo de ejecución
 execution_thread = None
 
-"""
+
 
 
 app = Flask(__name__)
@@ -45,7 +44,7 @@ class User(UserMixin):
     def __init__(self, id):
         self.id = id
         
-"""
+
 
 #---------------------------- detection funtions -----------------------------
 
@@ -74,7 +73,7 @@ def stop_execution():
 
 #--------------------------------------------------------------
 
-"""
+
 
 
 # Set the different routes involoved lin the web application
@@ -185,7 +184,7 @@ def vehicle_type_search_index(vehicle_name):
 
 # Add new vehicle route (No needed)
 
-"""
+
 @app.route('/add-vehicle', methods=['GET', 'POST'])
 def add_vehicle_type():
 
@@ -198,8 +197,6 @@ def add_vehicle_type():
         connection = VehicleConnection(loginApp.database)
         vehicle_types = connection.write_vehicle_type(data)
         return redirect('/vehicle-type')  
-        
-"""
 
 # Update vehicle route
 
@@ -681,8 +678,7 @@ def revenues():
         return render_template('revenues.html')
 
     
-    
-"""
+
   
 #---------------------------- deteccion ---------------------------------------------
 
@@ -711,7 +707,6 @@ def toggle_button():
 #-------------------------------------------------------------------------------------    
     
 
-"""
 
        
 

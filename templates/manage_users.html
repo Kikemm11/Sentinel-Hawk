@@ -13,19 +13,14 @@
     <link rel="icon" href="static/assets/img/sentinel_icon.png" type="image/x-icon">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="static/tablesVe.css"> <!-- Importa el archivo CSS aquí -->
 </head>
 <body>
     <div class="container">
         <h1>System Users</h1>
 
-        <!--Botón de agregar usuario-->
-
-        <button id="addUserBtn" class="btn btn-success"><i class="fas fa-plus"></i> Add User</button>
-
-        <!--Botón de agregar usuario-->
 
         <!--Barra de búsqueda-->
-
         <div class="row mb-3">
             <div class="col">
                 <br>
@@ -33,19 +28,15 @@
             </div>
 
             <!--Botón de búsqueda-->
-
             <div class="col-auto">
                 <br>
                 <button class="btn btn-primary" id="searchBtn"><i class="fas fa-search"></i> Search</button>
             </div>
-
             <!--Botón de búsqueda-->
         </div>
-
         <!--Barra de búsqueda-->
 
         <!--Pop up Crear usuario-->
-
         <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -85,21 +76,20 @@
                 </div>
             </div>
         </div>
-        
-        
-        
         <!--Pop up Crear usuario-->
 
-
         <!--Tabla de usuarios-->
-
-        <table class="table mt-3">
+        <div class="table-container">
+            <table class="table mt-3">
             <thead class="thead-dark">
                 <tr>
                     <th>ID</th>
                     <th>Username</th>
                     <th>Permisology</th>
                     <th>Actions</th> 
+                            <!--Botón de agregar usuario-->
+        <button id="addUserBtn" class="btn btn-success add-payment-btn"><i class="fas fa-plus"></i> Add User</button>
+        <!--Botón de agregar usuario-->
                 </tr>
             </thead>
             <tbody>
@@ -117,12 +107,11 @@
                 </tr>
 
                 <!--Pop up Actualizar usuario-->
-
-                <div class="modal fade" id="updateUserModal" tabindex="-1" aria-labelledby="updateUserModalLabel" aria-hidden="true">
+                <div class="modal fade" id="updateUserModal{{ user.id }}" tabindex="-1" aria-labelledby="updateUserModalLabel{{ user.id }}" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="updateUserModalLabel">Update</h5>
+                                <h5 class="modal-title" id="updateUserModalLabel{{ user.id }}">Update {{ user.username }}</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -130,16 +119,16 @@
                             <div class="modal-body">
                                 <form method="POST" action="/update-user" id="updateUserForm{{ user.id }}">
                                     <div class="form-group">
-                                        <label for="newUsername">New Username</label>
-                                        <input type="text" class="form-control" id="newUsername" name="newUsername">
+                                        <label for="newUsername{{ user.id }}">New Username</label>
+                                        <input type="text" class="form-control" id="newUsername{{ user.id }}" name="newUsername">
                                     </div>
                                     <div class="form-group">
-                                        <label for="newUserPassword">New Password</label>
-                                        <input type="text" class="form-control" id="newUserPassword" name="newUserPassword">
+                                        <label for="newUserPassword{{ user.id }}">New Password</label>
+                                        <input type="text" class="form-control" id="newUserPassword{{ user.id }}" name="newUserPassword">
                                     </div>
                                     <div class="form-group">
-                                        <label for="newUserPermisology">Choose User Permisology:</label>
-                                        <select id="newUserPermisology" name="newUserPermisology">
+                                        <label for="newUserPermisology{{ user.id }}">Choose User Permisology:</label>
+                                        <select id="newUserPermisology{{ user.id }}" name="newUserPermisology">
                                             <option value="admin">Administrator</option>
                                             <option value="employee">Employee</option>
                                         </select>
@@ -147,28 +136,24 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                                         <input type="hidden" name="userId" value="{{ user.id }}">
-                                        <button type="submit" class="btn btn-primary" id="saveChangesBtn">Save Changes</button>
+                                        <button type="submit" class="btn btn-primary save-changes-btn">Save Changes</button>
                                     </div>
                                 </form>
                             </div>
                         </div>
                     </div>
                 </div>
-
                 <!--Pop up Actualizar usuario-->
-
                 {% endfor %}
             </tbody>
         </table>
     </div>
+</div>
     <div style="text-align: center;">
         <div style="margin-top: 20px;">
-            <a href="/main" style="text-decoration: none; color: #007bff; font-weight: bold;">Back to menu</a>
+            <a href="/main" class="back-to-menu-btn" style="text-decoration: none;">Back to menu</a>
         </div>
     </div>
-
-
-    <!--Tabla de usuarios-->
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
@@ -178,17 +163,18 @@
             $('.update-btn').click(function() {
                 var userId = $(this).data('id');
                 var username = $(this).data('name');
-                $('#updateUserModalLabel').text('Update ' + username);
+                $('#updateUserModalLabel' + userId).text('Update ' + username);
                 // Set the data-id attribute for the "Guardar cambios" button
-                $('#updateUserModal').modal('show');
+                $('#updateUserModal' + userId).modal('show');
             });
     
-            $('#saveChangesBtn').click(function() {
-
-                var newUsername = $('#newUsername').val();
-                var newUserPassword = $('#newUserPassword').val();
-                var newUserPermisology = $('#newUserPermisology').val();
-                $('#updateUserForm').submit();
+            $('.save-changes-btn').click(function() {
+                // Get the values from the form fields
+                var userId = $(this).closest('form').find('input[name="userId"]').val();
+                var newUsername = $('#newUsername' + userId).val();
+                var newUserPassword = $('#newUserPassword' + userId).val();
+                var newUserPermisology = $('#newUserPermisology' + userId).val();
+                $('#updateUserForm' + userId).submit();
             });
         });
     </script>
@@ -211,10 +197,8 @@
         });
     </script>
     <script>
-
         function filterUsers(username) {
             $('.user-row').hide();
-            
             $('.user-row[data-name="' + username + '"]').show();
         }
     
@@ -223,13 +207,11 @@
                 var searchValue = $('#searchInput').val();
                 if (searchValue === ""){
                     $('.user-row').show(); 
-                }
-                else{
-                filterUsers(searchValue);
+                } else {
+                    filterUsers(searchValue);
                 }
             });
         });
-
     </script>
 </body>
 </html>
